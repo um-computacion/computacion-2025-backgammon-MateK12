@@ -1,0 +1,2 @@
+coverage
+pygame
