@@ -14,3 +14,14 @@
 ### Arreglado
 
 ### Eliminado
+
+## [1.0.1] - 20-08-2025
+
+### Agregado
+estructura de carpetas como en consigna
+archivos vacios de las clases con sus respectivos tests vacios
+### Cambiado
+gitignor para ignorar env
+### Arreglado
+
+### Eliminado
