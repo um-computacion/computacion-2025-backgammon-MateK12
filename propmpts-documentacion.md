@@ -50,3 +50,55 @@ Dark mode support
 lo pase a español 
 ### archivos finales
 changelog.md
+
+### modelo
+Claude
+### prompt 
+Resumen del diseño general.
+Justificación de las clases elegidas (por qué, responsabilidades).
+Justificación de atributos (por qué se eligieron).
+Decisiones de diseño relevantes
+Excepciones y manejo de errores (qué excepciones definidas y por qué).
+Estrategias de testing y cobertura (qué se probó y por qué).
+Referencias a requisitos SOLID y cómo se cumplen.
+Anexos: diagramas UML(ej: diagrama de clases).
+haz una plantilla de un archivo md, que tenga como titulo esto, no completes nada en cada punto, solo deja el titulo con algun emoji, o algo que lo haga ver mejor
+
+### respuesta    
+📋 Documento de Diseño del Sistema
+🏗️ Resumen del Diseño General
+🎯 Justificación de las Clases Elegidas
+Responsabilidades y Propósito
+📊 Justificación de Atributos
+Selección y Diseño de Atributos
+🔧 Decisiones de Diseño Relevantes
+Patrones y Arquitectura Implementada
+⚠️ Excepciones y Manejo de Errores
+Excepciones Personalizadas Definidas
+🧪 Estrategias de Testing y Cobertura
+Plan de Pruebas y Cobertura de Código
+🏛️ Principios SOLID
+Cumplimiento de los Principios SOLID
+🔸 Single Responsibility Principle (SRP)
+🔸 Open/Closed Principle (OCP)
+🔸 Liskov Substitution Principle (LSP)
+🔸 Interface Segregation Principle (ISP)
+🔸 Dependency Inversion Principle (DIP)
+📎 Anexos
+📈 Diagramas UML
+Diagrama de Clases
+Diagrama de Secuencia (opcional)
+Diagrama de Casos de Uso (opcional)
+Documento generado el: [Fecha]
+Autor: [Nombre del desarrollador]
+Versión: [Número de versión]
+
+
+### Fixed
+- Fixed memory leak in background tasks
+### cambios
+ 
+### archivos finales
+Justificacion.md
+
+
