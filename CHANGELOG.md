@@ -25,3 +25,12 @@ gitignor para ignorar env
 ### Arreglado
 
 ### Eliminado
+
+## [1.0.2] - 21-08-2025
+
+### Agregado
+clases ficha, jugador, dados implementadas con sus tests
+### Cambiado
+### Arreglado
+
+### Eliminado
