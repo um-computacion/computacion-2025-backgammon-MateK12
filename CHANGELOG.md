@@ -34,3 +34,13 @@ clases ficha, jugador, dados implementadas con sus tests
 ### Arreglado
 
 ### Eliminado
+
+## [1.0.3] - 23-08-2025
+
+### Agregado
+clase UI empezada, tablero se dibuja bien
+tests para la clase UI implementadas
+### Cambiado
+### Arreglado
+
+### Eliminado
