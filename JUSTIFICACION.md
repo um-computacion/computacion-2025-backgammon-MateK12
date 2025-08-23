@@ -17,7 +17,7 @@
 
 
 ## 🔧 Decisiones de Diseño Relevantes
-
+Decidi no usar una imagen para el tablero para asi tener mas control sobre los triangulos dibujados, y la estetica del tablero en general, ademas de que es mas liviano no tener
 ### Patrones y Arquitectura Implementada
 
 
