@@ -88,4 +88,104 @@ en el primer test agrege la variable punto_index para permitir calcular cualquie
 ### archivos finales
 Test_ui
 
+### modelo
+Claude
+### propmt 
+haz los tests de esta clase (tableroValidador)
+### respuesta    
+import unittest
+from src.core.models.tablero.Tablero_Validador import Tablero_Validador
+from src.core.models.ficha.Ficha import Ficha
+from src.core.enums.TipoFicha import TipoFicha
 
+class TestTableroValidador(unittest.TestCase):
+    def setUp(self):
+        self.validador = Tablero_Validador()
+        self.tablero = [[] for _ in range(24)]
+
+    def test_triangulo_con_dos_fichas_rivales(self):
+        """Test que verifica que detecta correctamente dos fichas rivales"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        ficha_roja1 = Ficha(TipoFicha.ROJA.value)
+        ficha_roja2 = Ficha(TipoFicha.ROJA.value)
+        
+        # Colocar dos fichas rojas en el triángulo 0
+        self.tablero[0] = [ficha_roja1, ficha_roja2]
+        
+        # Verificar con una ficha negra
+        self.assertTrue(
+            self.validador.triangulo_con_fichas_rivales(
+                self.tablero, 
+                0, 
+                ficha_negra
+            )
+        )
+
+    def test_triangulo_con_una_ficha_rival(self):
+        """Test que verifica que una sola ficha rival no bloquea"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        
+        # Colocar una ficha roja en el triángulo 0
+        self.tablero[0] = [ficha_roja]
+        
+        # Verificar con una ficha negra
+        self.assertFalse(
+            self.validador.triangulo_con_fichas_rivales(
+                self.tablero, 
+                0, 
+                ficha_negra
+            )
+        )
+
+    def test_triangulo_vacio(self):
+        """Test que verifica que un triángulo vacío no bloquea"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        
+        self.assertFalse(
+            self.validador.triangulo_con_fichas_rivales(
+                self.tablero, 
+                0, 
+                ficha_negra
+            )
+        )
+
+    def test_triangulo_con_fichas_mismo_color(self):
+        """Test que verifica que las fichas del mismo color no bloquean"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        ficha_negra1 = Ficha(TipoFicha.NEGRA.value)
+        ficha_negra2 = Ficha(TipoFicha.NEGRA.value)
+        
+        # Colocar dos fichas negras en el triángulo 0
+        self.tablero[0] = [ficha_negra1, ficha_negra2]
+        
+        # Verificar con una ficha negra
+        self.assertFalse(
+            self.validador.triangulo_con_fichas_rivales(
+                self.tablero, 
+                0, 
+                ficha_negra
+            )
+        )
+
+if __name__ == '__main__':
+    unittest.main()
+
+### Fixed
+### cambios
+Agrege test test_triangulo_mas_dos_fichas_rivales 
+No hice muchos cambios ya que los tests cubren los casos mas criticos de la clase
+- devuelva true cuando se mueve una ficha a un triangulo con 2 o mas fichas rivales
+- devuelva false cuando solo hay una ficha rival en el triangulo a mover
+- devuelva false cuando el triangulo esta vacio o cuando el triangulo tiene fichas del mismo color
+### archivos finales
+
+### modelo
+Claude
+### propmt 
+### respuesta    
+
+
+### Fixed
+### cambios
+### archivos finales

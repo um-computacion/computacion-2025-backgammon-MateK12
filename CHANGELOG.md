@@ -44,3 +44,12 @@ tests para la clase UI implementadas
 ### Arreglado
 
 ### Eliminado
+
+## [1.0.4] - 24-08-2025
+
+### Agregado
+Clase tablero, clase tablero validador, testeadas
+### Cambiado
+### Arreglado
+
+### Eliminado
