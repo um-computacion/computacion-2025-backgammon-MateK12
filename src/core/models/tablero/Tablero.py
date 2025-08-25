@@ -12,17 +12,32 @@ class Tablero():
     @property 
     def fichas_comidas(self)->list[Ficha]:
         return self.__fichas_comidas__
+    @fichas_comidas.setter
+    def fichas_comidas(self, valor:list[Ficha])->None:
+        self.__fichas_comidas__ = valor
+
     @property
     def fichas_ganadas(self)->list[Ficha]:
         return self.__fichas_ganadas__
+
+
     def mover_ficha(self, ficha:Ficha, triangulo_origen:int, moviemiento:int)->None:
-        self.__tablero__[triangulo_origen].remove(ficha)
         if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha): #le doy una copia para que no modifique el original
             raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
         else:
+            if self.__validador__.puede_comer(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha):
+                ficha_comida = self.__tablero__[triangulo_origen + moviemiento].pop()
+                ficha_comida.comida = True
+                self.__fichas_comidas__.append(ficha_comida) 
+            self.__tablero__[triangulo_origen].remove(ficha)
             self.__tablero__[triangulo_origen+ moviemiento].append(ficha)
 
-  
+    # def mover_ficha_comida(self, ficha:Ficha, moviemiento:int)->None:
+    #     if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),moviemiento, ficha): 
+    #         raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
+    #     else:
+    #         pass
+
     def imprimir_tablero(self) -> None:
         """
         Imprime una representación del tablero en la consola con fichas apiladas verticalmente.
