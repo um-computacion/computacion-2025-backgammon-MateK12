@@ -5,10 +5,11 @@
 
 
 ## 🎯 Justificación de las Clases Elegidas
-
+Decidi dejar la responabilidad de la verificacion de moviemientos en la clase de tableroValidador para separar 
+las responsabilidades
 ### Responsabilidades y Propósito
-
-
+Tablero -> el tabler gestionara movimientos
+TableroValidador -> metodos para determinar si un movimiento es valido o no
 
 ## 📊 Justificación de Atributos
 
