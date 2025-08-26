@@ -19,7 +19,9 @@ class Tablero():
     @property
     def fichas_ganadas(self)->list[Ficha]:
         return self.__fichas_ganadas__
-
+    @property
+    def tablero(self)->list[list[Ficha]]:
+        return self.__tablero__
 
     def mover_ficha(self, ficha:Ficha, triangulo_origen:int, moviemiento:int)->None:
         if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha): #le doy una copia para que no modifique el original

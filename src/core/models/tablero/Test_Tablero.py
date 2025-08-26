@@ -56,5 +56,8 @@ class TestTablero(unittest.TestCase):
         self.assertEqual(len(self.tablero.fichas_comidas), 1) #ficha roja
         self.assertEqual(self.tablero.fichas_comidas[0], ficha_roja)
         self.assertTrue(self.tablero.fichas_comidas[0].comida)
+
+    def test_get_tablero(self):
+        self.assertEqual(self.tablero.tablero,self.tablero.__tablero__)
 if __name__ == '__main__':
     unittest.main()
