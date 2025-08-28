@@ -120,24 +120,3 @@ class Tablero():
         if self.__fichas_ganadas__:
             print("Fichas ganadas:", "".join([str(ficha) for ficha in self.__fichas_ganadas__]))
     
-
-if __name__ == "__main__":
-    tablero_inicial: list[list[Ficha]] = [[] for _ in range(24)]
-    
-    # Colocar fichas negras
-    tablero_inicial[0] = [Ficha(TipoFicha.NEGRA.value) for _ in range(2)]  
-    tablero_inicial[11] = [Ficha(TipoFicha.NEGRA.value) for _ in range(5)] 
-    tablero_inicial[16] = [Ficha(TipoFicha.NEGRA.value) for _ in range(3)] 
-    tablero_inicial[18] = [Ficha(TipoFicha.NEGRA.value) for _ in range(5)] 
-
-    # Colocar fichas rojas (en posiciones opuestas)
-    tablero_inicial[23] = [Ficha(TipoFicha.ROJA.value) for _ in range(2)]  
-    tablero_inicial[12] = [Ficha(TipoFicha.ROJA.value) for _ in range(5)]  
-    tablero_inicial[7] = [Ficha(TipoFicha.ROJA.value) for _ in range(3)]   
-    tablero_inicial[5] = [Ficha(TipoFicha.ROJA.value) for _ in range(5)]   
-
-    # Crear instancia del tablero
-    tablero = Tablero(tablero_inicial)
-
-    tablero.imprimir_tablero()
-    tablero.mover_ficha(tablero_inicial[0][0], 0, 5) 

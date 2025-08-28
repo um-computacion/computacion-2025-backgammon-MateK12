@@ -66,3 +66,15 @@ Clase tablero, clase tablero validador, testeadas
 ### Arreglado
 
 ### Eliminado
+
+## [1.0.7] - 28-08-2025
+
+### Agregado
+-metodos para saber si hay fichas comidas de un tipo especifico, seleccionar ficha
+-tests de esas clases
+-metodo para inicializar tablero
+### Cambiado
+### Arreglado
+
+### Eliminado
+
