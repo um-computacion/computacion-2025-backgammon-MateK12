@@ -1,0 +1,6 @@
+omit = 
+    Test_*  
+    */Test_*
+    **/Test_*
+    src/core/exceptions
+    src/core/enums
