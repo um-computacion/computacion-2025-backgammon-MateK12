@@ -12,7 +12,8 @@ class Backgammon():
         return self.__dados__.tirar_dados()
 
     # def mover_ficha(self,tipo:TipoFicha):
-    #     if self.__tablero__.fichas_comidas:
+    #     # if
+    #     if self.__tablero_tipo_.fichas_comidas:
     #         self.__tablero__.mover_ficha()
 
     def hay_fichas_comidas(self,tipo:TipoFicha)->bool:
