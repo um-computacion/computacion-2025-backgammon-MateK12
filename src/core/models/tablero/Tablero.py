@@ -12,17 +12,34 @@ class Tablero():
     @property 
     def fichas_comidas(self)->list[Ficha]:
         return self.__fichas_comidas__
+    @fichas_comidas.setter
+    def fichas_comidas(self, valor:list[Ficha])->None:
+        self.__fichas_comidas__ = valor
+
     @property
     def fichas_ganadas(self)->list[Ficha]:
         return self.__fichas_ganadas__
+    @property
+    def tablero(self)->list[list[Ficha]]:
+        return self.__tablero__
+
     def mover_ficha(self, ficha:Ficha, triangulo_origen:int, moviemiento:int)->None:
-        self.__tablero__[triangulo_origen].remove(ficha)
         if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha): #le doy una copia para que no modifique el original
             raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
         else:
+            if self.__validador__.puede_comer(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha):
+                ficha_comida = self.__tablero__[triangulo_origen + moviemiento].pop()
+                ficha_comida.comida = True
+                self.__fichas_comidas__.append(ficha_comida) 
+            self.__tablero__[triangulo_origen].remove(ficha)
             self.__tablero__[triangulo_origen+ moviemiento].append(ficha)
 
-  
+    # def mover_ficha_comida(self, ficha:Ficha, moviemiento:int)->None:
+    #     if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),moviemiento, ficha): 
+    #         raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
+    #     else:
+    #         pass
+
     def imprimir_tablero(self) -> None:
         """
         Imprime una representación del tablero en la consola con fichas apiladas verticalmente.
@@ -103,24 +120,3 @@ class Tablero():
         if self.__fichas_ganadas__:
             print("Fichas ganadas:", "".join([str(ficha) for ficha in self.__fichas_ganadas__]))
     
-
-if __name__ == "__main__":
-    tablero_inicial: list[list[Ficha]] = [[] for _ in range(24)]
-    
-    # Colocar fichas negras
-    tablero_inicial[0] = [Ficha(TipoFicha.NEGRA.value) for _ in range(2)]  
-    tablero_inicial[11] = [Ficha(TipoFicha.NEGRA.value) for _ in range(5)] 
-    tablero_inicial[16] = [Ficha(TipoFicha.NEGRA.value) for _ in range(3)] 
-    tablero_inicial[18] = [Ficha(TipoFicha.NEGRA.value) for _ in range(5)] 
-
-    # Colocar fichas rojas (en posiciones opuestas)
-    tablero_inicial[23] = [Ficha(TipoFicha.ROJA.value) for _ in range(2)]  
-    tablero_inicial[12] = [Ficha(TipoFicha.ROJA.value) for _ in range(5)]  
-    tablero_inicial[7] = [Ficha(TipoFicha.ROJA.value) for _ in range(3)]   
-    tablero_inicial[5] = [Ficha(TipoFicha.ROJA.value) for _ in range(5)]   
-
-    # Crear instancia del tablero
-    tablero = Tablero(tablero_inicial)
-
-    tablero.imprimir_tablero()
-    tablero.mover_ficha(tablero_inicial[0][0], 0, 5) 

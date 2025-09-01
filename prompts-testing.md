@@ -183,9 +183,87 @@ No hice muchos cambios ya que los tests cubren los casos mas criticos de la clas
 ### modelo
 Claude
 ### propmt 
+haz un test del metodo inicializar_tablero() para que devuelva exactamente lo que esta devolviendo ahora (el posicionamiento inicial del tablero de backgammon)
 ### respuesta    
-
+def test_inicializar_tablero(self):
+    """Test que verifica la disposición inicial correcta del tablero de backgammon"""
+    game = Backgammon()
+    tablero = game.inicializar_tablero()
+    
+    # Verificar que el tablero tiene 24 posiciones
+    self.assertEqual(len(tablero), 24)
+    
+    # Verificar fichas negras
+    self.assertEqual(len(tablero[0]), 2)
+    self.assertEqual(len(tablero[11]), 5)
+    self.assertEqual(len(tablero[16]), 3)
+    self.assertEqual(len(tablero[18]), 5)
+    
+    # Verificar que son del tipo correcto
+    self.assertEqual(tablero[0][0].tipo, TipoFicha.NEGRA.value)
+    self.assertEqual(tablero[11][0].tipo, TipoFicha.NEGRA.value)
+    self.assertEqual(tablero[16][0].tipo, TipoFicha.NEGRA.value)
+    self.assertEqual(tablero[18][0].tipo, TipoFicha.NEGRA.value)
+    
+    # Verificar fichas rojas
+    self.assertEqual(len(tablero[23]), 2)
+    self.assertEqual(len(tablero[12]), 5)
+    self.assertEqual(len(tablero[7]), 3)
+    self.assertEqual(len(tablero[5]), 5)
+    
+    # Verificar que son del tipo correcto
+    self.assertEqual(tablero[23][0].tipo, TipoFicha.ROJA.value)
+    self.assertEqual(tablero[12][0].tipo, TipoFicha.ROJA.value)
+    self.assertEqual(tablero[7][0].tipo, TipoFicha.ROJA.value)
+    self.assertEqual(tablero[5][0].tipo, TipoFicha.ROJA.value)
+    
 
 ### Fixed
 ### cambios
+le agregue 2 asserts mas para validar la longitud del arreglo y los espacios vacios
+### archivos finales
+Test_backgammon.py
+
+
+
+### modelo
+Claude
+### propmt 
+haz los tests de los ultimos 3 metodos
+### respuesta    
+def test_hay_fichas_comidas_sin_fichas(self):
+        """Test cuando no hay fichas comidas"""
+        self.game._Backgammon__tablero__.fichas_comidas = []
+        resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)
+        self.assertFalse(resultado)
+
+    def test_hay_fichas_comidas_con_fichas(self):
+        """Test cuando hay fichas comidas del tipo especificado"""
+        ficha_comida = Ficha(TipoFicha.NEGRA.value)
+        self.game._Backgammon__tablero__.fichas_comidas = [ficha_comida]
+        resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)
+        self.assertTrue(resultado)
+
+    def test_seleccionar_ficha_existente(self):
+        """Test seleccionar una ficha que existe en el triángulo"""
+        ficha = Ficha(TipoFicha.NEGRA.value)
+        self.game._Backgammon__tablero__.tablero = [[ficha]]
+        resultado = self.game.seleccionar_ficha(0, TipoFicha.NEGRA)
+        self.assertEqual(resultado, ficha)
+
+    def test_seleccionar_ficha_no_existente(self):
+        """Test seleccionar una ficha que no existe en el triángulo"""
+        self.game._Backgammon__tablero__.tablero = [[]]
+        with self.assertRaises(NoHayFichaEnTriangulo):
+            self.game.seleccionar_ficha(0, TipoFicha.NEGRA)
+
+    def test_seleccionar_ficha_color_incorrecto(self):
+        """Test seleccionar una ficha cuando solo hay fichas de otro color"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.game._Backgammon__tablero__.tablero = [[ficha_roja]]
+        with self.assertRaises(NoHayFichaEnTriangulo):
+            self.game.seleccionar_ficha(0, TipoFicha.NEGRA)
+
+### Fixed
+### cambios TO DO CAMBIAR POR METODO INICIALIZAR_TABLERO()
 ### archivos finales
