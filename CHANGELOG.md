@@ -78,3 +78,24 @@ Clase tablero, clase tablero validador, testeadas
 
 ### Eliminado
 
+## [1.0.8] - 31-08-2025
+
+### Agregado
+Clase CLI empezada
+test a metodos basicos
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.0.9] - 31-08-2025
+
+### Agregado
+Clase CLI empezada
+test a metodos basicos
+se agrego metodo para saber si hay ganador, testeado parcialmente
+### Cambiado
+se corriguieron algunos tests
+### Arreglado
+
+### Eliminado

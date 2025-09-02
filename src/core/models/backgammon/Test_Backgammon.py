@@ -14,7 +14,16 @@ class TestBackgammon(unittest.TestCase):
             mock_dados.return_value = {'dado1': 4, 'dado2': 6}
             resultado = self.game.tirar_dados()
             self.assertEqual(resultado, {'dado1': 4, 'dado2': 6})
-
+    def test_get_tablero(self):
+        resultado = self.game.tablero
+        self.assertIsNotNone(resultado)
+    def test_cambiar_turno(self):
+        self.game.cambiar_turno()
+        self.assertEqual(self.game._Backgammon__turno, TipoFicha.NEGRA)
+    def test_cambiar_turno_a_rojo(self):
+        self.game.cambiar_turno()
+        self.game.cambiar_turno()
+        self.assertEqual(self.game._Backgammon__turno, TipoFicha.ROJA)
     # def test_mover_ficha(self):
     #     self.game.__tablero__.mover_ficha()
     #     self.game.mover_ficha()
@@ -35,11 +44,11 @@ class TestBackgammon(unittest.TestCase):
         self.assertTrue(resultado)
 
     def test_seleccionar_ficha_existente(self):
-        ficha = Ficha(TipoFicha.NEGRA.value)
-        
         resultado = self.game.seleccionar_ficha(0, TipoFicha.NEGRA.value)
         self.assertIsNot(resultado, None)
-
+    def test_hay_ganador_none_si_no_hay_ganador(self):
+        resultado = self.game.hay_ganador()
+        self.assertIsNone(resultado)
     def test_seleccionar_ficha_no_existente(self):
         with self.assertRaises(NoHayFichaEnTriangulo):
             self.game.seleccionar_ficha(1, TipoFicha.NEGRA.value)

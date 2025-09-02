@@ -7,10 +7,12 @@ class Backgammon():
     def __init__(self):
         self.__dados__:Dados = Dados()
         self.__tablero__:Tablero = Tablero(self.inicializar_tablero())
-    
+        self.__turno:TipoFicha = TipoFicha.ROJA
     def tirar_dados(self):
         return self.__dados__.tirar_dados()
-
+    @property
+    def tablero(self):
+        return self.__tablero__
     # def mover_ficha(self,tipo:TipoFicha):
     #     # if
     #     if self.__tablero_tipo_.fichas_comidas:
@@ -29,6 +31,18 @@ class Backgammon():
             raise NoHayFichaEnTriangulo("No tiene una ficha de su color en el triangulo seleccionado")
         else:
             return tipos_fichas[0]
+        
+    def cambiar_turno(self):
+        self.__turno = TipoFicha.NEGRA if self.__turno == TipoFicha.ROJA else TipoFicha.ROJA
+
+    def hay_ganador(self) -> int | None:
+        fichas_rojas:list[Ficha] = [ficha for ficha in self.__tablero__.fichas_ganadas if ficha.tipo == TipoFicha.ROJA.value]
+        fichas_negras:list[Ficha] = [ficha for ficha in self.__tablero__.fichas_ganadas if ficha.tipo == TipoFicha.NEGRA.value]
+        if len(fichas_rojas) == 24:
+            return TipoFicha.ROJA.value
+        if len(fichas_negras) == 24:
+            return TipoFicha.NEGRA.value
+        return None
 
     def inicializar_tablero(self) -> list[list[Ficha | None]]:
         
