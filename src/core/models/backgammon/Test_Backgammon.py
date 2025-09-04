@@ -1,0 +1,80 @@
+import unittest
+from unittest.mock import Mock, patch
+from src.core.models.backgammon.backgammon import Backgammon
+from src.core.enums.TipoFicha import TipoFicha
+from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
+from src.core.models.ficha.Ficha import Ficha
+
+class TestBackgammon(unittest.TestCase):
+    def setUp(self):
+        self.game = Backgammon()
+
+    def test_tirar_dados(self):
+        with patch('src.core.models.dado.Dados.Dados.tirar_dados') as mock_dados:
+            mock_dados.return_value = {'dado1': 4, 'dado2': 6}
+            resultado = self.game.tirar_dados()
+            self.assertEqual(resultado, {'dado1': 4, 'dado2': 6})
+
+    # def test_mover_ficha(self):
+    #     self.game.__tablero__.mover_ficha()
+    #     self.game.mover_ficha()
+
+    # def test_seleccionar_ficha(self):
+    #     with self.assertRaises(AttributeError):
+    #         self.game.seleccionar_ficha(0, TipoFicha.NEGRA)
+    
+    def test_hay_fichas_comidas_sin_fichas(self):
+        self.game.__tablero__.fichas_comidas = []
+        resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)
+        self.assertFalse(resultado)
+
+    def test_hay_fichas_comidas_con_fichas(self):
+        ficha_comida = Ficha(TipoFicha.NEGRA.value)
+        self.game.__tablero__.fichas_comidas = [ficha_comida]
+        resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)
+        self.assertTrue(resultado)
+
+    def test_seleccionar_ficha_existente(self):
+        ficha = Ficha(TipoFicha.NEGRA.value)
+        
+        resultado = self.game.seleccionar_ficha(0, TipoFicha.NEGRA.value)
+        self.assertIsNot(resultado, None)
+
+    def test_seleccionar_ficha_no_existente(self):
+        with self.assertRaises(NoHayFichaEnTriangulo):
+            self.game.seleccionar_ficha(1, TipoFicha.NEGRA.value)
+
+    def test_seleccionar_ficha_color_incorrecto(self):
+        with self.assertRaises(NoHayFichaEnTriangulo):
+            self.game.seleccionar_ficha(0, TipoFicha.ROJA.value)
+    def test_inicializar_tablero(self):
+        game = Backgammon()
+        tablero = game.inicializar_tablero()
+
+        self.assertEqual(len(tablero), 24)
+
+        self.assertEqual(len(tablero[0]), 2)
+        self.assertEqual(len(tablero[11]), 5)
+        self.assertEqual(len(tablero[16]), 3)
+        self.assertEqual(len(tablero[18]), 5)
+
+        self.assertEqual(tablero[0][0].tipo, TipoFicha.NEGRA.value)
+        self.assertEqual(tablero[11][0].tipo, TipoFicha.NEGRA.value)
+        self.assertEqual(tablero[16][0].tipo, TipoFicha.NEGRA.value)
+        self.assertEqual(tablero[18][0].tipo, TipoFicha.NEGRA.value)
+
+        self.assertEqual(len(tablero[23]), 2)
+        self.assertEqual(len(tablero[12]), 5)
+        self.assertEqual(len(tablero[7]), 3)
+        self.assertEqual(len(tablero[5]), 5)
+
+        self.assertEqual(tablero[23][0].tipo, TipoFicha.ROJA.value)
+        self.assertEqual(tablero[12][0].tipo, TipoFicha.ROJA.value)
+        self.assertEqual(tablero[7][0].tipo, TipoFicha.ROJA.value)
+        self.assertEqual(tablero[5][0].tipo, TipoFicha.ROJA.value)
+
+        posiciones_vacias = [1,2,3,4,6,8,9,10,13,14,15,17,19,20,21,22]
+        for pos in posiciones_vacias:
+            self.assertEqual(len(tablero[pos]), 0)
+if __name__ == '__main__':
+    unittest.main()
