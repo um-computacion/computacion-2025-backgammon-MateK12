@@ -17,6 +17,8 @@ class CLI():
     @property
     def backgammon(self):
         return self.__backgammon
+    def tirar_dados(self):
+        return self.__backgammon.tirar_dados()
 
 if __name__ == "__main__":
     print("Bienvenido al backgammon!!")
@@ -28,4 +30,5 @@ if __name__ == "__main__":
     tablero:Tablero = CLI.backgammon.tablero
     tablero.mostrar_tablero()
     print('Empieza el jugador rojo: {}'.format(cli.jugador_rojo))
-    # while tablero.hay_ga
+    while cli.backgammon.hay_ganador() is False:
+        
