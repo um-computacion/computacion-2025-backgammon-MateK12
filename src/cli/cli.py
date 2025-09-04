@@ -18,7 +18,11 @@ class CLI():
     def backgammon(self):
         return self.__backgammon
     def tirar_dados(self):
-        return self.__backgammon.tirar_dados()
+        resultado = self.__backgammon.dados.tirar_dados()
+        print(f'Dados tirados: {resultado['dado1']} y {resultado['dado2']}')
+        if self.backgammon.dados.doble:
+            print('¡Doble! Tira de nuevo.')
+        return resultado
 
 if __name__ == "__main__":
     print("Bienvenido al backgammon!!")
@@ -31,4 +35,7 @@ if __name__ == "__main__":
     tablero.mostrar_tablero()
     print('Empieza el jugador rojo: {}'.format(cli.jugador_rojo))
     while cli.backgammon.hay_ganador() is False:
-        
+        if cli.backgammon.turno == TipoFicha.ROJA:
+            print('Turno del jugador rojo: {}'.format(cli.jugador_rojo))
+            cli.tirar_dados()
+    print('¡El jugador {} ha ganado!'.format(cli.backgammon.hay_ganador()))

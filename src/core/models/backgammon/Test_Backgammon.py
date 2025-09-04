@@ -11,9 +11,15 @@ class TestBackgammon(unittest.TestCase):
 
     def test_tirar_dados(self):
         with patch('src.core.models.dado.Dados.Dados.tirar_dados') as mock_dados:
-            mock_dados.return_value = {'dado1': 4, 'dado2': 6}
+            mock_dados.return_value = {'dado1': 4, 'dado2': 6,'doble': False}
             resultado = self.game.tirar_dados()
-            self.assertEqual(resultado, {'dado1': 4, 'dado2': 6})
+            self.assertEqual(resultado, {'dado1': 4, 'dado2': 6,'doble': False})
+    def test_tirar_dados_dobles(self):
+        with patch('src.core.models.dado.Dados.Dados.tirar_dados') as mock_dados:
+            mock_dados.return_value = {'dado1': 6, 'dado2': 6,'doble': True}
+            resultado = self.game.tirar_dados()
+            self.assertEqual(resultado, {'dado1': 6, 'dado2': 6,'doble': True})
+
     def test_get_tablero(self):
         resultado = self.game.tablero
         self.assertIsNotNone(resultado)
@@ -31,7 +37,8 @@ class TestBackgammon(unittest.TestCase):
     # def test_seleccionar_ficha(self):
     #     with self.assertRaises(AttributeError):
     #         self.game.seleccionar_ficha(0, TipoFicha.NEGRA)
-    
+    def test_dados_property(self):
+        self.assertIsNotNone(self.game.dados)
     def test_hay_fichas_comidas_sin_fichas(self):
         self.game.__tablero__.fichas_comidas = []
         resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)

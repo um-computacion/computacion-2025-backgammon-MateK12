@@ -88,14 +88,19 @@ test a metodos basicos
 
 ### Eliminado
 
-## [1.0.9] - 31-08-2025
-
+## [1.0.11] - 3-09-2025
 ### Agregado
-Clase CLI empezada
-test a metodos basicos
-se agrego metodo para saber si hay ganador, testeado parcialmente
+Pipeline creada
 ### Cambiado
-se corriguieron algunos tests
+requirements txt
 ### Arreglado
+### Eliminado
 
+## [1.0.12] - 4-09-2025
+### Agregado
+agrege getter del dado en la clase backgammon
+dinamica de juego empezada
+### Cambiado
+
+### Arreglado
 ### Eliminado

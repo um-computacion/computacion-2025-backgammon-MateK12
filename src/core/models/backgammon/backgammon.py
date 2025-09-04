@@ -9,14 +9,14 @@ class Backgammon():
         self.__tablero__:Tablero = Tablero(self.inicializar_tablero())
         self.__turno:TipoFicha = TipoFicha.ROJA
     def tirar_dados(self):
-        return self.__dados__.tirar_dados()
+        dados = self.__dados__.tirar_dados()
+        return {'dado1': dados['dado1'], 'dado2': dados['dado2'],'doble': self.__dados__.doble}
     @property
     def tablero(self):
         return self.__tablero__
-    # def mover_ficha(self,tipo:TipoFicha):
-    #     # if
-    #     if self.__tablero_tipo_.fichas_comidas:
-    #         self.__tablero__.mover_ficha()
+    @property
+    def dados(self):
+        return self.__dados__
 
     def hay_fichas_comidas(self,tipo:TipoFicha)->bool:
         if [ficha.tipo == tipo for ficha in self.__tablero__.fichas_comidas]:
