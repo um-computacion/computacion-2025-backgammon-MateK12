@@ -17,21 +17,27 @@ class Backgammon():
     @property
     def dados(self):
         return self.__dados__
-
+    @property
+    def turno(self):
+        return self.__turno
     def hay_fichas_comidas(self,tipo:TipoFicha)->bool:
         if [ficha.tipo == tipo for ficha in self.__tablero__.fichas_comidas]:
             return True
         else:
             return False
-
     def seleccionar_ficha(self,triangulo:int,tipo:TipoFicha)->Ficha | None:
+        if triangulo < 0 or triangulo > 23:
+            raise NoHayFichaEnTriangulo("El triangulo seleccionado no es valido")
         fichas = self.__tablero__.tablero[triangulo]
         tipos_fichas = [ficha for ficha in fichas if ficha.tipo == tipo]
         if not tipos_fichas:
             raise NoHayFichaEnTriangulo("No tiene una ficha de su color en el triangulo seleccionado")
         else:
             return tipos_fichas[0]
-        
+    def mover_ficha(self,triangulo_origen:int,triangulo_destino:int,tipo:TipoFicha):
+        ficha:Ficha = self.seleccionar_ficha(triangulo_origen,tipo)
+        self.__tablero__.mover_ficha(ficha,triangulo_origen,triangulo_destino)
+        self.cambiar_turno()
     def cambiar_turno(self):
         self.__turno = TipoFicha.NEGRA if self.__turno == TipoFicha.ROJA else TipoFicha.ROJA
 

@@ -92,5 +92,17 @@ class TestBackgammon(unittest.TestCase):
         posiciones_vacias = [1,2,3,4,6,8,9,10,13,14,15,17,19,20,21,22]
         for pos in posiciones_vacias:
             self.assertEqual(len(tablero[pos]), 0)
+
+    def test_seleccionar_ficha_triangulo_invalido(self):
+        with self.assertRaises(NoHayFichaEnTriangulo):
+            self.game.seleccionar_ficha(-1, TipoFicha.NEGRA.value)
+    def test_seleccionar_ficha_triangulo_mayor_23(self):
+        with self.assertRaises(NoHayFichaEnTriangulo):
+            self.game.seleccionar_ficha(24, TipoFicha.NEGRA.value)
+    def test_mover_ficha(self):
+        self.game.mover_ficha(0,1,TipoFicha.NEGRA)
+        self.assertEqual(len(self.game.tablero.tablero[0]),1)
+        self.assertEqual(len(self.game.tablero.tablero[1]),1)
+        self.assertEqual(self.game.tablero.tablero[1][0].tipo,TipoFicha.NEGRA.value)
 if __name__ == '__main__':
     unittest.main()

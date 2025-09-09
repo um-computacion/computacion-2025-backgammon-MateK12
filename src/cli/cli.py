@@ -8,6 +8,7 @@ class CLI():
         self.__jugador_rojo:Jugador = jugador1
         self.__jugador_negro:Jugador = jugador2
         self.__backgammon:Backgammon = Backgammon()
+        self.__dados_disponibles:list[int] = []
     @property
     def jugador_rojo(self):
         return self.__jugador_rojo
@@ -17,13 +18,19 @@ class CLI():
     @property
     def backgammon(self):
         return self.__backgammon
+    @property
+    def dados_disponibles(self):
+        return self.__dados_disponibles
     def tirar_dados(self):
         resultado = self.__backgammon.dados.tirar_dados()
         print(f'Dados tirados: {resultado['dado1']} y {resultado['dado2']}')
         if self.backgammon.dados.doble:
             print('¡Doble! Tira de nuevo.')
         return resultado
-
+    def mover_ficha(self):
+        triangulo_origen = int(input("Ingrese el triángulo de origen: "))
+        triangulo_destino = int(input("Ingrese el triángulo de destino: "))
+        self.__backgammon.mover_ficha(triangulo_origen, triangulo_destino, self.__backgammon.turno)
 if __name__ == "__main__":
     print("Bienvenido al backgammon!!")
     nombre_jugador_rojo:str = input("Ingrese su nombre jugador rojo:")
@@ -37,5 +44,8 @@ if __name__ == "__main__":
     while cli.backgammon.hay_ganador() is False:
         if cli.backgammon.turno == TipoFicha.ROJA:
             print('Turno del jugador rojo: {}'.format(cli.jugador_rojo))
+            cli.tirar_dados()
+        else:
+            print('Turno del jugador negro: {}'.format(cli.jugador_negro))
             cli.tirar_dados()
     print('¡El jugador {} ha ganado!'.format(cli.backgammon.hay_ganador()))
