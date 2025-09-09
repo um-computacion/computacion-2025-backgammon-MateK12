@@ -104,6 +104,7 @@ dinamica de juego empezada
 
 ### Arreglado
 ### Eliminado
+
 ## [1.0.13] - 8-09-2025
 ### Agregado
 funcion mover ficha agregada en backgammon
@@ -112,3 +113,15 @@ agregada validacion en seleccion de triangulo para elejir un triangulo valido
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.14] - 9-09-2025
+### Agregado
+funcion mover ficha agregada en backgammon
+atributo movimientos disponibles agregados en cli
+agregada validacion en seleccion de triangulo para elejir un triangulo valido 
+### Cambiado
+tirar dados devuelve un arreglo de numeros
+
+### Arreglado
+### Eliminado
+

@@ -1,5 +1,5 @@
 
-from src.core.models.jugador import Jugador
+from src.core.models.jugador.Jugador import Jugador
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
@@ -23,29 +23,41 @@ class CLI():
         return self.__dados_disponibles
     def tirar_dados(self):
         resultado = self.__backgammon.dados.tirar_dados()
-        print(f'Dados tirados: {resultado['dado1']} y {resultado['dado2']}')
+        self.__dados_disponibles = resultado
+        print(f'Dados tirados: {resultado}')
         if self.backgammon.dados.doble:
-            print('¡Doble! Tira de nuevo.')
+            print('¡Doble!')
         return resultado
-    def mover_ficha(self):
-        triangulo_origen = int(input("Ingrese el triángulo de origen: "))
-        triangulo_destino = int(input("Ingrese el triángulo de destino: "))
+    def mover_ficha(self,movimiento):
+        triangulo_origen = movimiento['origen']
+        triangulo_destino = movimiento['destino']
         self.__backgammon.mover_ficha(triangulo_origen, triangulo_destino, self.__backgammon.turno)
 if __name__ == "__main__":
     print("Bienvenido al backgammon!!")
     nombre_jugador_rojo:str = input("Ingrese su nombre jugador rojo:")
     nombre_jugador_negro:str = input("Ingrese su nombre jugador negro:")
-    jugador1:Jugador = Jugador(nombre_jugador_rojo, TipoFicha.ROJA.value)
-    jugador2:Jugador = Jugador(nombre_jugador_negro, TipoFicha.NEGRA.value)
+    jugador1:Jugador = Jugador(nombre_jugador_rojo)
+    jugador2:Jugador = Jugador(nombre_jugador_negro)
     cli:CLI = CLI(jugador1, jugador2)
-    tablero:Tablero = CLI.backgammon.tablero
-    tablero.mostrar_tablero()
+    tablero:Tablero = cli.backgammon.tablero
+    tablero.imprimir_tablero()
     print('Empieza el jugador rojo: {}'.format(cli.jugador_rojo))
-    while cli.backgammon.hay_ganador() is False:
+    while cli.backgammon.hay_ganador() is None:
+        cli.__dados_disponibles = []
+        tablero.imprimir_tablero()
         if cli.backgammon.turno == TipoFicha.ROJA:
             print('Turno del jugador rojo: {}'.format(cli.jugador_rojo))
-            cli.tirar_dados()
         else:
             print('Turno del jugador negro: {}'.format(cli.jugador_negro))
-            cli.tirar_dados()
+        cli.tirar_dados()
+        print('Selecciona movimiento')
+        print(cli.dados_disponibles)
+        print('0  1  2  3')
+        seleccion = input('Selecciona el dado a usar (0-3): ')
+        if seleccion.isdigit() and 0 <= int(seleccion) < len(cli.dados_disponibles):
+            dado_seleccionado = cli.dados_disponibles[int(seleccion)]
+            
+        else:
+            print('Selección inválida. Intente de nuevo.')
+
     print('¡El jugador {} ha ganado!'.format(cli.backgammon.hay_ganador()))

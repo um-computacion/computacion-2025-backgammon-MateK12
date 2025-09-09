@@ -12,6 +12,7 @@ class TestCli(unittest.TestCase):
 
     def test_getterJugador_2(self):
         self.assertEqual(self.cli.jugador_negro, self.jugador2)
-
+    def test_getterDadosDisponibles(self):
+        self.assertEqual(self.cli.dados_disponibles, [])
 if __name__=="__main__":
     unittest.main()
