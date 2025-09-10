@@ -35,34 +35,38 @@ class CLI():
         triangulo_origen = movimiento['origen']
 
         self.__backgammon.mover_ficha(triangulo_origen, movimiento, self.__backgammon.turno)
+    
 if __name__ == "__main__":
-    print("Bienvenido al backgammon!!")
-    nombre_jugador_rojo:str = input("Ingrese su nombre jugador rojo:")
-    nombre_jugador_negro:str = input("Ingrese su nombre jugador negro:")
-    jugador1:Jugador = Jugador(nombre_jugador_rojo)
-    jugador2:Jugador = Jugador(nombre_jugador_negro)
-    cli:CLI = CLI(jugador1, jugador2)
-    tablero:Tablero = cli.backgammon.tablero
-    tablero.imprimir_tablero()
-    print('Empieza el jugador rojo: {}'.format(cli.jugador_rojo))
-    while cli.backgammon.hay_ganador() is None:
-        cli.__dados_disponibles = []
+    # try:
+        print("Bienvenido al backgammon!!")
+        nombre_jugador_rojo:str = input("Ingrese su nombre jugador rojo:")
+        nombre_jugador_negro:str = input("Ingrese su nombre jugador negro:")
+        jugador1:Jugador = Jugador(nombre_jugador_rojo)
+        jugador2:Jugador = Jugador(nombre_jugador_negro)
+        cli:CLI = CLI(jugador1, jugador2)
+        tablero:Tablero = cli.backgammon.tablero
         tablero.imprimir_tablero()
-        if cli.backgammon.turno == TipoFicha.ROJA:
-            print('Turno del jugador rojo: {}'.format(cli.jugador_rojo))
-        else:
-            print('Turno del jugador negro: {}'.format(cli.jugador_negro))
-        cli.tirar_dados()
-        print('Selecciona movimiento')#TO DO validar que elija un movimiento correcto
-        print(cli.dados_disponibles)
-        print('0  1  2  3')
-        seleccion_index = input('Selecciona el dado usando (0-3): ')
-        seleccion = cli.dados_disponibles.pop(int(seleccion_index))
-        if 0 <= int(seleccion_index):
-            dado_seleccionado = cli.dados_disponibles[int(seleccion_index)]
-            triangulo_origen = int(input('Selecciona el triángulo de origen (1-24): '))# to do validar que elija el numero correcto
-            cli.backgammon.mover_ficha(triangulo_origen,seleccion)
-        else:
-            print('Selección inválida. Intente de nuevo.')
+        print('Empieza el jugador rojo: {}'.format(cli.jugador_rojo))
+        while cli.backgammon.hay_ganador() is None:
+            cli.__dados_disponibles = []
+            tablero.imprimir_tablero()
+            if cli.backgammon.turno == TipoFicha.ROJA:
+                print('Turno del jugador rojo: {}'.format(cli.jugador_rojo))
+            else:
+                print('Turno del jugador negro: {}'.format(cli.jugador_negro))
+            cli.tirar_dados()
+            print('Selecciona movimiento')#TO DO validar que elija un movimiento correcto
+            print(cli.dados_disponibles)
+            print('0  1  2  3')
+            seleccion_index = input('Selecciona el dado usando (0-3): ')
+            seleccion = cli.dados_disponibles.pop(int(seleccion_index))
+            if 0 <= int(seleccion_index):
+                dado_seleccionado = cli.dados_disponibles[int(seleccion_index)]
+                triangulo_origen = int(input('Selecciona el triángulo de origen (1-24): '))# to do validar que elija el numero correcto
+                cli.backgammon.mover_ficha(triangulo_origen,seleccion)
+            else:
+                print('Selección inválida. Intente de nuevo.')
 
-    print('¡El jugador {} ha ganado!'.format(cli.backgammon.hay_ganador()))
+        print('¡El jugador {} ha ganado!'.format(cli.backgammon.hay_ganador()))
+    # except Exception as e:
+    #     print(e)

@@ -23,7 +23,15 @@ class Tablero():
     def tablero(self)->list[list[Ficha]]:
         return self.__tablero__
 
-    def mover_ficha(self, ficha:Ficha, triangulo_origen:int, moviemiento:int)->None:
+    def mover_ficha(self, ficha:Ficha, triangulo_origen:int, moviemiento:int):
+        '''Mueve una ficha de un triángulo a otro si el movimiento es válido.
+        Parámetros:
+            ficha (Ficha): La ficha a mover.
+            triangulo_origen (int): El triángulo de origen (0-23).
+            moviemiento (int): El número de triángulos a mover (positivo)
+        Raises:            
+        CasillaOcupadaException: Si el triángulo de destino tiene 2 o más fichas rivales.
+            '''
         if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha): #le doy una copia para que no modifique el original
             raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
         else:

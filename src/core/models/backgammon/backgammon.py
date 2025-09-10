@@ -7,7 +7,7 @@ class Backgammon():
     def __init__(self):
         self.__dados__:Dados = Dados()
         self.__tablero__:Tablero = Tablero(self.inicializar_tablero())
-        self.__turno:TipoFicha = TipoFicha.ROJA
+        self.__turno:TipoFicha = TipoFicha.ROJA.value
     def tirar_dados(self):
         dados = self.__dados__.tirar_dados()
         return {'dado1': dados['dado1'], 'dado2': dados['dado2'],'doble': self.__dados__.doble}
@@ -21,11 +21,26 @@ class Backgammon():
     def turno(self):
         return self.__turno
     def hay_fichas_comidas(self,tipo:TipoFicha)->bool:
+        '''Verifica si hay fichas comidas del tipo de ficha correspondiente
+        Paramentros:
+            tipo (TipoFicha): Tipo de ficha a verificar
+        Retorna:
+            bool: True si hay fichas comidas del tipo, False en caso contrario
+        '''
         if [ficha.tipo == tipo for ficha in self.__tablero__.fichas_comidas]:
             return True
         else:
             return False
     def seleccionar_ficha(self,triangulo:int,tipo:TipoFicha)->Ficha | None:
+        '''Selecciona una ficha del triangulo dado y del tipo dado
+        Parametros:
+            triangulo (int): Numero del triangulo (0-23)
+            tipo (TipoFicha): Tipo de ficha a seleccionar
+        Retorna:
+            Ficha | None: La ficha seleccionada o None si no hay ficha del tipo en el triangulo
+        Raises:
+            NoHayFichaEnTriangulo: Si el triangulo no es valido o no hay ficha del tipo en el triangulo
+        '''
         if triangulo < 0 or triangulo > 23:
             raise NoHayFichaEnTriangulo("El triangulo seleccionado no es valido")
         fichas = self.__tablero__.tablero[triangulo]
@@ -35,13 +50,23 @@ class Backgammon():
         else:
             return tipos_fichas[0]
     def mover_ficha(self,triangulo_origen:int,movimiento:int):
+        '''Mueve una ficha en el tablero
+        Parametros:
+            triangulo_origen (int): Numero del triangulo de origen (0-23)
+            movimiento (int): Numero de posiciones a mover (positivo)
+        Retorna: void'''
         ficha:Ficha = self.seleccionar_ficha(triangulo_origen,self.__turno)
-        self.__tablero__.mover_ficha(ficha,triangulo_origen,triangulo_origen+movimiento)
+        self.__tablero__.mover_ficha(ficha,triangulo_origen,movimiento)
         self.cambiar_turno()
     def cambiar_turno(self):
-        self.__turno = TipoFicha.NEGRA if self.__turno == TipoFicha.ROJA else TipoFicha.ROJA
+        '''Cambia el turno dependiendo del turno actual'''
+        self.__turno = TipoFicha.NEGRA.value if self.__turno == TipoFicha.ROJA.value else TipoFicha.ROJA.value
 
     def hay_ganador(self) -> int | None:
+        ''''Verifica si hay un ganador
+        Retorna:
+            int | None: TipoFicha del ganador o None si no hay ganador
+        '''
         fichas_rojas:list[Ficha] = [ficha for ficha in self.__tablero__.fichas_ganadas if ficha.tipo == TipoFicha.ROJA.value]
         fichas_negras:list[Ficha] = [ficha for ficha in self.__tablero__.fichas_ganadas if ficha.tipo == TipoFicha.NEGRA.value]
         if len(fichas_rojas) == 24:
@@ -51,16 +76,16 @@ class Backgammon():
         return None
 
     def inicializar_tablero(self) -> list[list[Ficha | None]]:
-        
+        '''Inicializa el tablero con la configuración inicial del backgammon
+        Retorna:
+            list[list[Ficha | None]]: Tablero inicial con fichas en sus posiciones correspondientes (como indican las reglas del backgammon)'''
         tablero_inicial: list[list[Ficha]] = [[] for _ in range(24)]
         tablero_inicial[0] = [Ficha(TipoFicha.NEGRA.value) for _ in range(2)]  
         tablero_inicial[11] = [Ficha(TipoFicha.NEGRA.value) for _ in range(5)] 
         tablero_inicial[16] = [Ficha(TipoFicha.NEGRA.value) for _ in range(3)] 
         tablero_inicial[18] = [Ficha(TipoFicha.NEGRA.value) for _ in range(5)] 
-
         tablero_inicial[23] = [Ficha(TipoFicha.ROJA.value) for _ in range(2)]  
         tablero_inicial[12] = [Ficha(TipoFicha.ROJA.value) for _ in range(5)]  
         tablero_inicial[7] = [Ficha(TipoFicha.ROJA.value) for _ in range(3)]   
         tablero_inicial[5] = [Ficha(TipoFicha.ROJA.value) for _ in range(5)]   
-
         return tablero_inicial

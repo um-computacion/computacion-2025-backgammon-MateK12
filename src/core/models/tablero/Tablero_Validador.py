@@ -13,7 +13,13 @@ class Tablero_Validador:
         return False
     def puede_comer(self,tablero, triangulo:int,ficha:Ficha)->bool:
         '''
-        Verifica si en el triángulo dado hay SOLO una ficha del tipo rival
+        Verifica si en el triángulo dado hay solo una ficha del tipo rival
+        Parametros:
+            tablero (list[list[Ficha]]): El tablero de juego
+            triangulo (int): El triángulo a verificar
+            ficha (Ficha): La ficha que se está moviendo
+        Retorna:
+            bool: True si puede comer, False en caso contrario
         '''
         tipo_rival = TipoFicha.ROJA.value if ficha.tipo == TipoFicha.NEGRA.value else TipoFicha.NEGRA.value
         tipos_en_triangulo = [f.tipo for f in tablero[triangulo]]
@@ -21,6 +27,13 @@ class Tablero_Validador:
             return True
         return False
     def tiene_fichas_comidas(self,tablero,ficha:Ficha)->bool:
+        '''Verifica si el jugador tiene fichas comidas 
+        Parametros:
+            tablero (list[list[Ficha]]): El tablero de juego
+            ficha (Ficha): La ficha del jugador a verificar
+        Retorna:
+            bool: True si tiene fichas comidas, False en caso contrario
+        '''
         tipo = ficha.tipo
         for triangulo in tablero:
             for f in triangulo:

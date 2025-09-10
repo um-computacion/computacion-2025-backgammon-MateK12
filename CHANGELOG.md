@@ -125,3 +125,10 @@ tirar dados devuelve un arreglo de numeros
 ### Arreglado
 ### Eliminado
 
+## [1.0.15] - 10-09-2025
+### Agregado
+docstrings a funciones
+### Cambiado
+### Arreglado
+movieminto de ficha en el tablero
+### Eliminado
