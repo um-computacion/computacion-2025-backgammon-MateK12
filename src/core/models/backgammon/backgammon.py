@@ -34,9 +34,9 @@ class Backgammon():
             raise NoHayFichaEnTriangulo("No tiene una ficha de su color en el triangulo seleccionado")
         else:
             return tipos_fichas[0]
-    def mover_ficha(self,triangulo_origen:int,triangulo_destino:int,tipo:TipoFicha):
-        ficha:Ficha = self.seleccionar_ficha(triangulo_origen,tipo)
-        self.__tablero__.mover_ficha(ficha,triangulo_origen,triangulo_destino)
+    def mover_ficha(self,triangulo_origen:int,movimiento:int):
+        ficha:Ficha = self.seleccionar_ficha(triangulo_origen,self.__turno)
+        self.__tablero__.mover_ficha(ficha,triangulo_origen,triangulo_origen+movimiento)
         self.cambiar_turno()
     def cambiar_turno(self):
         self.__turno = TipoFicha.NEGRA if self.__turno == TipoFicha.ROJA else TipoFicha.ROJA

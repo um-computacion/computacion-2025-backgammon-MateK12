@@ -21,6 +21,9 @@ class CLI():
     @property
     def dados_disponibles(self):
         return self.__dados_disponibles
+    @dados_disponibles.setter
+    def dados_disponibles(self, dados):
+        self.__dados_disponibles = dados
     def tirar_dados(self):
         resultado = self.__backgammon.dados.tirar_dados()
         self.__dados_disponibles = resultado
@@ -28,10 +31,10 @@ class CLI():
         if self.backgammon.dados.doble:
             print('¡Doble!')
         return resultado
-    def mover_ficha(self,movimiento):
+    def mover_ficha(self,triangulo_origen,movimiento):
         triangulo_origen = movimiento['origen']
-        triangulo_destino = movimiento['destino']
-        self.__backgammon.mover_ficha(triangulo_origen, triangulo_destino, self.__backgammon.turno)
+
+        self.__backgammon.mover_ficha(triangulo_origen, movimiento, self.__backgammon.turno)
 if __name__ == "__main__":
     print("Bienvenido al backgammon!!")
     nombre_jugador_rojo:str = input("Ingrese su nombre jugador rojo:")
@@ -50,13 +53,15 @@ if __name__ == "__main__":
         else:
             print('Turno del jugador negro: {}'.format(cli.jugador_negro))
         cli.tirar_dados()
-        print('Selecciona movimiento')
+        print('Selecciona movimiento')#TO DO validar que elija un movimiento correcto
         print(cli.dados_disponibles)
         print('0  1  2  3')
-        seleccion = input('Selecciona el dado a usar (0-3): ')
-        if seleccion.isdigit() and 0 <= int(seleccion) < len(cli.dados_disponibles):
-            dado_seleccionado = cli.dados_disponibles[int(seleccion)]
-            
+        seleccion_index = input('Selecciona el dado usando (0-3): ')
+        seleccion = cli.dados_disponibles.pop(int(seleccion_index))
+        if 0 <= int(seleccion_index):
+            dado_seleccionado = cli.dados_disponibles[int(seleccion_index)]
+            triangulo_origen = int(input('Selecciona el triángulo de origen (1-24): '))# to do validar que elija el numero correcto
+            cli.backgammon.mover_ficha(triangulo_origen,seleccion)
         else:
             print('Selección inválida. Intente de nuevo.')
 
