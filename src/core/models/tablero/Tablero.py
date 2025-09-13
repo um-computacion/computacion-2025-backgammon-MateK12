@@ -39,7 +39,7 @@ class Tablero():
                 ficha_comida = self.__tablero__[triangulo_origen + moviemiento].pop()
                 ficha_comida.comida = True
                 self.__fichas_comidas__.append(ficha_comida) 
-            self.__tablero__[triangulo_origen].remove(ficha)
+            self.__tablero__[triangulo_origen].pop()
             self.__tablero__[triangulo_origen+ moviemiento].append(ficha)
 
     # def mover_ficha_comida(self, ficha:Ficha, moviemiento:int)->None:
@@ -66,7 +66,6 @@ class Tablero():
         for i in range(11, 5, -1):
             print(f"{i:2}", end="     ")
         print(" | ", end=" ")
-        print("Puntos 6-1:", end=" ")
         for i in range(5, -1, -1):
             print(f"{i:2}", end="     ")
         print()
@@ -115,7 +114,6 @@ class Tablero():
         for i in range(12, 18):
             print(f"{i:2}", end="     ")
         print(" | ", end=" ")
-        print("Puntos 19-24:", end=" ")
         for i in range(18, 24):
             print(f"{i:2}", end="     ")
         print()

@@ -1,6 +1,13 @@
+[run]
+source=
+    src
 omit = 
-    Test_*  
-    */Test_*
-    **/Test_*
-    src/core/exceptions
-    src/core/enums
+    */Test_*.py
+    **/Test_*.py
+    Test_*.py
+    src/core/exceptions/*
+    src/core/enums/*
+    */tests/*
+    **/tests/*
+    */test_*.py
+    **/test_*.py

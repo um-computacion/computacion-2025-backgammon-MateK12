@@ -1,7 +1,9 @@
+
+
+
+
 ### modelo
-Claude
 ### propmt 
-teniendo en cuenta el enum de tipo ficha, haz un test para verificar el metodo repr
 ### respuesta    
 import unittest
 from src.core.models.ficha.Ficha import Ficha
@@ -88,10 +90,12 @@ en el primer test agrege la variable punto_index para permitir calcular cualquie
 ### archivos finales
 Test_ui
 
+
+
+
+
 ### modelo
-Claude
 ### propmt 
-haz los tests de esta clase (tableroValidador)
 ### respuesta    
 import unittest
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
@@ -180,10 +184,12 @@ No hice muchos cambios ya que los tests cubren los casos mas criticos de la clas
 - devuelva false cuando el triangulo esta vacio o cuando el triangulo tiene fichas del mismo color
 ### archivos finales
 
+
+
+
+
 ### modelo
-Claude
 ### propmt 
-haz un test del metodo inicializar_tablero() para que devuelva exactamente lo que esta devolviendo ahora (el posicionamiento inicial del tablero de backgammon)
 ### respuesta    
 def test_inicializar_tablero(self):
     """Test que verifica la disposición inicial correcta del tablero de backgammon"""
@@ -226,10 +232,12 @@ Test_backgammon.py
 
 
 
+
+
+
+
 ### modelo
-Claude
 ### propmt 
-haz los tests de los ultimos 3 metodos
 ### respuesta    
 def test_hay_fichas_comidas_sin_fichas(self):
         """Test cuando no hay fichas comidas"""
@@ -263,6 +271,176 @@ def test_hay_fichas_comidas_sin_fichas(self):
         self.game._Backgammon__tablero__.tablero = [[ficha_roja]]
         with self.assertRaises(NoHayFichaEnTriangulo):
             self.game.seleccionar_ficha(0, TipoFicha.NEGRA)
+
+### Fixed
+### cambios TO DO CAMBIAR POR METODO INICIALIZAR_TABLERO()
+### archivos finales
+
+
+### modelo
+### propmt 
+### respuesta    
+import unittest
+from src.core.models.ficha.Ficha import Ficha
+from src.core.enums.TipoFicha import TipoFicha
+
+class TestFicha(unittest.TestCase):
+    
+    def test_repr_ficha_negra(self):
+        ficha = Ficha(TipoFicha.NEGRA.value)
+        self.assertEqual(repr(ficha), '\033[30m●\033[0m')
+
+
+### modelo
+### propmt 
+### respuesta    
+import unittest
+from src.core.models.tablero.Tablero_Validador import Tablero_Validador
+from src.core.models.ficha.Ficha import Ficha
+from src.core.enums.TipoFicha import TipoFicha
+
+class TestTableroValidador(unittest.TestCase):
+    def setUp(self):
+        self.validador = Tablero_Validador()
+
+
+### modelo
+### propmt 
+### respuesta    
+def test_inicializar_tablero(self):
+    """Test que verifica la disposición inicial correcta del tablero de backgammon"""
+    game = Backgammon()
+    tablero = game.inicializar_tablero()
+    
+    # Verificar que el tablero tiene 24 posiciones
+    self.assertEqual(len(tablero), 24)
+
+
+### modelo
+claude
+### propmt 
+necesito que agreges a los tests de tablero,  los test de imprimit tablero
+### respuesta    
+def test_hay_fichas_comidas_sin_fichas(self):
+        """Test cuando no hay fichas comidas"""
+        self.game._Backgammon__tablero__.fichas_comidas = []
+        resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)
+        self.assertFalse(resultado)
+
+    def test_hay_fichas_comidas_con_fichas(self):
+        """Test cuando hay fichas comidas del tipo especificado"""
+
+
+### modelo
+claude
+### propmt 
+necesito que agreges a los tests de tablero,  los test de imprimit tablero
+### respuesta    
+import unittest
+from unittest.mock import patch
+from io import StringIO
+from src.core.models.tablero.Tablero import Tablero
+from src.core.models.ficha.Ficha import Ficha
+from src.core.enums.TipoFicha import TipoFicha
+from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
+
+class TestTablero(unittest.TestCase):
+    # ...existing code...
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_imprimir_tablero_vacio(self, mock_stdout):
+        """Test imprimir tablero vacío"""
+        self.tablero.imprimir_tablero()
+        output = mock_stdout.getvalue()
+        
+        # Verificar que contiene elementos básicos del tablero
+        self.assertIn("Puntos:", output)
+        self.assertIn("Fichas:", output)
+        self.assertIn("=", output)  # Líneas de separación
+        
+        # Verificar que contiene números de puntos
+        for i in range(1, 25):
+            self.assertIn(str(i), output)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_imprimir_tablero_con_fichas(self, mock_stdout):
+        """Test imprimir tablero con algunas fichas"""
+        # Agregar fichas en posiciones específicas
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        
+        self.tablero.__tablero__[0].append(ficha_negra)
+        self.tablero.__tablero__[0].append(ficha_negra)
+        self.tablero.__tablero__[23].append(ficha_roja)
+        
+        self.tablero.imprimir_tablero()
+        output = mock_stdout.getvalue()
+        
+        # Verificar estructura básica
+        self.assertIn("Puntos:", output)
+        self.assertIn("Fichas:", output)
+        
+        # Verificar que se muestran las fichas (representadas como ●)
+        self.assertIn("●", output)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_imprimir_tablero_con_fichas_comidas(self, mock_stdout):
+        """Test imprimir tablero con fichas comidas"""
+        ficha_comida = Ficha(TipoFicha.ROJA.value)
+        ficha_comida.comida = True
+        self.tablero.__fichas_comidas__.append(ficha_comida)
+        
+        self.tablero.imprimir_tablero()
+        output = mock_stdout.getvalue()
+        
+        self.assertIn("Fichas comidas:", output)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_imprimir_tablero_con_fichas_ganadas(self, mock_stdout):
+        """Test imprimir tablero con fichas ganadas"""
+        ficha_ganada = Ficha(TipoFicha.NEGRA.value)
+        self.tablero.__fichas_ganadas__.append(ficha_ganada)
+        
+        self.tablero.imprimir_tablero()
+        output = mock_stdout.getvalue()
+        
+        self.assertIn("Fichas ganadas:", output)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_imprimir_tablero_formato_correcto(self, mock_stdout):
+        """Test que el formato del tablero sea correcto"""
+        self.tablero.imprimir_tablero()
+        output = mock_stdout.getvalue()
+        
+        # Verificar separadores
+        self.assertIn("=" * 100, output)
+        self.assertIn("─" * 100, output)
+        
+        # Verificar que aparece el separador visual entre mitades
+        self.assertIn("│", output)
+        
+        # Verificar que hay al menos 4 líneas principales (2 de puntos, 2 de fichas)
+        lines = output.strip().split('\n')
+        puntos_lines = [line for line in lines if 'Puntos:' in line]
+        fichas_lines = [line for line in lines if 'Fichas:' in line]
+        
+        self.assertEqual(len(puntos_lines), 2)  # Superior e inferior
+        self.assertEqual(len(fichas_lines), 2)  # Superior e inferior
+
+    # ...existing code...
+
+if __name__ == '__main__':
+    unittest.main()
+### Fixed
+### cambios 
+cambie para que valide si imprime los arreglos
+test_imprimir_tablero_vacio
+### archivos finales
+
+
+### modelo
+### propmt 
+### respuesta    
 
 ### Fixed
 ### cambios TO DO CAMBIAR POR METODO INICIALIZAR_TABLERO()

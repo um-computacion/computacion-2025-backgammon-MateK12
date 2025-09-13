@@ -26,6 +26,7 @@ class Tablero_Validador:
         if tipos_en_triangulo.count(tipo_rival) == 1:
             return True
         return False
+        
     def tiene_fichas_comidas(self,tablero,ficha:Ficha)->bool:
         '''Verifica si el jugador tiene fichas comidas 
         Parametros:

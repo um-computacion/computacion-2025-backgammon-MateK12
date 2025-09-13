@@ -24,12 +24,10 @@ class TestBackgammon(unittest.TestCase):
         resultado = self.game.tablero
         self.assertIsNotNone(resultado)
     def test_cambiar_turno(self):
+        self.game.quien_empieza()
+        turno_anterior = self.game.turno
         self.game.cambiar_turno()
-        self.assertEqual(self.game._Backgammon__turno, TipoFicha.NEGRA)
-    def test_cambiar_turno_a_rojo(self):
-        self.game.cambiar_turno()
-        self.game.cambiar_turno()
-        self.assertEqual(self.game._Backgammon__turno, TipoFicha.ROJA)
+        self.assertNotEqual(self.game.turno,turno_anterior)
     # def test_mover_ficha(self):
     #     self.game.__tablero__.mover_ficha()
     #     self.game.mover_ficha()
@@ -99,10 +97,33 @@ class TestBackgammon(unittest.TestCase):
     def test_seleccionar_ficha_triangulo_mayor_23(self):
         with self.assertRaises(NoHayFichaEnTriangulo):
             self.game.seleccionar_ficha(24, TipoFicha.NEGRA.value)
-    def test_mover_ficha(self):
-        self.game.mover_ficha(0,1,TipoFicha.NEGRA)
+    @patch.object(Backgammon, 'tirar_dados')
+    def test_mover_ficha(self, mock_tirar_dados):
+        mock_tirar_dados.return_value = [1, 2]
+        self.game.quien_empieza()
+
+        self.game.mover_ficha(0,1)
         self.assertEqual(len(self.game.tablero.tablero[0]),1)
         self.assertEqual(len(self.game.tablero.tablero[1]),1)
         self.assertEqual(self.game.tablero.tablero[1][0].tipo,TipoFicha.NEGRA.value)
+    @patch.object(Backgammon, 'tirar_dados')
+    def test_quien_empieza_roja_gana(self, mock_tirar_dados):
+        mock_tirar_dados.return_value = [5, 3]
+        self.game.quien_empieza()
+        self.assertEqual(self.game.turno, TipoFicha.ROJA.value)
+
+    @patch.object(Backgammon, 'tirar_dados')
+    def test_quien_empieza_negra_gana(self, mock_tirar_dados):
+        mock_tirar_dados.return_value = [2, 6]
+        self.game.quien_empieza()
+        self.assertEqual(self.game.turno, TipoFicha.NEGRA.value)
+
+    @patch.object(Backgammon, 'tirar_dados')
+    def test_quien_empieza_empate_luego_negra(self, mock_tirar_dados):
+        mock_tirar_dados.side_effect = [[3, 3], [1, 5]]
+        self.game.quien_empieza()
+        self.assertEqual(self.game.turno, TipoFicha.NEGRA.value)
+        self.assertEqual(mock_tirar_dados.call_count, 2)
+
 if __name__ == '__main__':
     unittest.main()

@@ -2,7 +2,8 @@ from src.core.models.jugador.Jugador import Jugador
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
-
+ERROR= "\033[91m"
+RESET ="\033[0m"
 class CLI():
     def __init__(self,jugador1,jugador2):
         self.__jugador_rojo:Jugador = jugador1
@@ -83,11 +84,11 @@ class CLI():
             self.mostrar_turno_actual()
             self.tirar_dados()
             while self.dados_disponibles:
-                # try:
+                try:
                     self.realizar_movimiento()
-                # except Exception as e:
-                #     print(e)
-
+                except Exception as e:
+                    print(f"{ERROR}{e}{RESET}")
+            self.backgammon.cambiar_turno()
         print('¡El jugador {} ha ganado!'.format(self.backgammon.hay_ganador()))
 
 if __name__ == "__main__":

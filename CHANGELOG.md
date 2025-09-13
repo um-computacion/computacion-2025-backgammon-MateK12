@@ -141,3 +141,14 @@ funcion quien empieza para elegir aleatoriamente quien empieza
 ### Arreglado
 funciones cambiadas en el movimiento para que ande
 ### Eliminado
+
+## [1.0.17] - 13-09-2025
+### Agregado
+tests de imprimirTablero() agregado
+Agregado nombre en readme
+### Cambiado
+### Arreglado
+test arreglados en clase dados y en backgammon
+Las fichas rojas mueven en sentido contrario a las negras
+se cambia gestion de turnos para mover 2 veces seguidas mismo jugador
+### Eliminado

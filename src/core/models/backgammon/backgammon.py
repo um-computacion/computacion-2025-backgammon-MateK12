@@ -60,7 +60,6 @@ class Backgammon():
         ficha:Ficha = self.seleccionar_ficha(triangulo_origen,self.__turno)
         movimiento = movimiento if self.__turno == TipoFicha.NEGRA.value else -movimiento
         self.__tablero__.mover_ficha(ficha,triangulo_origen,movimiento)
-        self.cambiar_turno()
     def cambiar_turno(self):
         '''Cambia el turno dependiendo del turno actual'''
         self.__turno = TipoFicha.NEGRA.value if self.__turno == TipoFicha.ROJA.value else TipoFicha.ROJA.value
