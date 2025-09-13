@@ -64,11 +64,11 @@ class Tablero():
         # Imprimir números de los puntos superiores
         print("Puntos 12-7:", end=" ")
         for i in range(11, 5, -1):
-            print(f"{i+1:2}", end="     ")
+            print(f"{i:2}", end="     ")
         print(" | ", end=" ")
         print("Puntos 6-1:", end=" ")
         for i in range(5, -1, -1):
-            print(f"{i+1:2}", end="     ")
+            print(f"{i:2}", end="     ")
         print()
 
         # Imprimir fichas superiores verticalmente
@@ -113,11 +113,11 @@ class Tablero():
         # Imprimir números de los puntos inferiores
         print("Puntos 13-18:", end=" ")
         for i in range(12, 18):
-            print(f"{i+1:2}", end="     ")
+            print(f"{i:2}", end="     ")
         print(" | ", end=" ")
         print("Puntos 19-24:", end=" ")
         for i in range(18, 24):
-            print(f"{i+1:2}", end="     ")
+            print(f"{i:2}", end="     ")
         print()
 
         print("=" * 80)

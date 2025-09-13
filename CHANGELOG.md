@@ -132,3 +132,12 @@ docstrings a funciones
 ### Arreglado
 movieminto de ficha en el tablero
 ### Eliminado
+
+## [1.0.16] - 12-09-2025
+### Agregado
+Moviemientos fluids
+funcion quien empieza para elegir aleatoriamente quien empieza
+### Cambiado
+### Arreglado
+funciones cambiadas en el movimiento para que ande
+### Eliminado

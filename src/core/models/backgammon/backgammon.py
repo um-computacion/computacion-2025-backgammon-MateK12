@@ -7,10 +7,10 @@ class Backgammon():
     def __init__(self):
         self.__dados__:Dados = Dados()
         self.__tablero__:Tablero = Tablero(self.inicializar_tablero())
-        self.__turno:TipoFicha = TipoFicha.ROJA.value
+        self.__turno:int
     def tirar_dados(self):
         dados = self.__dados__.tirar_dados()
-        return {'dado1': dados['dado1'], 'dado2': dados['dado2'],'doble': self.__dados__.doble}
+        return dados
     @property
     def tablero(self):
         return self.__tablero__
@@ -20,7 +20,7 @@ class Backgammon():
     @property
     def turno(self):
         return self.__turno
-    def hay_fichas_comidas(self,tipo:TipoFicha)->bool:
+    def hay_fichas_comidas(self,tipo:int)->bool:
         '''Verifica si hay fichas comidas del tipo de ficha correspondiente
         Paramentros:
             tipo (TipoFicha): Tipo de ficha a verificar
@@ -31,7 +31,7 @@ class Backgammon():
             return True
         else:
             return False
-    def seleccionar_ficha(self,triangulo:int,tipo:TipoFicha)->Ficha | None:
+    def seleccionar_ficha(self,triangulo:int,tipo:int)->Ficha | None:
         '''Selecciona una ficha del triangulo dado y del tipo dado
         Parametros:
             triangulo (int): Numero del triangulo (0-23)
@@ -45,9 +45,11 @@ class Backgammon():
             raise NoHayFichaEnTriangulo("El triangulo seleccionado no es valido")
         fichas = self.__tablero__.tablero[triangulo]
         tipos_fichas = [ficha for ficha in fichas if ficha.tipo == tipo]
+        print(tipos_fichas)
         if not tipos_fichas:
             raise NoHayFichaEnTriangulo("No tiene una ficha de su color en el triangulo seleccionado")
         else:
+            print(tipos_fichas[0])
             return tipos_fichas[0]
     def mover_ficha(self,triangulo_origen:int,movimiento:int):
         '''Mueve una ficha en el tablero
@@ -56,6 +58,7 @@ class Backgammon():
             movimiento (int): Numero de posiciones a mover (positivo)
         Retorna: void'''
         ficha:Ficha = self.seleccionar_ficha(triangulo_origen,self.__turno)
+        movimiento = movimiento if self.__turno == TipoFicha.NEGRA.value else -movimiento
         self.__tablero__.mover_ficha(ficha,triangulo_origen,movimiento)
         self.cambiar_turno()
     def cambiar_turno(self):
@@ -89,3 +92,16 @@ class Backgammon():
         tablero_inicial[7] = [Ficha(TipoFicha.ROJA.value) for _ in range(3)]   
         tablero_inicial[5] = [Ficha(TipoFicha.ROJA.value) for _ in range(5)]   
         return tablero_inicial
+    def quien_empieza(self):
+        '''Determina quien empieza el juego tirando los dados
+        Retorna:
+            int: TipoFicha del jugador que empieza'''
+        hayGanador=False
+        while not hayGanador:
+            dados = self.tirar_dados()
+            if dados[0] > dados[1]:
+                self.__turno = TipoFicha.ROJA.value
+                hayGanador = True
+            elif dados[0] < dados[1]:
+                self.__turno = TipoFicha.NEGRA.value
+                hayGanador = True
