@@ -41,13 +41,9 @@ class Tablero():
                 ficha_comida.comida = True
                 self.__fichas_comidas__.append(ficha_comida) 
             self.__tablero__[triangulo_origen].pop()
+            #to do ver si puede ganar la ficha
             self.__tablero__[triangulo_destino].append(ficha)
 
-    # def mover_ficha_comida(self, ficha:Ficha, moviemiento:int)->None:
-    #     if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),moviemiento, ficha): 
-    #         raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
-    #     else:
-    #         pass
 
     def imprimir_tablero(self) -> None:
         """

@@ -103,5 +103,51 @@ class TestTableroValidador(unittest.TestCase):
         self.assertFalse(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
 
 
+    def test_esta_rango_ganar_ficha_roja_triangulo_0(self): #esta_rango_ganar()
+        """Test ficha roja en rango de ganar (triangulo 0)"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_roja, 0))
+
+    def test_esta_rango_ganar_ficha_roja_triangulo_5(self):
+        """Test ficha roja en rango de ganar (triangulo 5)"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_roja, 5))
+
+    def test_esta_rango_ganar_ficha_negra_triangulo_18(self):
+        """Test ficha negra en rango de ganar (triangulo 18)"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_negra, 18))
+
+    def test_esta_rango_ganar_ficha_negra_triangulo_23(self):
+        """Test ficha negra en rango de ganar (triangulo 23)"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_negra, 23))
+
+    def test_no_esta_rango_ganar_ficha_roja_fuera_rango(self):
+        """Test ficha roja fuera del rango de ganar"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_roja, 6))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_roja, 10))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_roja, 23))
+
+    def test_no_esta_rango_ganar_ficha_negra_fuera_rango(self):
+        """Test ficha negra fuera del rango de ganar"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_negra, 0))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_negra, 10))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_negra, 17))
+    def test_puede_ganar_ficha_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_roja,-1))
+
+    def test_puede_ganar_ficha_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_negra,24))
+    def test_no_puede_ganar_ficha_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_roja,5))
+    def test_no_puede_ganar_ficha_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_negra,20))  
 if __name__ == '__main__':
     unittest.main()
