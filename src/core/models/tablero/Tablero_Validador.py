@@ -1,6 +1,6 @@
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.ficha.Ficha import Ficha
-
+from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
 class Tablero_Validador:
     def triangulo_con_fichas_rivales(self,tablero, triangulo:int,ficha:Ficha)->bool:
         '''
@@ -48,23 +48,14 @@ class Tablero_Validador:
             triangulo_destino (int): El triángulo al que se quiere mover la ficha
         Retorna:
             bool: True si puede ganar, False en caso contrario
+        Raises:
+            MovimientoNoJustoParaGanar si el movimiento lleva a un numero fuera del tablero, >-1 para las fichas rojas y >24 para las negras
         '''
         tipo = ficha.tipo
+        if triangulo_destino < -1 or triangulo_destino > 24:
+            raise MovimientoNoJustoParaGanar("Movimiento no válido para ganar la ficha, se pasa")
         if tipo == TipoFicha.ROJA.value and triangulo_destino ==-1:
             return True
         elif tipo == TipoFicha.NEGRA.value and triangulo_destino ==24:
-            return True
-        return False
-    def esta_rango_ganar(self,ficha:Ficha,triangulo_origen:int)->bool:
-        '''Verifica si la ficha está en rango de ganar
-        Parametros:
-            ficha (Ficha): La ficha del jugador a verificar
-            triangulo_origen (int): El triángulo donde está la ficha
-        Retorna:
-            bool: True si la ficha esta en rango de ganar (un movimiento de 0 a 6), False en caso contrario
-        '''
-        if ficha.tipo == TipoFicha.ROJA.value and triangulo_origen in range(0,6):
-            return True
-        elif ficha.tipo == TipoFicha.NEGRA.value and triangulo_origen in range(18,24):
             return True
         return False

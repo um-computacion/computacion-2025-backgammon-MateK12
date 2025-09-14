@@ -439,9 +439,84 @@ test_imprimir_tablero_vacio
 
 
 ### modelo
+claude
+### propmt 
+haz los test de los 2 ultimo meotods de esta clase (clase tablero_validador)
+### respuesta    
+# Add these tests to your existing Test_Tablero_Validador.py file
+
+    def test_puede_ganar_ficha_roja_triangulo_menos_uno(self): #puede_ganar()
+        """Test cuando ficha roja puede ganar (triangulo_destino = -1)"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_roja, -1))
+
+    def test_puede_ganar_ficha_negra_triangulo_24(self):
+        """Test cuando ficha negra puede ganar (triangulo_destino = 24)"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_negra, 24))
+
+    def test_no_puede_ganar_ficha_roja_triangulo_24(self):
+        """Test cuando ficha roja NO puede ganar (triangulo_destino = 24)"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, 24))
+
+    def test_no_puede_ganar_ficha_negra_triangulo_menos_uno(self):
+        """Test cuando ficha negra NO puede ganar (triangulo_destino = -1)"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_negra, -1))
+
+    def test_no_puede_ganar_triangulo_intermedio(self):
+        """Test cuando ninguna ficha puede ganar en triángulo intermedio"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, 10))
+        self.assertFalse(self.validador.puede_ganar(ficha_negra, 10))
+
+    def test_esta_rango_ganar_ficha_roja_triangulo_0(self): #esta_rango_ganar()
+        """Test ficha roja en rango de ganar (triangulo 0)"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_roja, 0))
+
+    def test_esta_rango_ganar_ficha_roja_triangulo_5(self):
+        """Test ficha roja en rango de ganar (triangulo 5)"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_roja, 5))
+
+    def test_esta_rango_ganar_ficha_negra_triangulo_18(self):
+        """Test ficha negra en rango de ganar (triangulo 18)"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_negra, 18))
+
+    def test_esta_rango_ganar_ficha_negra_triangulo_23(self):
+        """Test ficha negra en rango de ganar (triangulo 23)"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.esta_rango_ganar(ficha_negra, 23))
+
+    def test_no_esta_rango_ganar_ficha_roja_fuera_rango(self):
+        """Test ficha roja fuera del rango de ganar"""
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_roja, 6))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_roja, 10))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_roja, 23))
+
+    def test_no_esta_rango_ganar_ficha_negra_fuera_rango(self):
+        """Test ficha negra fuera del rango de ganar"""
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_negra, 0))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_negra, 10))
+        self.assertFalse(self.validador.esta_rango_ganar(ficha_negra, 17))
+### Fixed
+### cambios
+Elimine los tests de puede_ganar() porque me parecieron que eran bastante complejos para lo que hacia la funcion 
+### archivos finales
+test_tablero_validador
+
+
+
+### modelo
 ### propmt 
 ### respuesta    
 
 ### Fixed
-### cambios TO DO CAMBIAR POR METODO INICIALIZAR_TABLERO()
+### cambios 
 ### archivos finales

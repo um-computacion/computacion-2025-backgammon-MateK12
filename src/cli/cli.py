@@ -86,10 +86,10 @@ class CLI():
             self.mostrar_turno_actual()
             self.tirar_dados()
             while self.dados_disponibles:
-                try:
+                # try:
                     self.realizar_movimiento()
-                except Exception as e:
-                    print(f"{ERROR}{e}{RESET}")
+                # except Exception as e:
+                #     print(f"{ERROR}{e}{RESET}")
             self.backgammon.cambiar_turno()
         print('¡El jugador {} ha ganado!'.format(self.backgammon.hay_ganador()))
 
