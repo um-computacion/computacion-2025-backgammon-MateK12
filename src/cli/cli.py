@@ -2,6 +2,7 @@ from src.core.models.jugador.Jugador import Jugador
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
+from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 ERROR= "\033[91m"
 RESET ="\033[0m"
 class CLI():
@@ -59,22 +60,23 @@ class CLI():
 
     def realizar_movimiento(self):
         """Procesa el movimiento del jugador"""
-        print('Selecciona movimiento')
-        print(self.dados_disponibles)
-        print('0  1  2  3')
-        seleccion_index = input('Selecciona el dado usando (0-3): ')
-        seleccion = self.dados_disponibles[int(seleccion_index)]
-        
-        if 0 <= int(seleccion_index):
-            dado_seleccionado = self.dados_disponibles[int(seleccion_index)]
-            triangulo_origen = int(input('Selecciona el triángulo de origen (1-24): '))
-            self.backgammon.mover_ficha(triangulo_origen, seleccion)
-            self.dados_disponibles.pop(int(seleccion_index))
+        print('Dados disponibles: {}'.format(self.dados_disponibles))
+        dados_range = range(len(self.dados_disponibles))
+        seleccion_index = input(f'Selecciona el dado usando {list(dados_range)}')
+        if self.seleccion_dado_valida(seleccion_index):
+            seleccion = self.dados_disponibles[int(seleccion_index)]
+            if self.backgammon.hay_fichas_comidas():
+                self.backgammon.mover_ficha_comida(seleccion)
+                self.dados_disponibles.pop(int(seleccion_index))
+            else:
+                triangulo_origen = int(input('Selecciona el triángulo de origen (0-23): '))
+                self.backgammon.mover_ficha(triangulo_origen, seleccion)
+                self.dados_disponibles.pop(int(seleccion_index))
             self.backgammon.tablero.imprimir_tablero()
-
-        else:
-            print('Selección inválida. Intente de nuevo.')
-
+    def seleccion_dado_valida(self,seleccion:str)-> bool: 
+        if seleccion in [str(i) for i in range(len(self.dados_disponibles))]:
+            return True
+        raise SeleccionDadoInvalida("Selección de dado inválida")
     def jugar(self):
         """Método principal que controla el flujo del juego"""
         self.inicializar_juego()
@@ -92,5 +94,5 @@ class CLI():
         print('¡El jugador {} ha ganado!'.format(self.backgammon.hay_ganador()))
 
 if __name__ == "__main__":
-    cli = CLI(None, None)  # Se inicializarán en inicializar_juego()
+    cli = CLI(None, None)
     cli.jugar()

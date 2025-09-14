@@ -20,14 +20,15 @@ class Backgammon():
     @property
     def turno(self):
         return self.__turno
-    def hay_fichas_comidas(self,tipo:int)->bool:
+    def hay_fichas_comidas(self)->bool:
         '''Verifica si hay fichas comidas del tipo de ficha correspondiente
         Paramentros:
             tipo (TipoFicha): Tipo de ficha a verificar
         Retorna:
             bool: True si hay fichas comidas del tipo, False en caso contrario
         '''
-        if [ficha.tipo == tipo for ficha in self.__tablero__.fichas_comidas]:
+        tipo = self.__turno
+        if [ficha for ficha in self.__tablero__.fichas_comidas if ficha.tipo == tipo]:
             return True
         else:
             return False
@@ -45,11 +46,9 @@ class Backgammon():
             raise NoHayFichaEnTriangulo("El triangulo seleccionado no es valido")
         fichas = self.__tablero__.tablero[triangulo]
         tipos_fichas = [ficha for ficha in fichas if ficha.tipo == tipo]
-        print(tipos_fichas)
         if not tipos_fichas:
             raise NoHayFichaEnTriangulo("No tiene una ficha de su color en el triangulo seleccionado")
         else:
-            print(tipos_fichas[0])
             return tipos_fichas[0]
     def mover_ficha(self,triangulo_origen:int,movimiento:int):
         '''Mueve una ficha en el tablero
@@ -60,6 +59,15 @@ class Backgammon():
         ficha:Ficha = self.seleccionar_ficha(triangulo_origen,self.__turno)
         movimiento = movimiento if self.__turno == TipoFicha.NEGRA.value else -movimiento
         self.__tablero__.mover_ficha(ficha,triangulo_origen,movimiento)
+    def mover_ficha_comida(self,movimiento:int):
+        '''Mueve una ficha comida al tablero
+        Parametros:
+            movimiento (int): Numero de posiciones a mover (positivo)
+        Retorna: void'''
+        ficha:Ficha = [ficha for ficha in self.__tablero__.fichas_comidas if ficha.tipo == self.__turno].pop()
+        ficha.comida = False
+        movimiento = movimiento -1 if self.__turno == TipoFicha.NEGRA.value else -movimiento
+        self.__tablero__.mover_ficha(ficha,0,movimiento)
     def cambiar_turno(self):
         '''Cambia el turno dependiendo del turno actual'''
         self.__turno = TipoFicha.NEGRA.value if self.__turno == TipoFicha.ROJA.value else TipoFicha.ROJA.value

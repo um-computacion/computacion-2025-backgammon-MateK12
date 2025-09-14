@@ -32,15 +32,16 @@ class Tablero():
         Raises:            
         CasillaOcupadaException: Si el triángulo de destino tiene 2 o más fichas rivales.
             '''
-        if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha): #le doy una copia para que no modifique el original
+        triangulo_destino = triangulo_origen + moviemiento
+        if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),triangulo_destino, ficha): #le doy una copia para que no modifique el original
             raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
         else:
-            if self.__validador__.puede_comer(self.__tablero__.copy(),triangulo_origen + moviemiento, ficha):
-                ficha_comida = self.__tablero__[triangulo_origen + moviemiento].pop()
+            if self.__validador__.puede_comer(self.__tablero__.copy(),triangulo_destino, ficha):
+                ficha_comida = self.__tablero__[triangulo_destino].pop()
                 ficha_comida.comida = True
                 self.__fichas_comidas__.append(ficha_comida) 
             self.__tablero__[triangulo_origen].pop()
-            self.__tablero__[triangulo_origen+ moviemiento].append(ficha)
+            self.__tablero__[triangulo_destino].append(ficha)
 
     # def mover_ficha_comida(self, ficha:Ficha, moviemiento:int)->None:
     #     if self.__validador__.triangulo_con_fichas_rivales(self.__tablero__.copy(),moviemiento, ficha): 

@@ -1,3 +1,4 @@
+from core.models import ficha
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.ficha.Ficha import Ficha
 

@@ -38,14 +38,17 @@ class TestBackgammon(unittest.TestCase):
     def test_dados_property(self):
         self.assertIsNotNone(self.game.dados)
     def test_hay_fichas_comidas_sin_fichas(self):
+        self.game.quien_empieza()
         self.game.__tablero__.fichas_comidas = []
-        resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)
+        resultado = self.game.hay_fichas_comidas()
         self.assertFalse(resultado)
 
     def test_hay_fichas_comidas_con_fichas(self):
-        ficha_comida = Ficha(TipoFicha.NEGRA.value)
+        self.game.quien_empieza()
+        tipo_ficha = TipoFicha.NEGRA.value if self.game.turno == TipoFicha.NEGRA.value else TipoFicha.ROJA.value
+        ficha_comida = Ficha(tipo_ficha)
         self.game.__tablero__.fichas_comidas = [ficha_comida]
-        resultado = self.game.hay_fichas_comidas(TipoFicha.NEGRA)
+        resultado = self.game.hay_fichas_comidas()
         self.assertTrue(resultado)
 
     def test_seleccionar_ficha_existente(self):
