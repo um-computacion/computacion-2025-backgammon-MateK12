@@ -64,10 +64,12 @@ class Backgammon():
         Parametros:
             movimiento (int): Numero de posiciones a mover (positivo)
         Retorna: void'''
-        ficha:Ficha = [ficha for ficha in self.__tablero__.fichas_comidas if ficha.tipo == self.__turno].pop()
+        ficha:Ficha = [ficha for ficha in self.__tablero__.fichas_comidas if ficha.tipo == self.__turno][0]
         ficha.comida = False
         movimiento = movimiento -1 if self.__turno == TipoFicha.NEGRA.value else -movimiento
-        self.__tablero__.mover_ficha(ficha,0,movimiento)
+        triangulo_origen = 24 if self.__turno == TipoFicha.ROJA.value else 0
+        self.__tablero__.mover_ficha(ficha,triangulo_origen,movimiento,True)
+    
     def cambiar_turno(self):
         '''Cambia el turno dependiendo del turno actual'''
         self.__turno = TipoFicha.NEGRA.value if self.__turno == TipoFicha.ROJA.value else TipoFicha.ROJA.value

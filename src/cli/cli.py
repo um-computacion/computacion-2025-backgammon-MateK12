@@ -74,6 +74,14 @@ class CLI():
                 self.dados_disponibles.pop(int(seleccion_index))
             self.backgammon.tablero.imprimir_tablero()
     def seleccion_dado_valida(self,seleccion:str)-> bool: 
+        '''Valida que la selección del dado sea correcta
+        Parámetros:
+            seleccion (str): La selección del dado como string
+        Retorna:
+            bool: True si la selección es válida
+        Raises:
+            SeleccionDadoInvalida
+        '''
         if seleccion in [str(i) for i in range(len(self.dados_disponibles))]:
             return True
         raise SeleccionDadoInvalida("Selección de dado inválida")

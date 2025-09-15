@@ -40,7 +40,7 @@ class Tablero_Validador:
                 if f.tipo == tipo:
                     return False
         return True
-    def puede_ganar(self,ficha:Ficha,triangulo_destino)->bool:
+    def puede_ganar(self,ficha:Ficha,triangulo_destino,triangulo_origen:int,movimiento:int)->bool:
         '''Verifica si el jugador puede ganar esa ficha
         Parametros:
             tablero (list[list[Ficha]]): El tablero de juego
@@ -52,10 +52,13 @@ class Tablero_Validador:
             MovimientoNoJustoParaGanar si el movimiento lleva a un numero fuera del tablero, >-1 para las fichas rojas y >24 para las negras
         '''
         tipo = ficha.tipo
-        if triangulo_destino < -1 or triangulo_destino > 24:
+        if tipo==TipoFicha.ROJA.value:
+            if triangulo_destino ==-1:
+                return True
+            if triangulo_origen<5 and triangulo_origen+movimiento< -1: #lo dejo sumando porque el movimiento rojo es negativo
+                raise MovimientoNoJustoParaGanar("Movimiento no válido para ganar la ficha, se pasa")
+        elif tipo==TipoFicha.NEGRA.value and triangulo_destino >24:
             raise MovimientoNoJustoParaGanar("Movimiento no válido para ganar la ficha, se pasa")
-        if tipo == TipoFicha.ROJA.value and triangulo_destino ==-1:
-            return True
         elif tipo == TipoFicha.NEGRA.value and triangulo_destino ==24:
             return True
         return False

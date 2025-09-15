@@ -23,18 +23,19 @@ class Tablero():
     def tablero(self)->list[list[Ficha]]:
         return self.__tablero__
 
-    def mover_ficha(self, ficha:Ficha, triangulo_origen:int, moviemiento:int):
+    def mover_ficha(self, ficha:Ficha, triangulo_origen:int, movimiento:int,comida:bool=False)->None:
         '''Mueve una ficha de un triángulo a otro si el movimiento es válido.
         Parámetros:
             ficha (Ficha): La ficha a mover.
             triangulo_origen (int): El triángulo de origen (0-23).
-            moviemiento (int): El número de triángulos a mover (positivo)
+            movimiento (int): El número de triángulos a mover (positivo)
         Raises:            
         CasillaOcupadaException: Si el triángulo de destino tiene 2 o más fichas rivales.
             '''
-        triangulo_destino = triangulo_origen + moviemiento
-        if self.__validador__.puede_ganar(ficha,triangulo_destino):
+        triangulo_destino = triangulo_origen + movimiento
+        if self.__validador__.puede_ganar(ficha,triangulo_destino,triangulo_origen,movimiento):
             self.__tablero__[triangulo_origen].pop()
+            self.__fichas_ganadas__.append(ficha)
             return
         if self.__validador__.triangulo_con_fichas_rivales(self.tablero,triangulo_destino, ficha): #le doy una copia para que no modifique el original
             raise CasillaOcupadaException("No se puede mover a un triángulo con 2 o mas fichas rivales")
@@ -42,9 +43,13 @@ class Tablero():
             if self.__validador__.puede_comer(self.tablero,triangulo_destino, ficha):
                 ficha_comida = self.__tablero__[triangulo_destino].pop()
                 ficha_comida.comida = True
-                self.__fichas_comidas__.append(ficha_comida) 
+                self.__fichas_comidas__.append(ficha_comida)
+            if comida:
+                ficha.comida = False
+                self.__fichas_comidas__.remove(ficha)
+            else:
+                self.__tablero__[triangulo_origen].pop()
             self.__tablero__[triangulo_destino].append(ficha)
-
 
     def imprimir_tablero(self) -> None:
         """

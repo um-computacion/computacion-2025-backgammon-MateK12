@@ -161,3 +161,11 @@ agregado meotod para saber is la fucha puede ganar o no, agregada excecpion
 se comen las fichas, y se vuelven a poner en el tablero en el lugar correspondiente
 ### Eliminado
 metodo rango_ganar en tablero_validador
+
+## [1.0.19] - 15-09-2025
+### Agregado
+atributo en ficha para saber si la ficha esta por ganar o no
+### Cambiado
+logica para saber si una ficha roja se pasa para ganar o no
+### Arreglado
+### Eliminado
