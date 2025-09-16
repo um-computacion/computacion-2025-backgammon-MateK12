@@ -173,6 +173,8 @@ logica para saber si una ficha roja se pasa para ganar o no
 ## [1.0.19] - 16-09-2025
 ### Agregado
 Probado circuito de juego, validacion de triangulo hecha
+creado metodo estatico para imprmir tablero, responsabilidades segmentadas
+agregados tests a cli
 ### Cambiado
 ### Arreglado
 ### Eliminado

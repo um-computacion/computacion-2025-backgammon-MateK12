@@ -53,7 +53,7 @@ class Tablero_Validador:
         '''
         tipo = ficha.tipo
         if tipo==TipoFicha.ROJA.value:
-            if triangulo_destino ==-1:
+            if triangulo_destino ==-1 and triangulo_origen<6:
                 return True
             if triangulo_origen<5 and triangulo_origen+movimiento< -1: #lo dejo sumando porque el movimiento rojo es negativo
                 raise MovimientoNoJustoParaGanar("Movimiento no válido para ganar la ficha, se pasa")

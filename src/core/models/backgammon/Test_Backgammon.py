@@ -28,13 +28,6 @@ class TestBackgammon(unittest.TestCase):
         turno_anterior = self.game.turno
         self.game.cambiar_turno()
         self.assertNotEqual(self.game.turno,turno_anterior)
-    # def test_mover_ficha(self):
-    #     self.game.__tablero__.mover_ficha()
-    #     self.game.mover_ficha()
-
-    # def test_seleccionar_ficha(self):
-    #     with self.assertRaises(AttributeError):
-    #         self.game.seleccionar_ficha(0, TipoFicha.NEGRA)
     def test_dados_property(self):
         self.assertIsNotNone(self.game.dados)
     def test_hay_fichas_comidas_sin_fichas(self):
@@ -50,7 +43,12 @@ class TestBackgammon(unittest.TestCase):
         self.game.__tablero__.fichas_comidas = [ficha_comida]
         resultado = self.game.hay_fichas_comidas()
         self.assertTrue(resultado)
-
+    def test_hay_fichas_comidas_con_fichas_del_otro_color(self):
+        self.game.quien_empieza()
+        tipo_ficha = TipoFicha.ROJA.value if self.game.turno == TipoFicha.NEGRA.value else TipoFicha.NEGRA.value
+        ficha_comida = Ficha(tipo_ficha)
+        self.game.__tablero__.fichas_comidas = [ficha_comida]
+        self.assertFalse(self.game.hay_fichas_comidas())
     def test_seleccionar_ficha_existente(self):
         resultado = self.game.seleccionar_ficha(0, TipoFicha.NEGRA.value)
         self.assertIsNot(resultado, None)
@@ -109,6 +107,8 @@ class TestBackgammon(unittest.TestCase):
         self.assertEqual(len(self.game.tablero.tablero[0]),1)
         self.assertEqual(len(self.game.tablero.tablero[1]),1)
         self.assertEqual(self.game.tablero.tablero[1][0].tipo,TipoFicha.NEGRA.value)
+
+    
     @patch.object(Backgammon, 'tirar_dados')
     def test_quien_empieza_roja_gana(self, mock_tirar_dados):
         mock_tirar_dados.return_value = [5, 3]

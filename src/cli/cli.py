@@ -4,7 +4,7 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
-
+from src.core.models.tablero.Tablero_Impresor import Tablero_Impresor
 ERROR= "\033[91m"
 RESET ="\033[0m"
 class CLI():
@@ -75,7 +75,7 @@ class CLI():
                 if self.seleccion_triangulo_valida(triangulo_origen):
                     self.backgammon.mover_ficha(int(triangulo_origen), seleccion)
                     self.dados_disponibles.pop(int(seleccion_index))
-            self.backgammon.tablero.imprimir_tablero()
+            Tablero_Impresor.imprimir_tablero(self.backgammon.tablero)
     def seleccion_dado_valida(self,seleccion:str)-> bool: 
         '''Valida que la selección del dado sea correcta
         Parámetros:
@@ -103,7 +103,7 @@ class CLI():
     def jugar(self):
         """Método principal que controla el flujo del juego"""
         self.inicializar_juego()
-        self.backgammon.tablero.imprimir_tablero()
+        Tablero_Impresor.imprimir_tablero(self.backgammon.tablero)
         while self.backgammon.hay_ganador() is None:
             self.__dados_disponibles = []
             self.mostrar_turno_actual()

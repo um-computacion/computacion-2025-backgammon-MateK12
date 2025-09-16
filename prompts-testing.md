@@ -514,9 +514,11 @@ test_tablero_validador
 
 
 ### modelo
-### propmt 
+    claude
+### propmt
+Haz los tests de los metodos seleccion_triangulo_valido y  seleccion_dado_valido
 ### respuesta    
-
 ### Fixed
 ### cambios 
 ### archivos finales
+test_cli.py
