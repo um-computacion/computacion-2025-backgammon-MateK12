@@ -3,6 +3,8 @@ from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
+from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
+
 ERROR= "\033[91m"
 RESET ="\033[0m"
 class CLI():
@@ -69,9 +71,10 @@ class CLI():
                 self.backgammon.mover_ficha_comida(seleccion)
                 self.dados_disponibles.pop(int(seleccion_index))
             else:
-                triangulo_origen = int(input('Selecciona el triángulo de origen (0-23): '))
-                self.backgammon.mover_ficha(triangulo_origen, seleccion)
-                self.dados_disponibles.pop(int(seleccion_index))
+                triangulo_origen = input('Selecciona el triángulo de origen (0-23): ')
+                if self.seleccion_triangulo_valida(triangulo_origen):
+                    self.backgammon.mover_ficha(int(triangulo_origen), seleccion)
+                    self.dados_disponibles.pop(int(seleccion_index))
             self.backgammon.tablero.imprimir_tablero()
     def seleccion_dado_valida(self,seleccion:str)-> bool: 
         '''Valida que la selección del dado sea correcta
@@ -85,6 +88,18 @@ class CLI():
         if seleccion in [str(i) for i in range(len(self.dados_disponibles))]:
             return True
         raise SeleccionDadoInvalida("Selección de dado inválida")
+    def seleccion_triangulo_valida(self, seleccion:str) -> bool:
+        '''Valida que la selección del triángulo sea correcta
+        Parámetros:
+            seleccion (str): La selección del triángulo como string
+        Retorna:
+            bool: True si la selección es válida
+        Raises:
+            SeleccionTrianguloInvalida
+        '''
+        if seleccion in [str(i) for i in range(24)]:
+            return True
+        raise SeleccionTrianguloInvalida("Selección de triángulo inválida")
     def jugar(self):
         """Método principal que controla el flujo del juego"""
         self.inicializar_juego()
@@ -94,10 +109,10 @@ class CLI():
             self.mostrar_turno_actual()
             self.tirar_dados()
             while self.dados_disponibles:
-                # try:
+                try:
                     self.realizar_movimiento()
-                # except Exception as e:
-                #     print(f"{ERROR}{e}{RESET}")
+                except Exception as e:
+                    print(f"{ERROR}{e}{RESET}")
             self.backgammon.cambiar_turno()
         print('¡El jugador {} ha ganado!'.format(self.backgammon.hay_ganador()))
 

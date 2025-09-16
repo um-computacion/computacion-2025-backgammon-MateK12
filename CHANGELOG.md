@@ -169,3 +169,10 @@ atributo en ficha para saber si la ficha esta por ganar o no
 logica para saber si una ficha roja se pasa para ganar o no
 ### Arreglado
 ### Eliminado
+
+## [1.0.19] - 16-09-2025
+### Agregado
+Probado circuito de juego, validacion de triangulo hecha
+### Cambiado
+### Arreglado
+### Eliminado
