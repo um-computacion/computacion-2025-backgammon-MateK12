@@ -178,3 +178,10 @@ agregados tests a cli
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.19] - 16-09-2025
+### Agregado
+agregados tests a cli
+### Cambiado
+### Arreglado
+### Eliminado
