@@ -182,6 +182,7 @@ agregados tests a cli
 ## [1.0.19] - 16-09-2025
 ### Agregado
 agregados tests a cli
+se mejoro la impresora del tablero, haciendo los [] mas ordenados
 ### Cambiado
 ### Arreglado
 ### Eliminado
