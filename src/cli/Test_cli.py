@@ -10,6 +10,7 @@ class TestCli(unittest.TestCase):
         self.jugador1 = Jugador('Juan')
         self.jugador2 = Jugador('Maria')
         self.cli = CLI(self.jugador1, self.jugador2)
+        self.cli.backgammon.quien_empieza()
     def test_getterJugador_1(self):
         self.assertEqual(self.cli.jugador_rojo, self.jugador1)
 
@@ -89,6 +90,126 @@ class TestCli(unittest.TestCase):
             self.assertEqual(self.cli.jugador_rojo.__repr__(), 'Jugador1')
             self.assertEqual(self.cli.jugador_negro.__repr__(), 'Jugador2')
             mock_quien_empieza.assert_called_once()
+    #endregion
+    
+    # # #region tirar_dados
+    # def test_tirar_dados_sin_dobles(self):
+    #     """Test tirar dados cuando NO salen dobles"""
+    #     with patch.object(self.cli.backgammon.dados, 'tirar_dados', return_value=[3, 5]), \
+    #          patch.object(self.cli.backgammon.dados, 'doble', False), \
+    #          patch('builtins.print'):
+    #         resultado = self.cli.tirar_dados()
+    #         self.assertEqual(resultado, [3, 5])
+    #         self.assertEqual(self.cli.dados_disponibles, [3, 5])
+
+    # def test_tirar_dados_con_dobles(self):
+    #     """Test tirar dados cuando salen dobles"""
+    #     with patch.object(self.cli.backgammon.dados, 'tirar_dados', return_value=[4, 4, 4, 4]), \
+    #          patch.object(self.cli.backgammon.dados, 'doble', True), \
+    #          patch('builtins.print'):
+    #         resultado = self.cli.tirar_dados()
+    #         self.assertEqual(resultado, [4, 4, 4, 4])
+    #         self.assertEqual(self.cli.dados_disponibles, [4, 4, 4, 4])
+    #endregion
+    
+    #region mostrar_turno_actual
+    # def test_mostrar_turno_actual_jugador_rojo(self):
+    #     """Test mostrar turno del jugador rojo"""
+    #     with patch.object(self.cli.backgammon, 'turno', TipoFicha.ROJA.value), \
+    #          patch('builtins.print') as mock_print:
+    #         self.cli.mostrar_turno_actual()
+    #         mock_print.assert_called_once_with('Turno del jugador rojo: Juan')
+
+    # def test_mostrar_turno_actual_jugador_negro(self):
+    #     """Test mostrar turno del jugador negro"""
+    #     with patch.object(self.cli.backgammon, 'turno', TipoFicha.NEGRA.value), \
+    #          patch('builtins.print') as mock_print:
+    #         self.cli.mostrar_turno_actual()
+    #         mock_print.assert_called_once_with('Turno del jugador negro: Maria')
+    #endregion
+    
+    #region realizar_movimiento
+    def test_realizar_movimiento_con_fichas_comidas_dado_valido(self):
+        """Test realizar movimiento cuando hay fichas comidas y el dado es válido"""
+        self.cli.dados_disponibles = [3, 5]
+        
+        with patch('builtins.input', return_value='0'), \
+             patch('builtins.print'), \
+             patch.object(self.cli.backgammon, 'hay_fichas_comidas', return_value=True), \
+             patch.object(self.cli.backgammon, 'mover_ficha_comida') as mock_mover_comida, \
+             patch('src.core.models.tablero.Tablero_Impresor.Tablero_Impresor.imprimir_tablero'):
+            
+            self.cli.realizar_movimiento()
+            
+            mock_mover_comida.assert_called_once_with(3)
+            self.assertEqual(self.cli.dados_disponibles, [5])
+
+    def test_realizar_movimiento_sin_fichas_comidas_dado_y_triangulo_validos(self):
+        """Test realizar movimiento cuando NO hay fichas comidas, dado y triángulo válidos"""
+        self.cli.dados_disponibles = [2, 4]
+        
+        with patch('builtins.input', side_effect=['1', '5']), \
+             patch('builtins.print'), \
+             patch.object(self.cli.backgammon, 'hay_fichas_comidas', return_value=False), \
+             patch.object(self.cli.backgammon, 'mover_ficha') as mock_mover_ficha, \
+             patch('src.core.models.tablero.Tablero_Impresor.Tablero_Impresor.imprimir_tablero'):
+            
+            self.cli.realizar_movimiento()
+            
+            mock_mover_ficha.assert_called_once_with(5, 4)
+            self.assertEqual(self.cli.dados_disponibles, [2])
+
+    def test_realizar_movimiento_dado_invalido(self):
+        """Test realizar movimiento con selección de dado inválida"""
+        self.cli.dados_disponibles = [1, 3]
+        
+        with patch('builtins.input', return_value='5'), \
+             patch('builtins.print'):
+            
+            with patch.object(self.cli.backgammon, 'hay_fichas_comidas') as mock_hay_comidas, \
+                 patch.object(self.cli.backgammon, 'mover_ficha_comida') as mock_mover_comida, \
+                 patch.object(self.cli.backgammon, 'mover_ficha') as mock_mover_ficha:
+                
+                with self.assertRaises(SeleccionDadoInvalida):
+                    self.cli.realizar_movimiento()
+                
+                mock_hay_comidas.assert_not_called()
+                mock_mover_comida.assert_not_called()
+                mock_mover_ficha.assert_not_called()
+
+    def test_realizar_movimiento_sin_fichas_comidas_triangulo_invalido(self):
+        """Test realizar movimiento sin fichas comidas pero triángulo inválido"""
+        self.cli.dados_disponibles = [2, 6]
+        
+        with patch('builtins.input', side_effect=['0', '25']), \
+             patch('builtins.print'), \
+             patch.object(self.cli.backgammon, 'hay_fichas_comidas', return_value=False), \
+             patch.object(self.cli.backgammon, 'mover_ficha') as mock_mover_ficha:
+            
+            with self.assertRaises(SeleccionTrianguloInvalida):
+                self.cli.realizar_movimiento()
+            
+            mock_mover_ficha.assert_not_called()
+            self.assertEqual(self.cli.dados_disponibles, [2, 6])
+    #endregion
+    #region tirar_dados
+    def test_tirar_dados_sin_dobles(self):
+        """Test tirar dados cuando NO salen dobles"""
+        with patch.object(self.cli.backgammon.dados, 'tirar_dados', return_value=[3, 5]), \
+             patch('builtins.print'):
+            resultado = self.cli.tirar_dados()
+            self.assertEqual(resultado, [3, 5])
+            self.assertEqual(self.cli.dados_disponibles, [3, 5])
+    
+    def test_tirar_dados_dobles(self):
+        """Test tirar dados cuando salen dobles"""
+        with patch.object(self.cli.backgammon.dados, 'tirar_dados', return_value=[3, 3,3,3]), \
+            patch('builtins.print') as mock_print:
+            resultado = self.cli.tirar_dados()
+            self.assertEqual(resultado, [3, 3, 3, 3])
+            mock_print.assert_called_with('Dados tirados: [3, 3, 3, 3]')
+            self.assertEqual(self.cli.dados_disponibles, [3, 3, 3, 3])
+    #endregion
 
 if __name__=="__main__":
     unittest.main()

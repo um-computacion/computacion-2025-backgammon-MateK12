@@ -99,6 +99,19 @@ class TestBackgammon(unittest.TestCase):
         with self.assertRaises(NoHayFichaEnTriangulo):
             self.game.seleccionar_ficha(24, TipoFicha.NEGRA.value)
     @patch.object(Backgammon, 'tirar_dados')
+    def test_mover_ficha_comida(self, mock_tirar_dados):
+        mock_tirar_dados.return_value = [1, 2]
+        self.game.quien_empieza()
+        self.game.__tablero__.fichas_comidas = [Ficha(self.game.turno)]
+        self.game.mover_ficha_comida(2)
+        self.assertEqual(len(self.game.__tablero__.fichas_comidas), 0)
+        if self.game.turno == TipoFicha.NEGRA.value:
+            self.assertEqual(len(self.game.tablero.tablero[1]), 1)
+            self.assertEqual(self.game.tablero.tablero[1][0].tipo, TipoFicha.NEGRA.value)
+        else:
+            self.assertEqual(len(self.game.tablero.tablero[-2]), 1) 
+            self.assertEqual(self.game.tablero.tablero[-2][0].tipo, TipoFicha.ROJA.value)
+    @patch.object(Backgammon, 'tirar_dados')
     def test_mover_ficha(self, mock_tirar_dados):
         mock_tirar_dados.return_value = [1, 2]
         self.game.quien_empieza()
