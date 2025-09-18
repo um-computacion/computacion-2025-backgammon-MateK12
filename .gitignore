@@ -2,3 +2,5 @@ venv/
 pycache/
 __pycache__/
 htmlcov/
+*.pyc
+pylint_report.txt

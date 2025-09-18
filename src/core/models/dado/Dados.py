@@ -4,11 +4,11 @@ class Dados:
     def __init__(self):
         self.__doble__:bool = False
 
-    '''
-    Tira dos dados y devuelve un diccionario con los resultados de ambos dados
-    Si los dados son iguales, cambia el atributo doble a True, de lo contrario a False.
-    '''
     def tirar_dados(self)->list[int]:
+        '''
+        Tira dos dados y devuelve un diccionario con los resultados de ambos dados
+        Si los dados son iguales, cambia el atributo doble a True, de lo contrario a False.
+        '''
         self.__doble__ = False
         dice_1:int= random.randint(1, 6)
         dice_2:int= random.randint(1, 6)
@@ -21,4 +21,7 @@ class Dados:
 
     @property
     def doble(self):
+        '''
+        Retorna doble
+        '''
         return self.__doble__

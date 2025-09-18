@@ -9,16 +9,22 @@ class Backgammon():
         self.__tablero__:Tablero = Tablero(self.inicializar_tablero())
         self.__turno:int
     def tirar_dados(self):
+        '''Tira los dados y retorna el resultado
+        Retorna:
+            list[int]: Resultado de los dados'''
         dados = self.__dados__.tirar_dados()
         return dados
     @property
     def tablero(self):
+        '''Retorna el tablero'''
         return self.__tablero__
     @property
     def dados(self):
+        '''Retorna los dados'''
         return self.__dados__
     @property
     def turno(self):
+        '''Retorna el turno actual'''
         return self.__turno
     def hay_fichas_comidas(self)->bool:
         '''Verifica si hay fichas comidas del tipo de ficha correspondiente

@@ -11,16 +11,20 @@ class Tablero():
 
     @property 
     def fichas_comidas(self)->list[Ficha]:
+        '''Retorna las fichas comidas'''
         return self.__fichas_comidas__
     @fichas_comidas.setter
     def fichas_comidas(self, valor:list[Ficha])->None:
+        '''Establece las fichas comidas'''
         self.__fichas_comidas__ = valor
 
     @property
     def fichas_ganadas(self)->list[Ficha]:
+        '''Retorna las fichas ganadas'''
         return self.__fichas_ganadas__
     @property
     def tablero(self)->list[list[Ficha]]:
+        '''Retorna el tablero'''
         return self.__tablero__
 
     def mover_ficha(self, ficha:Ficha, triangulo_origen:int, movimiento:int,comida:bool=False)->None:

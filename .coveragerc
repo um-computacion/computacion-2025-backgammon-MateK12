@@ -1,7 +1,7 @@
 [run]
 source=
     src
-omit = 
+omit =
     */Test_*.py
     **/Test_*.py
     Test_*.py
