@@ -2,7 +2,7 @@ import unittest
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
-
+from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
 class TestTableroValidador(unittest.TestCase):
     def setUp(self):
         self.validador = Tablero_Validador()
@@ -103,5 +103,31 @@ class TestTableroValidador(unittest.TestCase):
         self.assertFalse(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
 
 
+    def test_puede_ganar_ficha_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_negra,24,23,1))
+    def test_no_puede_ganar_ficha_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_roja,5,6,1))
+    def test_no_puede_ganar_ficha_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_negra,20,19,1))  
+    def test_raise_movimiento_no_justo_para_ganar_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        with self.assertRaises(MovimientoNoJustoParaGanar):
+            self.validador.puede_ganar(ficha_roja, -2, 4, -6) 
+    def test_raise_movimiento_no_justo_para_ganar_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        with self.assertRaises(MovimientoNoJustoParaGanar):
+            self.validador.puede_ganar(ficha_negra, 25, 23, 2)
+    def test_puede_ganar_ficha_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_roja,-1,0,-1))
+    def test_no_puede_ganar_ficha_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_roja,0,6,-6))
+    def test_no_puede_ganar_volviendo_de_comida(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, -1, 24, -1))
 if __name__ == '__main__':
     unittest.main()

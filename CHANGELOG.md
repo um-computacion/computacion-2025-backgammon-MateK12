@@ -78,3 +78,111 @@ Clase tablero, clase tablero validador, testeadas
 
 ### Eliminado
 
+## [1.0.8] - 31-08-2025
+
+### Agregado
+Clase CLI empezada
+test a metodos basicos
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.0.11] - 3-09-2025
+### Agregado
+Pipeline creada
+### Cambiado
+requirements txt
+### Arreglado
+### Eliminado
+
+## [1.0.12] - 4-09-2025
+### Agregado
+agrege getter del dado en la clase backgammon
+dinamica de juego empezada
+### Cambiado
+
+### Arreglado
+### Eliminado
+
+## [1.0.13] - 8-09-2025
+### Agregado
+funcion mover ficha agregada en backgammon
+atributo movimientos disponibles agregados en cli
+agregada validacion en seleccion de triangulo para elejir un triangulo valido 
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [1.0.14] - 9-09-2025
+### Agregado
+funcion mover ficha agregada en backgammon
+atributo movimientos disponibles agregados en cli
+agregada validacion en seleccion de triangulo para elejir un triangulo valido 
+### Cambiado
+tirar dados devuelve un arreglo de numeros
+
+### Arreglado
+### Eliminado
+
+## [1.0.15] - 10-09-2025
+### Agregado
+docstrings a funciones
+### Cambiado
+### Arreglado
+movieminto de ficha en el tablero
+### Eliminado
+
+## [1.0.16] - 12-09-2025
+### Agregado
+Moviemientos fluids
+funcion quien empieza para elegir aleatoriamente quien empieza
+### Cambiado
+### Arreglado
+funciones cambiadas en el movimiento para que ande
+### Eliminado
+
+## [1.0.17] - 13-09-2025
+### Agregado
+tests de imprimirTablero() agregado
+Agregado nombre en readme
+### Cambiado
+### Arreglado
+test arreglados en clase dados y en backgammon
+Las fichas rojas mueven en sentido contrario a las negras
+se cambia gestion de turnos para mover 2 veces seguidas mismo jugador
+### Eliminado
+
+## [1.0.18] - 14-09-2025
+### Agregado
+agregado meotod para saber is la fucha puede ganar o no, agregada excecpion
+### Cambiado
+### Arreglado
+se comen las fichas, y se vuelven a poner en el tablero en el lugar correspondiente
+### Eliminado
+metodo rango_ganar en tablero_validador
+
+## [1.0.19] - 15-09-2025
+### Agregado
+atributo en ficha para saber si la ficha esta por ganar o no
+### Cambiado
+logica para saber si una ficha roja se pasa para ganar o no
+### Arreglado
+### Eliminado
+
+## [1.0.19] - 16-09-2025
+### Agregado
+Probado circuito de juego, validacion de triangulo hecha
+creado metodo estatico para imprmir tablero, responsabilidades segmentadas
+agregados tests a cli
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [1.0.19] - 16-09-2025
+### Agregado
+agregados tests a cli
+se mejoro la impresora del tablero, haciendo los [] mas ordenados
+### Cambiado
+### Arreglado
+### Eliminado

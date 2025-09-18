@@ -3,7 +3,7 @@ class Ficha():
     def __init__(self,tipo:TipoFicha):
         self.__tipo__:TipoFicha = tipo
         self.__comida__:bool = False
-
+        self.__por_ganar__:bool = False
     @property
     def tipo(self):
         return self.__tipo__

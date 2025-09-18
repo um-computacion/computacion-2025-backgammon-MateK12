@@ -3,6 +3,8 @@ from src.core.models.tablero.Tablero import Tablero
 from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
+from io import StringIO
+from unittest.mock import patch
 
 class TestTablero(unittest.TestCase):
     def setUp(self):
@@ -59,5 +61,7 @@ class TestTablero(unittest.TestCase):
 
     def test_get_tablero(self):
         self.assertEqual(self.tablero.tablero,self.tablero.__tablero__)
+
+
 if __name__ == '__main__':
     unittest.main()

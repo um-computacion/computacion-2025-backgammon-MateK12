@@ -1,0 +1,2 @@
+class TrianguloInvalidoException(Exception):
+    pass
