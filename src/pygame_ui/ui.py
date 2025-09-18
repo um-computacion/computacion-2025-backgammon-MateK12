@@ -1,103 +1,128 @@
 import pygame
-import math
-import random
 import sys
+from src.core.models.backgammon.backgammon import Backgammon
+from src.pygame_ui.Tablero_UI import TableroUI
+from src.core.models.tablero.Tablero import Tablero
+from src.core.models.ficha.Ficha import Ficha
+from src.core.enums.TipoFicha import TipoFicha
 
-pygame.init()
+# Colores para las fichas
+FICHA_ROJA = (139, 0, 0)
+FICHA_NEGRA = (50, 50, 50)
+FICHA_BORDER = (0, 0, 0)
 
-# Constantes
-WINDOW_WIDTH = 1000
-WINDOW_HEIGHT = 700
-BOARD_WIDTH = 800
-BOARD_HEIGHT = 600
-BOARD_X = 100
-BOARD_Y = 50
-
-# Colores
-BLACK = (50, 50, 50)
-BROWN_LIGHT = (222, 184, 135)
-DARK = (23, 23, 23)
-RED = (139, 0, 0)
-class TableroUI():
-     
+class BackgammonUI:
     def __init__(self):
-        self.__ancho_tablero__ = BOARD_WIDTH
-        self.__alto_tablero__ = BOARD_HEIGHT
-        self.__x__ = BOARD_X #posicion x del vertice inicial del tablero 
-        self.__y__ = BOARD_Y
-        self.__punto_width__ = (self.__ancho_tablero__ - 100) // 12  # 100 para el bar central
-        self.__punto_height__ = (self.__alto_tablero__ - 100) // 2  
-        self.__screen__ = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        self.__screen__.fill(BROWN_LIGHT)
-    def dibujar_triangulo(self, punto_index, color):
-        """Dibuja un triángulo para un punto específico
-            Si son los primeros 12 triangulos apuntan hacia abajo, si son los ultimos 12 triangulos apuntan hacia arriba
-        """
-        punto_x, punto_y = self.get_punto_position_base(punto_index) #obtengo el vertice base del triangulo
+        pygame.init()
+        self.backgammon = Backgammon()
+        self.tablero_ui = TableroUI()
+        self.screen = self.tablero_ui.screen
+        self.tablero = Tablero(self.backgammon.inicializar_tablero())  
+        self.running = True
         
-        if punto_index <= 11: # triangulo apuntando hacia abajo
-            puntos = [
-                (punto_x, punto_y), #vertice base del triangulo
-                (punto_x + self.__punto_width__, punto_y),
-                (punto_x + self.__punto_width__ // 2, punto_y + self.__punto_height__) #vertice mas alto
-            ]
-        else:  # triangulo apuntando hacia arriba
-            puntos = [
-                (punto_x, punto_y + self.__punto_height__),
-                (punto_x + self.__punto_width__, punto_y + self.__punto_height__),
-                (punto_x + self.__punto_width__ // 2, punto_y) #vertice mas alto
-            ]
+        # Configurar la ventana
+        pygame.display.set_caption("Backgammon")
         
-        pygame.draw.polygon(self.__screen__, color, puntos)
-        pygame.draw.polygon(self.__screen__, BLACK, puntos, 2)
+        # Inicializar tablero con fichas de ejemplo (puedes quitar esto más tarde)
+        # self._inicializar_tablero_ejemplo()
     
-    def dibujar_tablero(self):
-            """Dibuja el tablero completo
-            Incluye el borde del tablero, el bar central y los 24 triangulos
-            """
-            pygame.draw.rect(self.__screen__, BLACK, (self.__x__, self.__y__, self.__ancho_tablero__, self.__alto_tablero__), 3) # Borde del tablero
-            
-            bar_x = self.__x__ + self.__ancho_tablero__ // 2 - 25
-            pygame.draw.rect(self.__screen__, DARK, (bar_x, self.__y__, 50, self.__alto_tablero__)) #barra del medio divisoria
-            
-            for i in range(24): #triangulos alternando el color
-                color = DARK if i % 2 == 0 else RED
-                self.dibujar_triangulo( i, color)
-            
+    # def _inicializar_tablero_ejemplo(self):
+    #     """Inicializa el tablero con una configuración de ejemplo para testing"""
+    #     # Agregar algunas fichas rojas en diferentes posiciones
+    #     for _ in range(5):
+    #         ficha_roja = Ficha(TipoFicha.ROJA)
+    #         self.tablero.tablero[0].append(ficha_roja)
         
-    def get_punto_position_base(self, punto_index):
-        """Obtiene la posición x, y de un triangulo especifico,
-        este punto sera el base ya que en base a este punto se calularan los otros 2 vertices del triangulo"""
+    #     for _ in range(3):
+    #         ficha_negra = Ficha(TipoFicha.NEGRA)
+    #         self.tablero.tablero[1].append(ficha_negra)
         
-        if punto_index <= 11:  # Parte superior
-            if punto_index <= 5:
-                x = self.__x__ + self.__ancho_tablero__ - (punto_index + 1) * self.__punto_width__
-            else:
-                x = self.__x__ + self.__ancho_tablero__ - (punto_index) * self.__punto_width__ - 150   
-            y = self.__y__
-        else:  # Parte inferior
-            if punto_index <= 17:
-                x = self.__x__  + (punto_index - 12+1) * self.__punto_width__ + self.__ancho_tablero__ /2  # pos_inicial_x+ desplazamiento en x +ancho_del_tablero/2 
-            else:
-                x = self.__x__ + (punto_index - 18 ) * self.__punto_width__
-            y = self.__y__ + self.__alto_tablero__ - 250
+    #     for _ in range(2):
+    #         ficha_roja = Ficha(TipoFicha.ROJA)
+    #         self.tablero.tablero[12].append(ficha_roja)
         
-        return x, y
-if __name__ == "__main__":
-    pygame.display.set_caption("Tablero Backgammon")
-    running = True
+    #     for _ in range(4):
+    #         ficha_negra = Ficha(TipoFicha.NEGRA)
+    #         self.tablero.tablero[23].append(ficha_negra)
     
-    tablero = TableroUI()
+    def dibujar_ficha(self, x, y, tipo_ficha, radius=20):
+        """Dibuja una ficha individual en la posición especificada"""
+        color = FICHA_ROJA if tipo_ficha == TipoFicha.ROJA.value else FICHA_NEGRA
+        
+        pygame.draw.circle(self.screen, color, (int(x), int(y)), radius)
+        pygame.draw.circle(self.screen, FICHA_BORDER, (int(x), int(y)), radius, 2)
     
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    def dibujar_fichas_en_punto(self, punto_index):
+        """Dibuja todas las fichas en un punto específico del tablero"""
+        fichas = self.tablero.tablero[punto_index]
+        if not fichas:
+            return
+        # Obtener la posición base del triángulo
+        base_x, base_y = self.tablero_ui.get_punto_position_base(punto_index)
+        punto_width = self.tablero_ui.punto_width
+        punto_height = self.tablero_ui.punto_height
         
+        # Calcular la posición central del triángulo para las fichas
+        center_x = base_x + punto_width // 2
         
-        tablero.dibujar_tablero()
+        # Determinar la dirección de apilamiento según la posición del triángulo
+        if punto_index <= 11:  # Parte superior - fichas se apilan hacia abajo
+            start_y = base_y + 30  # Comenzar un poco abajo del vértice
+            y_offset = 35  # Espacio entre fichas
+        else:  # Parte inferior - fichas se apilan hacia arriba
+            start_y = base_y + punto_height - 30  # Comenzar un poco arriba del vértice
+            y_offset = -35  # Espacio negativo para apilar hacia arriba
         
+        # Dibujar cada ficha
+        for i, ficha in enumerate(fichas):
+            ficha_y = start_y + (i * y_offset)
+            self.dibujar_ficha(center_x, ficha_y, ficha.tipo)
+    
+    def dibujar_todas_las_fichas(self):
+        """Dibuja todas las fichas en todos los puntos del tablero"""
+        for punto_index in range(24):
+            self.dibujar_fichas_en_punto(punto_index)
+    
+    def actualizar_tablero(self, nuevo_tablero=None):
+        """Actualiza el objeto tablero y redibuja"""
+        if nuevo_tablero:
+            self.tablero = nuevo_tablero
+    
+    def dibujar_frame(self):
+        """Dibuja un frame completo del tablero con fichas"""
+        # Limpiar pantalla
+        self.screen.fill((222, 184, 135))  # BROWN_LIGHT
+        
+        # Dibujar el tablero
+        self.tablero_ui.dibujar_tablero()
+        
+        # Dibujar las fichas
+        self.dibujar_todas_las_fichas()
+        
+        # Actualizar pantalla
         pygame.display.flip()
     
-    pygame.quit()
-    sys.exit()
+    def run(self):
+        """Loop principal del juego"""
+        clock = pygame.time.Clock()
+        
+        while self.running:
+            # Manejar eventos
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
+            
+            # Dibujar frame completo
+            self.dibujar_frame()
+            clock.tick(60)  # 60 FPS
+        
+        pygame.quit()
+        sys.exit()
+
+if __name__ == "__main__":
+    # Crear y ejecutar la aplicación
+    app = BackgammonUI()
+    app.run()

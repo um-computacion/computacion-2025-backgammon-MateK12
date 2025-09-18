@@ -1,6 +1,6 @@
 import unittest
 import pygame
-from src.pygame_ui.ui import TableroUI, BOARD_WIDTH, BOARD_HEIGHT, BOARD_X, BOARD_Y
+from src.pygame_ui.Tablero_UI import TableroUI, BOARD_WIDTH, BOARD_HEIGHT, BOARD_X, BOARD_Y
 
 class TestTableroUI(unittest.TestCase):
     def setUp(self):
