@@ -3,8 +3,14 @@ from src.core.models.ficha.Ficha import Ficha
 from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
 class Tablero_Validador:
     def triangulo_con_fichas_rivales(self,tablero, triangulo:int,ficha:Ficha)->bool:
-        '''
+        '''   
         Verifica si en el triángulo dado hay al menos dos fichas del tipo rival
+        Parametros:
+            tablero (list[list[Ficha]]): El tablero de juego
+            triangulo (int): El triángulo a verificar
+            ficha (Ficha): La ficha que se está moviendo
+        Retorna:
+            bool: True si hay al menos dos fichas rivales, False en caso contrario
         '''
         tipo_rival = TipoFicha.ROJA.value if ficha.tipo == TipoFicha.NEGRA.value else TipoFicha.NEGRA.value
         tipos_en_triangulo = [f.tipo for f in tablero[triangulo]]

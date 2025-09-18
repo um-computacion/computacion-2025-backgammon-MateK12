@@ -16,21 +16,29 @@ class CLI():
     
     @property
     def jugador_rojo(self):
+        """Retorna el jugador rojo"""
         return self.__jugador_rojo
     @property
     def jugador_negro(self):
+        """Retorna el jugador negro"""
         return self.__jugador_negro
     @property
     def backgammon(self):
+        """Retorna el objeto Backgammon (gestor del juego)"""
         return self.__backgammon
     @property
     def dados_disponibles(self):
+        """Retorna los dados disponibles"""
         return self.__dados_disponibles
     @dados_disponibles.setter
     def dados_disponibles(self, dados):
+        """Establece los dados disponibles"""
         self.__dados_disponibles = dados
     
     def tirar_dados(self):
+        """
+        Llama al método tirar_dados y actualiza los dados disponibles
+        """
         resultado = self.__backgammon.dados.tirar_dados()
         self.__dados_disponibles = resultado
         print(f'Dados tirados: {resultado}')
@@ -39,7 +47,10 @@ class CLI():
         return resultado
     
     def mover_ficha(self,triangulo_origen,movimiento):
-        triangulo_origen = movimiento['origen']
+        """Parámetros:
+            triangulo_origen (int): El triángulo de origen
+            movimiento (int): El movimiento a realizar
+        Llama al método mover_ficha del Backgammon"""
         self.__backgammon.mover_ficha(triangulo_origen, movimiento, self.__backgammon.turno)
 
     def inicializar_juego(self):
