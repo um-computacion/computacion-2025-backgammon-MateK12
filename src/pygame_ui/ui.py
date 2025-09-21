@@ -20,58 +20,39 @@ class BackgammonUI:
         self.tablero = Tablero(self.backgammon.inicializar_tablero())  
         self.running = True
         
-        # Configurar la ventana
         pygame.display.set_caption("Backgammon")
         
-        # Inicializar tablero con fichas de ejemplo (puedes quitar esto más tarde)
-        # self._inicializar_tablero_ejemplo()
-    
-    # def _inicializar_tablero_ejemplo(self):
-    #     """Inicializa el tablero con una configuración de ejemplo para testing"""
-    #     # Agregar algunas fichas rojas en diferentes posiciones
-    #     for _ in range(5):
-    #         ficha_roja = Ficha(TipoFicha.ROJA)
-    #         self.tablero.tablero[0].append(ficha_roja)
-        
-    #     for _ in range(3):
-    #         ficha_negra = Ficha(TipoFicha.NEGRA)
-    #         self.tablero.tablero[1].append(ficha_negra)
-        
-    #     for _ in range(2):
-    #         ficha_roja = Ficha(TipoFicha.ROJA)
-    #         self.tablero.tablero[12].append(ficha_roja)
-        
-    #     for _ in range(4):
-    #         ficha_negra = Ficha(TipoFicha.NEGRA)
-    #         self.tablero.tablero[23].append(ficha_negra)
-    
-    def dibujar_ficha(self, x, y, tipo_ficha, radius=20):
-        """Dibuja una ficha individual en la posición especificada"""
+    def dibujar_ficha(self, x, y, tipo_ficha):
+        """Dibuja una ficha individual en la posición especificada
+        @param x: Coordenada x del centro de la ficha
+        @param y: Coordenada y del centro de la ficha
+        @param tipo_ficha: Tipo de ficha (TipoFicha.ROJA o TipoFicha.NEGRA)
+        """
+        radius = 20
         color = FICHA_ROJA if tipo_ficha == TipoFicha.ROJA.value else FICHA_NEGRA
         
         pygame.draw.circle(self.screen, color, (int(x), int(y)), radius)
         pygame.draw.circle(self.screen, FICHA_BORDER, (int(x), int(y)), radius, 2)
     
     def dibujar_fichas_en_punto(self, punto_index):
-        """Dibuja todas las fichas en un punto específico del tablero"""
+        """Dibuja todas las fichas en un triangulo específico del tablero, validando la posición del triangulo
+            @param punto_index: Índice del triángulo (0-23)
+        """
         fichas = self.tablero.tablero[punto_index]
         if not fichas:
             return
-        # Obtener la posición base del triángulo
-        base_x, base_y = self.tablero_ui.get_punto_position_base(punto_index)
+        base_x, base_y = self.tablero_ui.get_punto_position_base_ficha(punto_index)
         punto_width = self.tablero_ui.punto_width
         punto_height = self.tablero_ui.punto_height
         
-        # Calcular la posición central del triángulo para las fichas
         center_x = base_x + punto_width // 2
         
-        # Determinar la dirección de apilamiento según la posición del triángulo
-        if punto_index <= 11:  # Parte superior - fichas se apilan hacia abajo
-            start_y = base_y + 30  # Comenzar un poco abajo del vértice
-            y_offset = 35  # Espacio entre fichas
-        else:  # Parte inferior - fichas se apilan hacia arriba
-            start_y = base_y + punto_height - 30  # Comenzar un poco arriba del vértice
-            y_offset = -35  # Espacio negativo para apilar hacia arriba
+        if punto_index <= 11:  
+            start_y = base_y + 30 
+            y_offset = 35  
+        else:  
+            start_y = base_y + punto_height - 30  
+            y_offset = -35  
         
         # Dibujar cada ficha
         for i, ficha in enumerate(fichas):
