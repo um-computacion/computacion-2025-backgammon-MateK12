@@ -433,6 +433,40 @@ Haz los tests de los metodos seleccion_triangulo_valido y  seleccion_dado_valido
 ### archivos finales
 test_cli.py
 
+### modelo
+    claude
+### propmt
+a partir de los triangulo de abajo (12-23 son sus indices )el ancho se enta pasando mal y no se esta mostrando la ficha en el triangulo que deberia, encuentra el error### respuesta    
+### Fixed
+cambie el defasaje de la barra, porque no tenia en cuenta los margenes 
+### respuesta
+def get_punto_position_base(self, punto_index):
+    """Obtiene la posición x, y de un triangulo especifico,
+    este punto sera el base ya que en base a este punto se calularan los otros 2 vertices del triangulo
+    @param punto_index: Índice del triángulo (0-23)
+    @return: (x, y) coordenadas del vértice base del triangulo
+    """
+    
+    if punto_index <= 11:  # Parte superior
+        if punto_index <= 5:
+            x = self.__x__ + self.__ancho_tablero__ - (punto_index + 1) * self.__punto_width__
+        else:
+            x = self.__x__ + self.__ancho_tablero__ - (punto_index) * self.__punto_width__ - 50   
+        y = self.__y__
+    else:  # Parte inferior
+        if punto_index <= 17:
+            # Triángulos 12-17 van del lado izquierdo
+            x = self.__x__ + (punto_index - 12) * self.__punto_width__
+        else:
+            # Triángulos 18-23 van del lado derecho después del bar
+            x = self.__x__ + (punto_index - 18) * self.__punto_width__ + 6 * self.__punto_width__ + 50
+        y = self.__y__ + self.__alto_tablero__ - self.__punto_height__
+    
+    return x, y
+### cambios 
+lo cree como un metodo aparte para obtener la posicion de las fichas
+### archivos finales
+ui.py
 
 
 

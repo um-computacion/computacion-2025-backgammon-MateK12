@@ -195,3 +195,11 @@ renderizado en de fichas en tablero, aunque mal puestas
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.21] - 21-09-2025
+### Agregado
+docstrings en metodos de ui
+### Cambiado
+### Arreglado
+fichas mostrandose alineadas con los triangulos
+### Eliminado
