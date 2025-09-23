@@ -1,7 +1,9 @@
 from src.core.models.tablero.Tablero import Tablero
-class Tablero_Impresor():
+
+
+class Tablero_Impresor:
     @staticmethod
-    def imprimir_tablero(tablero:Tablero)->None:
+    def imprimir_tablero(tablero: Tablero) -> None:
         """
         Imprime una representación del tablero en la consola con fichas apiladas verticalmente.
         Muestra los puntos 12-7 en la línea superior izquierda
@@ -24,7 +26,7 @@ class Tablero_Impresor():
         print()
 
         # Imprimir fichas superiores verticalmente
-        for altura in range(max_height-1, -1, -1):
+        for altura in range(max_height - 1, -1, -1):
             print(" " * 13, end="")  # Alineación
             # Puntos 12-7
             for i in range(11, 5, -1):
@@ -79,6 +81,12 @@ class Tablero_Impresor():
 
         # Mostrar fichas comidas y ganadas si hay
         if tablero.fichas_comidas:
-            print("Fichas comidas:", "".join([str(ficha) for ficha in tablero.fichas_comidas]))
+            print(
+                "Fichas comidas:",
+                "".join([str(ficha) for ficha in tablero.fichas_comidas]),
+            )
         if tablero.fichas_ganadas:
-            print("Fichas ganadas:", "".join([str(ficha) for ficha in tablero.fichas_ganadas]))
+            print(
+                "Fichas ganadas:",
+                "".join([str(ficha) for ficha in tablero.fichas_ganadas]),
+            )

@@ -13,3 +13,4 @@ lxml
 beautifulsoup4
 pylint
 pygame_gui
+black

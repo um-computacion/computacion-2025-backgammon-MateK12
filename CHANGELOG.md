@@ -203,3 +203,10 @@ docstrings en metodos de ui
 ### Arreglado
 fichas mostrandose alineadas con los triangulos
 ### Eliminado
+
+## [1.0.22] - 21-09-2025
+### Agregado
+Se muestran campos para realizar movimientos
+### Cambiado
+### Arreglado
+### Eliminado
