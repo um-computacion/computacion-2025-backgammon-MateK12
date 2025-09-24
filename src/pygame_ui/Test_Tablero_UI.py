@@ -1,5 +1,6 @@
 import unittest
 import pygame
+from src.core.models.backgammon.backgammon import Backgammon
 from src.pygame_ui.Tablero_UI import (
     TableroUI,
     BOARD_WIDTH,
@@ -12,7 +13,8 @@ from src.pygame_ui.Tablero_UI import (
 class TestTableroUI(unittest.TestCase):
     def setUp(self):
         pygame.init()
-        self.tablero = TableroUI()
+        self.backgammon = Backgammon()
+        self.tablero = TableroUI(self.backgammon.inicializar_tablero())
         self.punto_width = (BOARD_WIDTH - 100) // 12
 
     def test_get_punto_position_superior_derecha(self):
