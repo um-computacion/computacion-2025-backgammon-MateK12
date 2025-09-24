@@ -210,3 +210,13 @@ Se muestran campos para realizar movimientos
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.23] - 24-09-2025
+### Agregado
+se agrega metodo para saber si puede hacer algun movimiento
+se agrega getter del validador
+se elimino tests y metodo que no se usaba en tablero_validador
+se agrego comentario para evitar que pylint busque docstrings en tests
+### Cambiado
+### Arreglado
+### Eliminado

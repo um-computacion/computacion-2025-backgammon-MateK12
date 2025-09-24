@@ -4,7 +4,7 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
 from src.core.models.ficha.Ficha import Ficha
-
+# pylint: disable=C0116
 
 class TestBackgammon(unittest.TestCase):
     def setUp(self):

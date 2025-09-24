@@ -9,7 +9,7 @@ from src.pygame_ui.Tablero_UI import (
     BOARD_Y,
 )
 
-
+# pylint: disable=C0116
 class TestTableroUI(unittest.TestCase):
     def setUp(self):
         pygame.init()

@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 from src.core.models.dado.Dados import Dados
 
-
+# pylint: disable=C0116
 class TestDados(unittest.TestCase):
 
     def setUp(self):
