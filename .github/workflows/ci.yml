@@ -30,7 +30,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          coverage run -m unittest discover
+          coverage run -m unittest discover -s src -p "Test_*"
           coverage xml -o cobertura.xml
           coverage report -m > coverage_report.txt
 
@@ -78,7 +78,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.MY_TOKEN }}
           commit-message: "docs: Update automated reports [skip ci]"
           title: "Automated Reports Update"
           body: |
