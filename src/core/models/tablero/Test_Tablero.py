@@ -6,17 +6,18 @@ from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
 from io import StringIO
 from unittest.mock import patch
 
+
 class TestTablero(unittest.TestCase):
     def setUp(self):
         self.tablero_vacio = [[] for _ in range(24)]
         self.tablero = Tablero(self.tablero_vacio)
 
-    def test_mover_ficha_a_espacio_vacio(self): #mover_ficha()
+    def test_mover_ficha_a_espacio_vacio(self):  # mover_ficha()
         ficha = Ficha(TipoFicha.NEGRA.value)
         self.tablero.__tablero__[0].append(ficha)
-        
+
         self.tablero.mover_ficha(ficha, 0, 1)
-        
+
         self.assertEqual(len(self.tablero.__tablero__[0]), 0)
         self.assertEqual(len(self.tablero.__tablero__[1]), 1)
         self.assertEqual(self.tablero.__tablero__[1][0], ficha)
@@ -26,9 +27,9 @@ class TestTablero(unittest.TestCase):
         ficha2 = Ficha(TipoFicha.NEGRA.value)
         self.tablero.__tablero__[0].append(ficha1)
         self.tablero.__tablero__[1].append(ficha2)
-        
+
         self.tablero.mover_ficha(ficha1, 0, 1)
-        
+
         self.assertEqual(len(self.tablero.__tablero__[0]), 0)
         self.assertEqual(len(self.tablero.__tablero__[1]), 2)
 
@@ -36,32 +37,33 @@ class TestTablero(unittest.TestCase):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
         ficha_roja1 = Ficha(TipoFicha.ROJA.value)
         ficha_roja2 = Ficha(TipoFicha.ROJA.value)
-        
+
         self.tablero.__tablero__[0].append(ficha_negra)
         self.tablero.__tablero__[1].append(ficha_roja1)
         self.tablero.__tablero__[1].append(ficha_roja2)
-        
+
         with self.assertRaises(CasillaOcupadaException):
             self.tablero.mover_ficha(ficha_negra, 0, 1)
+
     def test_mover_ficha_a_espacio_con_una_ficha_rival(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        
+
         self.tablero.__tablero__[0].append(ficha_negra)
         self.tablero.__tablero__[1].append(ficha_roja)
-        
+
         self.tablero.mover_ficha(ficha_negra, 0, 1)
-        
+
         self.assertEqual(len(self.tablero.__tablero__[0]), 0)
         self.assertEqual(len(self.tablero.__tablero__[1]), 1)
         self.assertEqual(self.tablero.__tablero__[1][0], ficha_negra)
-        self.assertEqual(len(self.tablero.fichas_comidas), 1) #ficha roja
+        self.assertEqual(len(self.tablero.fichas_comidas), 1)  # ficha roja
         self.assertEqual(self.tablero.fichas_comidas[0], ficha_roja)
         self.assertTrue(self.tablero.fichas_comidas[0].comida)
 
     def test_get_tablero(self):
-        self.assertEqual(self.tablero.tablero,self.tablero.__tablero__)
+        self.assertEqual(self.tablero.tablero, self.tablero.__tablero__)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
