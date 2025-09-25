@@ -93,37 +93,6 @@ class TestTableroValidador(unittest.TestCase):
     def test_no_puede_ganar_se_queda_corto_roja_no_se_pasa(self): 
         ficha_roja = Ficha(TipoFicha.ROJA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3))
-    # def test_tiene_fichas_comidas_tablero_vacio(self):  # tiene_fichas_comidas()
-    #     ficha_negra = Ficha(TipoFicha.NEGRA.value)
-    #     self.assertTrue(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
-
-    # def test_no_tiene_fichas_comidas_con_fichas_en_tablero(self):
-    #     """Prueba cuando hay fichas del mismo color en el tablero"""
-    #     ficha_negra = Ficha(TipoFicha.NEGRA.value)
-    #     ficha_negra2 = Ficha(TipoFicha.NEGRA.value)
-    #     self.tablero[0] = [ficha_negra2]
-
-    #     self.assertFalse(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
-
-    # def test_tiene_fichas_comidas_solo_fichas_rivales(self):
-    #     """Prueba cuando solo hay fichas rivales en el tablero"""
-    #     ficha_negra = Ficha(TipoFicha.NEGRA.value)
-    #     ficha_roja = Ficha(TipoFicha.ROJA.value)
-    #     self.tablero[0] = [ficha_roja]
-
-    #     self.assertTrue(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
-
-    # def test_no_tiene_fichas_comidas_multiples_posiciones(self):
-    #     """Prueba con fichas en múltiples posiciones del tablero"""
-    #     ficha_negra = Ficha(TipoFicha.NEGRA.value)
-    #     ficha_negra2 = Ficha(TipoFicha.NEGRA.value)
-    #     ficha_roja = Ficha(TipoFicha.ROJA.value)
-
-    #     self.tablero[0] = [ficha_roja]
-    #     self.tablero[5] = [ficha_negra2]
-    #     self.tablero[10] = [ficha_roja]
-
-    #     self.assertFalse(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
 
     def test_puede_ganar_ficha_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)

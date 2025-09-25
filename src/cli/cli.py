@@ -5,6 +5,7 @@ from src.core.models.tablero.Tablero import Tablero
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
 from src.core.models.tablero.Tablero_Impresor import Tablero_Impresor
+from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
 
 ERROR = "\033[91m"
 RESET = "\033[0m"
@@ -111,6 +112,18 @@ class CLI:
             return True
         raise SeleccionDadoInvalida("Selección de dado inválida")
 
+    def puede_hacer_algun_movimiento(self):
+        """Verifica si el jugador actual puede hacer algún movimiento con los dados disponibles
+        Raises:
+            bool: True si puede hacer algún movimiento, False en caso contrario
+        """
+        tipo = self.backgammon.turno
+        for dado in self.dados_disponibles:
+            if self.backgammon.puede_mover_ficha(tipo, dado):
+                return True
+        self.dados_disponibles = []
+        raise NingunMovimientoPosible("No hay movimientos posibles con los dados disponibles")
+
     def seleccion_triangulo_valida(self, seleccion: str) -> bool:
         """Valida que la selección del triángulo sea correcta
         Parámetros:
@@ -134,6 +147,7 @@ class CLI:
             self.tirar_dados()
             while self.dados_disponibles:
                 try:
+                    self.puede_hacer_algun_movimiento()
                     self.realizar_movimiento()
                 except Exception as e:
                     print(f"{ERROR}{e}{RESET}")

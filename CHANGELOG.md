@@ -220,3 +220,12 @@ se agrego comentario para evitar que pylint busque docstrings en tests
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.24] - 25-09-2025
+### Agregado
+metodo para saber si puede hacer algun movimiento funcionando
+excepcion para indicar que se cambio de turno
+tests de la funcion
+### Cambiado
+### Arreglado
+### Eliminado
