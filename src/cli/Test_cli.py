@@ -6,7 +6,7 @@ from unittest.mock import patch, Mock
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
 
-
+# pylint: disable=C0116
 class TestCli(unittest.TestCase):
     def setUp(self):
         self.jugador1 = Jugador("Juan")

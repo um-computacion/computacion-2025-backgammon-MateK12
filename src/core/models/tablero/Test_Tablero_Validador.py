@@ -87,72 +87,63 @@ class TestTableroValidador(unittest.TestCase):
         ficha_roja3 = Ficha(TipoFicha.ROJA.value)
         self.tablero[3] = [ficha_roja1]
         self.assertFalse(self.validador.puede_comer(self.tablero, 3, ficha_roja3))
-
-    def test_tiene_fichas_comidas_tablero_vacio(self):  # tiene_fichas_comidas()
-        ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        self.assertTrue(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
-
-    def test_no_tiene_fichas_comidas_con_fichas_en_tablero(self):
-        """Prueba cuando hay fichas del mismo color en el tablero"""
-        ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        ficha_negra2 = Ficha(TipoFicha.NEGRA.value)
-        self.tablero[0] = [ficha_negra2]
-
-        self.assertFalse(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
-
-    def test_tiene_fichas_comidas_solo_fichas_rivales(self):
-        """Prueba cuando solo hay fichas rivales en el tablero"""
-        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+    def test_no_puede_ganar_se_queda_corto_roja(self): 
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.tablero[0] = [ficha_roja]
-
-        self.assertTrue(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
-
-    def test_no_tiene_fichas_comidas_multiples_posiciones(self):
-        """Prueba con fichas en múltiples posiciones del tablero"""
-        ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        ficha_negra2 = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, 0, 3))
+    def test_no_puede_ganar_se_queda_corto_roja_no_se_pasa(self): 
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-
-        self.tablero[0] = [ficha_roja]
-        self.tablero[5] = [ficha_negra2]
-        self.tablero[10] = [ficha_roja]
-
-        self.assertFalse(self.validador.tiene_fichas_comidas(self.tablero, ficha_negra))
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3))
 
     def test_puede_ganar_ficha_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        self.assertTrue(self.validador.puede_ganar(ficha_negra, 24, 23, 1))
+        self.assertTrue(self.validador.puede_ganar(ficha_negra, 24, 23))
 
     def test_no_puede_ganar_ficha_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.puede_ganar(ficha_roja, 5, 6, 1))
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, 5, 6))
 
     def test_no_puede_ganar_ficha_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        self.assertFalse(self.validador.puede_ganar(ficha_negra, 20, 19, 1))
-
-    def test_raise_movimiento_no_justo_para_ganar_roja(self):
-        ficha_roja = Ficha(TipoFicha.ROJA.value)
-        with self.assertRaises(MovimientoNoJustoParaGanar):
-            self.validador.puede_ganar(ficha_roja, -2, 4, -6)
-
-    def test_raise_movimiento_no_justo_para_ganar_negra(self):
-        ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        with self.assertRaises(MovimientoNoJustoParaGanar):
-            self.validador.puede_ganar(ficha_negra, 25, 23, 2)
+        self.assertFalse(self.validador.puede_ganar(ficha_negra, 20, 19))
 
     def test_puede_ganar_ficha_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertTrue(self.validador.puede_ganar(ficha_roja, -1, 0, -1))
+        self.assertTrue(self.validador.puede_ganar(ficha_roja, -1, 0))
 
     def test_no_puede_ganar_ficha_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.puede_ganar(ficha_roja, 0, 6, -6))
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, 0, 6))
 
     def test_no_puede_ganar_volviendo_de_comida(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.puede_ganar(ficha_roja, -1, 24, -1))
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, -1, 24))
+
+    def test_no_se_pasa_del_tablero_ficha_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 24, 23))
+
+    def test_no_se_pasa_del_tablero_ficha_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 0))
+    def test_no_se_pasa_del_tablero_ficha_roja_si_sale_6(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 0))
+    def test_no_se_pasa_del_tablero_ficha_negra_si_sale_6(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 24, 24))
+    def test_se_pasa_del_tablero_ficha_negra_mueve_3(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_negra, 26, 23))
+    def test_se_pasa_del_tablero_ficha_roja_mueve_3(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_roja, -2, 1))
+    def test_no_se_pasa_si_es_menor_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3))
+    def test_no_se_pasa_si_es_menor_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 23, 20))
+
 
 
 if __name__ == "__main__":
