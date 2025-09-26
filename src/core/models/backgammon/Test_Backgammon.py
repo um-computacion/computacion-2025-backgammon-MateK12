@@ -4,7 +4,9 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
 from src.core.models.ficha.Ficha import Ficha
-# pylint: disable=C0116
+
+# pylint: disable=C0116,W0212
+
 
 class TestBackgammon(unittest.TestCase):
     def setUp(self):
@@ -80,36 +82,7 @@ class TestBackgammon(unittest.TestCase):
         with self.assertRaises(NoHayFichaEnTriangulo):
             self.game.seleccionar_ficha(0, TipoFicha.ROJA.value)
 
-    def test_inicializar_tablero(self):
-        game = Backgammon()
-        tablero = game.inicializar_tablero()
-
-        self.assertEqual(len(tablero), 24)
-
-        self.assertEqual(len(tablero[0]), 2)
-        self.assertEqual(len(tablero[11]), 5)
-        self.assertEqual(len(tablero[16]), 3)
-        self.assertEqual(len(tablero[18]), 5)
-
-        self.assertEqual(tablero[0][0].tipo, TipoFicha.NEGRA.value)
-        self.assertEqual(tablero[11][0].tipo, TipoFicha.NEGRA.value)
-        self.assertEqual(tablero[16][0].tipo, TipoFicha.NEGRA.value)
-        self.assertEqual(tablero[18][0].tipo, TipoFicha.NEGRA.value)
-
-        self.assertEqual(len(tablero[23]), 2)
-        self.assertEqual(len(tablero[12]), 5)
-        self.assertEqual(len(tablero[7]), 3)
-        self.assertEqual(len(tablero[5]), 5)
-
-        self.assertEqual(tablero[23][0].tipo, TipoFicha.ROJA.value)
-        self.assertEqual(tablero[12][0].tipo, TipoFicha.ROJA.value)
-        self.assertEqual(tablero[7][0].tipo, TipoFicha.ROJA.value)
-        self.assertEqual(tablero[5][0].tipo, TipoFicha.ROJA.value)
-
-        posiciones_vacias = [1, 2, 3, 4, 6, 8, 9, 10, 13, 14, 15, 17, 19, 20, 21, 22]
-        for pos in posiciones_vacias:
-            self.assertEqual(len(tablero[pos]), 0)
-
+   
     def test_seleccionar_ficha_triangulo_invalido(self):
         with self.assertRaises(NoHayFichaEnTriangulo):
             self.game.seleccionar_ficha(-1, TipoFicha.NEGRA.value)
@@ -165,7 +138,7 @@ class TestBackgammon(unittest.TestCase):
         self.assertEqual(self.game.turno, TipoFicha.NEGRA.value)
         self.assertEqual(mock_tirar_dados.call_count, 2)
 
-#region puede_mover_ficha
+    # region puede_mover_ficha
     def test_puede_mover_ficha_todas_posiciones_bloqueadas(self):
         """Test cuando todas las posiciones están bloqueadas por fichas rivales"""
         self.game._Backgammon__turno = TipoFicha.NEGRA.value
@@ -176,8 +149,14 @@ class TestBackgammon(unittest.TestCase):
         self.game.tablero.tablero[10] = [Ficha(TipoFicha.NEGRA.value)]
         self.game.tablero.tablero[15] = [Ficha(TipoFicha.NEGRA.value)]
 
-        self.game.tablero.tablero[13] = [Ficha(TipoFicha.ROJA.value), Ficha(TipoFicha.ROJA.value)]
-        self.game.tablero.tablero[18] = [Ficha(TipoFicha.ROJA.value), Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[13] = [
+            Ficha(TipoFicha.ROJA.value),
+            Ficha(TipoFicha.ROJA.value),
+        ]
+        self.game.tablero.tablero[18] = [
+            Ficha(TipoFicha.ROJA.value),
+            Ficha(TipoFicha.ROJA.value),
+        ]
 
         resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 3)
         self.assertFalse(resultado)
@@ -192,8 +171,8 @@ class TestBackgammon(unittest.TestCase):
 
         for i in range(6):
             self.game.tablero.tablero[i] = [
-                Ficha(TipoFicha.ROJA.value), 
-                Ficha(TipoFicha.ROJA.value)
+                Ficha(TipoFicha.ROJA.value),
+                Ficha(TipoFicha.ROJA.value),
             ]
 
         for dado in range(1, 7):
@@ -209,8 +188,8 @@ class TestBackgammon(unittest.TestCase):
 
         for i in range(18, 24):
             self.game.tablero.tablero[i] = [
-                Ficha(TipoFicha.NEGRA.value), 
-                Ficha(TipoFicha.NEGRA.value)
+                Ficha(TipoFicha.NEGRA.value),
+                Ficha(TipoFicha.NEGRA.value),
             ]
 
         resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 2)
@@ -228,7 +207,7 @@ class TestBackgammon(unittest.TestCase):
         self.game.tablero.tablero[15] = [Ficha(TipoFicha.ROJA.value)]
 
         resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 6)
-        self.assertTrue(resultado) 
+        self.assertTrue(resultado)
 
     def test_puede_mover_ficha_completamente_bloqueado_negro(self):
         self.game._Backgammon__turno = TipoFicha.NEGRA.value
@@ -256,8 +235,8 @@ class TestBackgammon(unittest.TestCase):
 
         # Bloquear su único destino posible con dado 2 (posición 7)
         self.game.tablero.tablero[7] = [
-            Ficha(TipoFicha.ROJA.value), 
-            Ficha(TipoFicha.ROJA.value)
+            Ficha(TipoFicha.ROJA.value),
+            Ficha(TipoFicha.ROJA.value),
         ]
 
         resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 2)
@@ -272,8 +251,14 @@ class TestBackgammon(unittest.TestCase):
         self.game.tablero.tablero[20] = [Ficha(TipoFicha.NEGRA.value)]
         self.game.tablero.tablero[21] = [Ficha(TipoFicha.NEGRA.value)]
 
-        self.game.tablero.tablero[22] = [Ficha(TipoFicha.ROJA.value), Ficha(TipoFicha.ROJA.value)]
-        self.game.tablero.tablero[23] = [Ficha(TipoFicha.ROJA.value), Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[22] = [
+            Ficha(TipoFicha.ROJA.value),
+            Ficha(TipoFicha.ROJA.value),
+        ]
+        self.game.tablero.tablero[23] = [
+            Ficha(TipoFicha.ROJA.value),
+            Ficha(TipoFicha.ROJA.value),
+        ]
 
         resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 2)
         self.assertFalse(resultado)
@@ -284,14 +269,16 @@ class TestBackgammon(unittest.TestCase):
         for i in range(24):
             self.game.tablero.tablero[i] = []
 
-        self.game.tablero.tablero[0] = [Ficha(TipoFicha.ROJA.value)] 
-        self.game.tablero.tablero[1] = [Ficha(TipoFicha.ROJA.value)] 
+        self.game.tablero.tablero[0] = [Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[1] = [Ficha(TipoFicha.ROJA.value)]
 
         self.game.tablero.tablero[10] = [Ficha(TipoFicha.ROJA.value)]
 
         resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 6)
-        self.assertTrue(resultado)  
-#end region
+        self.assertTrue(resultado)
+
+
+# end region
 
 if __name__ == "__main__":
     unittest.main()

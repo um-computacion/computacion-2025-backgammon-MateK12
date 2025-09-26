@@ -4,6 +4,8 @@ from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
 
+# pylint: disable=C0116
+
 
 class TestTableroValidador(unittest.TestCase):
     def setUp(self):
@@ -87,10 +89,12 @@ class TestTableroValidador(unittest.TestCase):
         ficha_roja3 = Ficha(TipoFicha.ROJA.value)
         self.tablero[3] = [ficha_roja1]
         self.assertFalse(self.validador.puede_comer(self.tablero, 3, ficha_roja3))
-    def test_no_puede_ganar_se_queda_corto_roja(self): 
+
+    def test_no_puede_ganar_se_queda_corto_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
         self.assertFalse(self.validador.puede_ganar(ficha_roja, 0, 3))
-    def test_no_puede_ganar_se_queda_corto_roja_no_se_pasa(self): 
+
+    def test_no_puede_ganar_se_queda_corto_roja_no_se_pasa(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3))
 
@@ -125,25 +129,30 @@ class TestTableroValidador(unittest.TestCase):
     def test_no_se_pasa_del_tablero_ficha_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 0))
+
     def test_no_se_pasa_del_tablero_ficha_roja_si_sale_6(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 0))
+
     def test_no_se_pasa_del_tablero_ficha_negra_si_sale_6(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 24, 24))
+
     def test_se_pasa_del_tablero_ficha_negra_mueve_3(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
         self.assertTrue(self.validador.se_pasa_del_tablero(ficha_negra, 26, 23))
+
     def test_se_pasa_del_tablero_ficha_roja_mueve_3(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
         self.assertTrue(self.validador.se_pasa_del_tablero(ficha_roja, -2, 1))
+
     def test_no_se_pasa_si_es_menor_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3))
+
     def test_no_se_pasa_si_es_menor_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 23, 20))
-
 
 
 if __name__ == "__main__":

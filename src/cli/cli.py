@@ -4,7 +4,7 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
-from src.core.models.tablero.Tablero_Impresor import Tablero_Impresor
+from core.helpers.Tablero_Impresor import Tablero_Impresor
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
 
 ERROR = "\033[91m"
@@ -12,10 +12,10 @@ RESET = "\033[0m"
 
 
 class CLI:
-    def __init__(self, jugador1, jugador2):
+    def __init__(self, jugador1, jugador2,backgammon:Backgammon):
         self.__jugador_rojo: Jugador = jugador1
         self.__jugador_negro: Jugador = jugador2
-        self.__backgammon: Backgammon = Backgammon()
+        self.__backgammon: Backgammon = backgammon
         self.__dados_disponibles: list[int] = []
 
     @property
@@ -122,7 +122,9 @@ class CLI:
             if self.backgammon.puede_mover_ficha(tipo, dado):
                 return True
         self.dados_disponibles = []
-        raise NingunMovimientoPosible("No hay movimientos posibles con los dados disponibles")
+        raise NingunMovimientoPosible(
+            "No hay movimientos posibles con los dados disponibles"
+        )
 
     def seleccion_triangulo_valida(self, seleccion: str) -> bool:
         """Valida que la selección del triángulo sea correcta
@@ -156,5 +158,6 @@ class CLI:
 
 
 if __name__ == "__main__":
-    cli = CLI(None, None)
+    backgammon = Backgammon()
+    cli = CLI(None, None, backgammon)
     cli.jugar()
