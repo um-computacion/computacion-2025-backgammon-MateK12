@@ -4,9 +4,11 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
-from core.helpers.Tablero_Impresor import Tablero_Impresor
+from src.core.helpers.Tablero_Impresor import Tablero_Impresor
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
-
+from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
+from src.core.models.dado.Dados import Dados
+from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 ERROR = "\033[91m"
 RESET = "\033[0m"
 
@@ -158,6 +160,10 @@ class CLI:
 
 
 if __name__ == "__main__":
-    backgammon = Backgammon()
+    tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
+    dados = Dados()
+    backgammon = Backgammon(tablero,dados)
+
+
     cli = CLI(None, None, backgammon)
     cli.jugar()
