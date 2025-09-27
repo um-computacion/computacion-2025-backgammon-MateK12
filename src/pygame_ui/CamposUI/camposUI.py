@@ -1,6 +1,7 @@
 import pygame
 import pygame_gui
 from pygame.font import Font
+from src.core.enums.TipoFicha import TipoFicha
 ELEMENT_WIDTH = 250
 LABEL_WIDTH = 200
 BUTTON_WIDTH = 150
@@ -14,7 +15,7 @@ class CamposUi:
 
         self.__manager = pygame_gui.UIManager((screen_width, screen_height))
         self.__base_x = 920
-        self.__turno_actual = "Jugador 1"
+        self.__turno_actual:int = None
         self.__ultimo_movimiento = ""
         self.__campo_movimiento = None
         self.__boton_mover = None
@@ -28,13 +29,24 @@ class CamposUi:
         self.__text_dado = None
         self.__text_turno = None
         self.__text_dados = None
-
+        self.__elementos_creados = False
         
     @property
     def manager(self):
         return self.__manager
+    @property
+    def elementos_creados(self):
+        return self.__elementos_creados
+    @property
+    def turno_actual(self):
+        return self.__turno_actual
+    @turno_actual.setter
+    def turno_actual(self, value:TipoFicha):
+        self.__turno_actual = value
     def __crear_elementos(self):
         """Crea todos los elementos de la interfaz"""
+        if self.__elementos_creados:
+            return
         y_offset = 50  
         spacing = 50   
         
@@ -67,7 +79,7 @@ class CamposUi:
         
         y_offset += spacing + 10
 
-        self.__text_turno = self.__font.render(f"Turno: {self.__turno_actual}", True, LABEL_COLOR)
+        self.__text_turno = self.__font.render(self.__get_text_turno(), True, LABEL_COLOR)
         
         y_offset += 40
 
@@ -75,7 +87,7 @@ class CamposUi:
         self.__text_dados = self.__font.render(dados_texto, True, LABEL_COLOR)
 
         self.__text_triangulo = self.__font.render('Seleccione un triangulo', True, LABEL_COLOR)
-
+        self.__elementos_creados = True
 
     def __dibujar_textos(self, screen):
         """Dibuja todos los elementos en la pantalla"""
@@ -100,6 +112,13 @@ class CamposUi:
         if self.__text_dados:
             screen.blit(self.__text_dados, (self.__base_x, y_offset))
         
+    def __get_text_turno(self)-> str:
+        if self.__turno_actual == TipoFicha.ROJA.value:
+            return "Turno del jugador Rojo"
+        elif self.__turno_actual == TipoFicha.NEGRA.value:    
+            return "Turno del jugador Negro"
+        
+    
     def dibujar_campos(self, screen):
         """Dibuja todos los elementos en la pantalla"""
         self.__dibujar_textos(screen)
