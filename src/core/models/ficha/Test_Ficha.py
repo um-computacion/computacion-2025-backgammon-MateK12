@@ -2,6 +2,7 @@ import unittest
 from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
 
+
 # pylint: disable=C0116
 class TestFicha(unittest.TestCase):
 

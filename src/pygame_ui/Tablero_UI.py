@@ -1,7 +1,4 @@
 import pygame
-import math
-import random
-import sys
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.tablero.Tablero import Tablero
 

@@ -6,6 +6,7 @@ from unittest.mock import patch, Mock
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
 
+
 # pylint: disable=C0116
 class TestCli(unittest.TestCase):
     def setUp(self):
@@ -14,10 +15,10 @@ class TestCli(unittest.TestCase):
         self.cli = CLI(self.jugador1, self.jugador2)
         self.cli.backgammon.quien_empieza()
 
-    def test_getterJugador_1(self):
+    def test_getter_Jugador_1(self):
         self.assertEqual(self.cli.jugador_rojo, self.jugador1)
 
-    def test_getterJugador_2(self):
+    def test_getter_Jugador_2(self):
         self.assertEqual(self.cli.jugador_negro, self.jugador2)
 
     def test_getterDadosDisponibles(self):

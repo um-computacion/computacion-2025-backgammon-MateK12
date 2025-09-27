@@ -31,10 +31,12 @@ class Tablero:
     def tablero(self) -> list[list[Ficha]]:
         """Retorna el tablero"""
         return self.__tablero__
+
     @property
     def validador(self) -> Tablero_Validador:
         """Retorna el validador"""
         return self.__validador__
+
     def mover_ficha(
         self, ficha: Ficha, triangulo_origen: int, movimiento: int, comida: bool = False
     ) -> None:
@@ -47,15 +49,21 @@ class Tablero:
         CasillaOcupadaException: Si el triángulo de destino tiene 2 o más fichas rivales.
         """
         triangulo_destino = triangulo_origen + movimiento
-        if self.__validador__.puede_ganar(ficha, triangulo_destino, triangulo_origen) and not self.__validador__.se_pasa_del_tablero(ficha, triangulo_destino, triangulo_origen):
+        if self.__validador__.puede_ganar(
+            ficha, triangulo_destino, triangulo_origen
+        ) and not self.__validador__.se_pasa_del_tablero(
+            ficha, triangulo_destino, triangulo_origen
+        ):
             self.__tablero__[triangulo_origen].pop()
             self.__fichas_ganadas__.append(ficha)
             return
-        if self.__validador__.se_pasa_del_tablero(ficha, triangulo_destino, triangulo_origen):
+        if self.__validador__.se_pasa_del_tablero(
+            ficha, triangulo_destino, triangulo_origen
+        ):
             raise MovimientoNoJustoParaGanar("Movimiento no justo para ganar")
         if self.__validador__.triangulo_con_fichas_rivales(
             self.tablero, triangulo_destino, ficha
-        ):  
+        ):
             raise CasillaOcupadaException(
                 "No se puede mover a un triángulo con 2 o mas fichas rivales"
             )
@@ -70,5 +78,3 @@ class Tablero:
             else:
                 self.__tablero__[triangulo_origen].pop()
             self.__tablero__[triangulo_destino].append(ficha)
-
-    

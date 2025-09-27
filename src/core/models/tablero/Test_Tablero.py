@@ -7,6 +7,7 @@ from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoPara
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from unittest.mock import patch
 
+
 # pylint: disable=C0116
 class TestTablero(unittest.TestCase):
     def setUp(self):
@@ -61,32 +62,38 @@ class TestTablero(unittest.TestCase):
         self.assertEqual(len(self.tablero.fichas_comidas), 1)  # ficha roja
         self.assertEqual(self.tablero.fichas_comidas[0], ficha_roja)
         self.assertTrue(self.tablero.fichas_comidas[0].comida)
+
     def test_mover_ficha_fuera_del_tablero(self):
         ficha = Ficha(TipoFicha.NEGRA.value)
         self.tablero.__tablero__[0].append(ficha)
 
         with self.assertRaises(MovimientoNoJustoParaGanar):
             self.tablero.mover_ficha(ficha, 22, 5)
+
     def test_mover_ficha_a_ganar_negra(self):
         ficha = Ficha(TipoFicha.NEGRA.value)
         self.tablero.__tablero__[22].append(ficha)
         self.tablero.mover_ficha(ficha, 22, 2)
         self.assertEqual(len(self.tablero.__tablero__[22]), 0)
         self.assertEqual(len(self.tablero.fichas_ganadas), 1)
+
     def test_mover_ficha_a_ganar_roja(self):
         ficha = Ficha(TipoFicha.ROJA.value)
         self.tablero.__tablero__[2].append(ficha)
         self.tablero.mover_ficha(ficha, 2, -3)
         self.assertEqual(len(self.tablero.__tablero__[2]), 0)
         self.assertEqual(len(self.tablero.fichas_ganadas), 1)
+
     def test_mover_ficha_se_queda_corta__roja(self):
         ficha = Ficha(TipoFicha.ROJA.value)
         self.tablero.__tablero__[3].append(ficha)
         self.tablero.mover_ficha(ficha, 3, -3)
-        self.assertEqual(len(self.tablero.fichas_ganadas),0 )
+        self.assertEqual(len(self.tablero.fichas_ganadas), 0)
         self.assertEqual(len(self.tablero.__tablero__[3]), 0)
+
     def test_validador_getter(self):
         self.assertIsInstance(self.tablero.validador, Tablero_Validador)
+
     def test_get_tablero(self):
         self.assertEqual(self.tablero.tablero, self.tablero.__tablero__)
 

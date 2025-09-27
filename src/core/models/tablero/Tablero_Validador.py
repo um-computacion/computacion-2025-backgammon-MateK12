@@ -45,9 +45,9 @@ class Tablero_Validador:
             return True
         return False
 
-
-    
-    def puede_ganar(self, ficha: Ficha, triangulo_destino: int, triangulo_origen: int) -> bool:
+    def puede_ganar(
+        self, ficha: Ficha, triangulo_destino: int, triangulo_origen: int
+    ) -> bool:
         """Verifica si el jugador puede ganar esa ficha (llega exactamente al final)
         Parametros:
             ficha (Ficha): La ficha del jugador a verificar
@@ -65,7 +65,9 @@ class Tablero_Validador:
 
         return False
 
-    def se_pasa_del_tablero(self, ficha: Ficha, triangulo_destino: int, triangulo_origen: int) -> bool:
+    def se_pasa_del_tablero(
+        self, ficha: Ficha, triangulo_destino: int, triangulo_origen: int
+    ) -> bool:
         """Verifica si el movimiento se pasa del tablero (va más allá del final)
         Parametros:
             ficha (Ficha): La ficha del jugador a verificar

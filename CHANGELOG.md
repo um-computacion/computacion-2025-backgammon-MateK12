@@ -229,3 +229,13 @@ tests de la funcion
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.24] - 25-09-2025
+### Agregado
+Readme con instruccioens de como jugar
+### Cambiado
+Archivo de justificacion completado
+calificacion en pylint mejorada a 9
+
+### Arreglado
+### Eliminado

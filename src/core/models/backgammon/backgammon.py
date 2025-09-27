@@ -145,15 +145,16 @@ class Backgammon:
         """Determina quien empieza el juego tirando los dados
         Retorna:
             int: TipoFicha del jugador que empieza"""
-        hayGanador = False
-        while not hayGanador:
+        hay_Ganador = False
+        while not hay_Ganador:
             dados = self.tirar_dados()
             if dados[0] > dados[1]:
                 self.__turno = TipoFicha.ROJA.value
-                hayGanador = True
+                hay_Ganador = True
             elif dados[0] < dados[1]:
                 self.__turno = TipoFicha.NEGRA.value
-                hayGanador = True
+                hay_Ganador = True
+
     def puede_mover_ficha(self, tipo: int, movimiento: int) -> bool:
         """Verifica si el jugador puede mover alguna ficha de su tipo en base a un movimiento
         Parametros:
@@ -164,19 +165,39 @@ class Backgammon:
         """
         if self.hay_fichas_comidas():
             triangulo_origen = -1 if TipoFicha.NEGRA.value == self.__turno else 24
-            triangulo_destino = triangulo_origen + movimiento if tipo == TipoFicha.NEGRA.value else triangulo_origen - movimiento
-            return not self.tablero.validador.triangulo_con_fichas_rivales(self.tablero.tablero, triangulo_destino, Ficha(self.__turno))
-        else: 
+            triangulo_destino = (
+                triangulo_origen + movimiento
+                if tipo == TipoFicha.NEGRA.value
+                else triangulo_origen - movimiento
+            )
+            return not self.tablero.validador.triangulo_con_fichas_rivales(
+                self.tablero.tablero, triangulo_destino, Ficha(self.__turno)
+            )
+        else:
             for i in range(24):
-                triangulo_destino = i + movimiento if tipo == TipoFicha.NEGRA.value else i - movimiento
-                tiene_fichas = [ficha for ficha in self.tablero.tablero[i] if ficha.tipo == tipo]
-                puede_ganar = self.tablero.validador.puede_ganar(Ficha(tipo), triangulo_destino, i) and not self.tablero.validador.se_pasa_del_tablero(Ficha(tipo), triangulo_destino, i)
-                se_pasa = self.tablero.validador.se_pasa_del_tablero(Ficha(tipo), triangulo_destino, i)
+                triangulo_destino = (
+                    i + movimiento if tipo == TipoFicha.NEGRA.value else i - movimiento
+                )
+                tiene_fichas = [
+                    ficha for ficha in self.tablero.tablero[i] if ficha.tipo == tipo
+                ]
+                puede_ganar = self.tablero.validador.puede_ganar(
+                    Ficha(tipo), triangulo_destino, i
+                ) and not self.tablero.validador.se_pasa_del_tablero(
+                    Ficha(tipo), triangulo_destino, i
+                )
+                se_pasa = self.tablero.validador.se_pasa_del_tablero(
+                    Ficha(tipo), triangulo_destino, i
+                )
                 if not tiene_fichas:
                     continue
                 if se_pasa:
                     continue
-                no_hay_fichas_rivales = not self.tablero.validador.triangulo_con_fichas_rivales(self.tablero.tablero, triangulo_destino, Ficha(tipo))
+                no_hay_fichas_rivales = (
+                    not self.tablero.validador.triangulo_con_fichas_rivales(
+                        self.tablero.tablero, triangulo_destino, Ficha(tipo)
+                    )
+                )
                 if puede_ganar or no_hay_fichas_rivales:
                     return True
             return False
