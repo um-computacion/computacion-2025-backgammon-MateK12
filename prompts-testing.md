@@ -646,12 +646,12 @@ le quite los test de los dados porque no los voy a utizar de momento, le quite m
 ### archivos finales
 test_cli.py
 
+
+
 ### modelo
     claude
 ### propmt
-Haz los tests de los metodos seleccion_triangulo_valido y  seleccion_dado_valido
 ### respuesta    
 ### Fixed
 ### cambios 
 ### archivos finales
-test_cli.py

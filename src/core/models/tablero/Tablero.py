@@ -6,11 +6,11 @@ from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoPara
 
 
 class Tablero:
-    def __init__(self, fichas: list[list[Ficha]]) -> None:
+    def __init__(self, fichas: list[list[Ficha]],tablero_validador:Tablero_Validador) -> None:
         self.__tablero__: list[list[Ficha]] = fichas
         self.__fichas_comidas__: list[Ficha] = []
         self.__fichas_ganadas__: list[Ficha] = []
-        self.__validador__: Tablero_Validador = Tablero_Validador()
+        self.__validador__: Tablero_Validador =tablero_validador
 
     @property
     def fichas_comidas(self) -> list[Ficha]:

@@ -469,4 +469,37 @@ lo cree como un metodo aparte para obtener la posicion de las fichas
 ui.py
 
 
+### modelo
+    claude
+### propmt
+como puedo cambiar el color a una label de pygame?
+import pygame
+### respuesta    
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
 
+font = pygame.font.Font(None, 36)
+
+color_original = (255, 255, 255)  # Blanco
+color_nuevo = (255, 0, 0)         # Rojo
+
+texto = font.render("Mi label", True, color_nuevo)
+
+screen.blit(texto, (100, 100))
+pygame.display.flip()
+### Fixed
+### cambios 
+ lo use como guia para esctibir los textos que se crean en la clase CamposUI 
+### archivos finales
+ui/campos_ui.py
+
+
+
+
+### modelo
+    claude
+### propmt
+### respuesta    
+### Fixed
+### cambios 
+### archivos finales

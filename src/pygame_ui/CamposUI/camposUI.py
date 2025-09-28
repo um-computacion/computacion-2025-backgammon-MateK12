@@ -1,56 +1,126 @@
 import pygame
 import pygame_gui
-
-
+from pygame.font import Font
+from src.core.enums.TipoFicha import TipoFicha
+ELEMENT_WIDTH = 250
+LABEL_WIDTH = 200
+BUTTON_WIDTH = 150
+LABEL_COLOR = (0,0,0)
 class CamposUi:
-    def __init__(self, screen_width, screen_height):
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+    def __init__(self, screen_width, screen_height,dados_actuales: list[int]):
+        self.__screen_width = screen_width
+        self.__screen_height = screen_height
 
-        self.manager = pygame_gui.UIManager((screen_width, screen_height))
-        self.base_x = 920
-        self.turno_actual = "Jugador 1"
-        self.ultimo_movimiento = ""
+        self.__dados_actuales = dados_actuales
 
-    def dibujar_elementos(self):
+        self.__manager = pygame_gui.UIManager((screen_width, screen_height))
+        self.__base_x = 920
+        self.__turno_actual:int = None
+        self.__ultimo_movimiento = ""
+        self.__campo_movimiento = None
+        self.__boton_mover = None
+        self.__label_movimiento = None
+        self.__label_turno = None
+        self.__label_mensaje = None
+        self.__label_dados = None
+        self.__font = Font(None, 36)
+        
+        self.__text_triangulo = None
+        self.__text_dado = None
+        self.__text_turno = None
+        self.__text_dados = None
+        self.__elementos_creados = False
+        
+    @property
+    def manager(self):
+        return self.__manager
+    @property
+    def elementos_creados(self):
+        return self.__elementos_creados
+    @property
+    def turno_actual(self):
+        return self.__turno_actual
+    @turno_actual.setter
+    def turno_actual(self, value:TipoFicha):
+        self.__turno_actual = value
+    def __crear_elementos(self):
         """Crea todos los elementos de la interfaz"""
-
-        # Campo de entrada para movimientos
-        self.campo_movimiento = pygame_gui.elements.UIDropDownMenu(
-            options_list=range(0, 23),
+        if self.__elementos_creados:
+            return
+        y_offset = 50  
+        spacing = 50   
+        
+        self.select_triangulo = pygame_gui.elements.UIDropDownMenu(
+            options_list=[str(i) for i in range(0, 24)],  
             starting_option="0",
-            relative_rect=pygame.Rect(self.base_x, 80, 200, 30),
-            manager=self.manager,
+            relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),
+            manager=self.__manager,
         )
+        
+        y_offset += spacing + 30  
 
-        # Botón para ejecutar movimiento
-        self.boton_mover = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(self.base_x, 50, 100, 30),
-            text="Mover",
-            manager=self.manager,
+        self.__text_dado = self.__font.render('Seleccionar Dado:', True, LABEL_COLOR)
+
+        opciones_dados = [f"Dado {i+1}: {valor}" for i, valor in enumerate(self.__dados_actuales)]
+        self.select_dado = pygame_gui.elements.UIDropDownMenu(
+            options_list=opciones_dados,
+            starting_option=opciones_dados[0] if opciones_dados else "Sin dados",
+            relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),
+            manager=self.__manager,
         )
+        
+        y_offset += spacing + 30
 
-        # Label para mostrar el turno actual
-        self.label_turno = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(self.base_x, 100, 200, 30),
-            text=f"Turno: {self.turno_actual}",
-            manager=self.manager,
+        self.__boton_mover = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(self.__base_x, y_offset, BUTTON_WIDTH, 40),
+            text="Realizar Movimiento",
+            manager=self.__manager,
         )
+        
+        y_offset += spacing + 10
 
-        # Label para mostrar mensajes/estado
-        self.label_mensaje = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(self.base_x, 140, 300, 30),
-            text="Ingresa tu movimiento",
-            manager=self.manager,
-        )
+        self.__text_turno = self.__font.render(self.__get_text_turno(), True, LABEL_COLOR)
+        
+        y_offset += 40
 
-        # Label para mostrar dados (futuro)
-        self.label_dados = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(self.base_x, 100, 150, 30),
-            text="Dados: -",
-            manager=self.manager,
-        )
+        dados_texto = f"Dados: {self.__dados_actuales[0]}, {self.__dados_actuales[1]}"
+        self.__text_dados = self.__font.render(dados_texto, True, LABEL_COLOR)
 
-    def dibujar(self, screen):
+        self.__text_triangulo = self.__font.render('Seleccione un triangulo', True, LABEL_COLOR)
+        self.__elementos_creados = True
+
+    def __dibujar_textos(self, screen):
         """Dibuja todos los elementos en la pantalla"""
-        self.manager.draw_ui(screen)
+        y_offset = 50
+        spacing = 50
+        
+        if self.__text_triangulo:
+            screen.blit(self.__text_triangulo, (self.__base_x, y_offset))
+        
+        y_offset += spacing + 30
+        
+        if self.__text_dado:
+            screen.blit(self.__text_dado, (self.__base_x, y_offset))
+        
+        y_offset += spacing + 30 + spacing + 10
+        
+        if self.__text_turno:
+            screen.blit(self.__text_turno, (self.__base_x,10))
+        
+        y_offset += 40
+        
+        if self.__text_dados:
+            screen.blit(self.__text_dados, (self.__base_x, y_offset))
+        
+    def __get_text_turno(self)-> str:
+        if self.__turno_actual == TipoFicha.ROJA.value:
+            return "Turno del jugador Rojo"
+        elif self.__turno_actual == TipoFicha.NEGRA.value:    
+            return "Turno del jugador Negro"
+        
+    
+    def dibujar_campos(self, screen):
+        """Dibuja todos los elementos en la pantalla"""
+        self.__dibujar_textos(screen)
+        self.__crear_elementos()
+        self.__manager.draw_ui(screen)
