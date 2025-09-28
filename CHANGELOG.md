@@ -248,3 +248,14 @@ orden de los campos para que se vea bien
 Refactor en codigo para respetar DIP
 ### Arreglado
 ### Eliminado
+
+## [1.0.27] - 27-09-2025
+### Agregado
+callbacks para evento de apretar boton
+metodos para tirar dados y mover ficha en ui
+validacion para triangulo y dado valido ui
+### Cambiado
+interfaz JuegoInterfazDados agregada e implementada en ui y cli
+### Arreglado
+### Eliminado
+quitados atributos no usados en CamposUi

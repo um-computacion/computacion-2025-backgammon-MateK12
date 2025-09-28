@@ -16,19 +16,12 @@ class CamposUi:
         self.__manager = pygame_gui.UIManager((screen_width, screen_height))
         self.__base_x = 920
         self.__turno_actual:int = None
-        self.__ultimo_movimiento = ""
-        self.__campo_movimiento = None
         self.__boton_mover = None
-        self.__label_movimiento = None
-        self.__label_turno = None
-        self.__label_mensaje = None
-        self.__label_dados = None
         self.__font = Font(None, 36)
         
         self.__text_triangulo = None
         self.__text_dado = None
         self.__text_turno = None
-        self.__text_dados = None
         self.__elementos_creados = False
         
     @property
@@ -43,6 +36,21 @@ class CamposUi:
     @turno_actual.setter
     def turno_actual(self, value:TipoFicha):
         self.__turno_actual = value
+    @property
+    def boton_mover(self):
+        return self.__boton_mover
+    @property
+    def dados_actuales(self):
+        return self.__dados_actuales
+    @dados_actuales.setter
+    def dados_actuales(self, dados: list[int]):
+        self.__dados_actuales = dados
+        # if self.select_dado:
+        #     self.select_dado.kill()
+        #     self.select_dado = None
+        #     self.__text_dado = None
+        #     self.__elementos_creados = False
+    
     def __crear_elementos(self):
         """Crea todos los elementos de la interfaz"""
         if self.__elementos_creados:
@@ -64,7 +72,7 @@ class CamposUi:
         opciones_dados = [f"Dado {i+1}: {valor}" for i, valor in enumerate(self.__dados_actuales)]
         self.select_dado = pygame_gui.elements.UIDropDownMenu(
             options_list=opciones_dados,
-            starting_option=opciones_dados[0] if opciones_dados else "Sin dados",
+            starting_option=opciones_dados[1],
             relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),
             manager=self.__manager,
         )
@@ -83,8 +91,6 @@ class CamposUi:
         
         y_offset += 40
 
-        dados_texto = f"Dados: {self.__dados_actuales[0]}, {self.__dados_actuales[1]}"
-        self.__text_dados = self.__font.render(dados_texto, True, LABEL_COLOR)
 
         self.__text_triangulo = self.__font.render('Seleccione un triangulo', True, LABEL_COLOR)
         self.__elementos_creados = True
@@ -109,16 +115,28 @@ class CamposUi:
         
         y_offset += 40
         
-        if self.__text_dados:
-            screen.blit(self.__text_dados, (self.__base_x, y_offset))
         
     def __get_text_turno(self)-> str:
+        '''Obtiene el texto del turno actual
+            Returns: str: Texto del turno actual
+        '''
         if self.__turno_actual == TipoFicha.ROJA.value:
             return "Turno del jugador Rojo"
         elif self.__turno_actual == TipoFicha.NEGRA.value:    
             return "Turno del jugador Negro"
-        
-    
+    def get_dado_seleccionado(self) -> int | None:
+        if self.select_dado and self.select_dado.selected_option:
+            (valor,_) =self.select_dado.selected_option
+            valor = valor.split(': ')[1]
+            return int(valor)
+        return None
+    def get_seleccion_triangulo(self) -> int:
+        """Obtiene el triángulo seleccionado"""
+        if self.select_triangulo:
+            (valor,_) =self.select_triangulo.selected_option
+            return int(valor)
+        return None
+
     def dibujar_campos(self, screen):
         """Dibuja todos los elementos en la pantalla"""
         self.__dibujar_textos(screen)
