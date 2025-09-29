@@ -259,3 +259,11 @@ interfaz JuegoInterfazDados agregada e implementada en ui y cli
 ### Arreglado
 ### Eliminado
 quitados atributos no usados en CamposUi
+
+## [1.0.28] - 28-09-2025
+### Agregado
+cartel para manejar excepciones
+tests en caposUi
+### Cambiado
+### Arreglado
+### Eliminado

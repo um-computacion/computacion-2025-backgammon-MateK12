@@ -16,6 +16,8 @@ from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.dado.Dados import Dados
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.helpers.Tablero_Impresor import Tablero_Impresor
+from tkinter import messagebox
+import tkinter as tk
 WINDOW_WIDTH = 1500
 WINDOW_HEIGHT = 700
 BROWN_LIGHT = (222, 184, 135)
@@ -43,7 +45,8 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__dados_disponibles = resultado
         self.__dados_tirados = True
         return resultado
-    
+    import tkinter as tk
+
     def actualizar_tablero_ui(self,time_delta:int):
         self.__campos_ui.manager.update(time_delta)
         self.__screen.fill(BROWN_LIGHT)
@@ -94,6 +97,10 @@ class BackgammonUI(IJuegoInterfazMovimientos):
                     self.__running = False
                 if event.type == pygame_gui.UI_BUTTON_START_PRESS:
                     if event.ui_element == self.__campos_ui.boton_mover:
+                        try:
+                            self.realizar_movimiento()
+                        except Exception as e:
+                            self.mostrar_error(e)
                         self.realizar_movimiento()
 
                 self.__campos_ui.manager.process_events(event)
@@ -102,12 +109,16 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         sys.exit()
     def puede_hacer_algun_movimiento(self):
         pass
-
+    def mostrar_error(self, mensaje: str):
+        root = tk.Tk()
+        root.withdraw() 
+        tk.messagebox.showerror("Error", mensaje)
+        root.destroy()
 if __name__ == "__main__":
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
     backgammon = Backgammon(tablero,Dados())
     tableroUi = TableroUI(tablero)
-    camposUi = CamposUi(1500, 700,[1,2])
+    camposUi = CamposUi(1500, 700)
     pantalla = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     app = BackgammonUI(backgammon, tableroUi, camposUi, pantalla)
     app.jugar()
