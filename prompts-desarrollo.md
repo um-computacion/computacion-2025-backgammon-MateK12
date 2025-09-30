@@ -494,6 +494,141 @@ pygame.display.flip()
 ui/campos_ui.py
 
 
+### modelo
+    claude
+### propmt
+necesito que me ayudes a crear un cartel de error en pygame, que se muestre en la pantalla y que desaparezca despues de 3 segundos
+### respuesta    
+import pygame
+import time
+
+class ErrorUI:
+    def __init__(self, screen: pygame.Surface):
+        self.__screen = screen
+        self.__error_activo = False
+        self.__tiempo_error_inicio = 0
+        self.__mensaje_error = ""
+        self.__duracion_error = 3.0  # 3 segundos por defecto
+        
+        # Configuración visual
+        self.__font_titulo = pygame.font.Font(None, 36)
+        self.__font_mensaje = pygame.font.Font(None, 24)
+        self.__color_fondo = (255, 0, 0)
+        self.__color_texto = (255, 255, 255)
+        self.__posicion = (0, 0)
+        self.__ancho = 400
+        self.__alto = 120
+
+    @property
+    def error_activo(self) -> bool:
+        """Indica si hay un error activo que mostrar"""
+        return self.__error_activo
+
+    def mostrar_error(self, mensaje: str, duracion: float = 3.0):
+        """
+        Configura un error para mostrar durante el tiempo especificado
+        
+        Args:
+            mensaje (str): Mensaje de error a mostrar
+            duracion (float): Duración en segundos (por defecto 3.0)
+        """
+        self.__error_activo = True
+        self.__tiempo_error_inicio = time.time()
+        self.__mensaje_error = str(mensaje)
+        self.__duracion_error = duracion
+
+    def actualizar_y_dibujar(self):
+        """
+        Actualiza el estado del error y lo dibuja si está activo
+        Debe llamarse en cada frame del loop principal
+        """
+        if not self.__error_activo:
+            return
+            
+        # Verificar si ha pasado el tiempo de duración
+        tiempo_actual = time.time()
+        if tiempo_actual - self.__tiempo_error_inicio >= self.__duracion_error:
+            self.__error_activo = False
+            return
+        
+        self.__dibujar_error(tiempo_actual)
+
+    def __dibujar_error(self, tiempo_actual: float):
+        """Dibuja el cartel de error en pantalla"""
+        # Dibujar fondo del error
+        pygame.draw.rect(self.__screen, self.__color_fondo, 
+                        (self.__posicion[0], self.__posicion[1], self.__ancho, self.__alto))
+        
+        # Título "ERROR"
+        titulo = self.__font_titulo.render("ERROR", True, self.__color_texto)
+        titulo_rect = titulo.get_rect()
+        titulo_x = self.__posicion[0] + (self.__ancho - titulo_rect.width) // 2
+        self.__screen.blit(titulo, (titulo_x, self.__posicion[1] + 10))
+        
+        # Mensaje de error (dividir en líneas si es muy largo)
+        lineas_mensaje = self.__dividir_mensaje(self.__mensaje_error)
+        y_mensaje = self.__posicion[1] + 45
+        
+        for linea in lineas_mensaje:
+            mensaje_surface = self.__font_mensaje.render(linea, True, self.__color_texto)
+            self.__screen.blit(mensaje_surface, (self.__posicion[0] + 10, y_mensaje))
+            y_mensaje += 20
+        
+        # Tiempo restante (opcional)
+        tiempo_restante = self.__duracion_error - (tiempo_actual - self.__tiempo_error_inicio)
+        tiempo_texto = self.__font_mensaje.render(f"Cerrando en: {tiempo_restante:.1f}s", 
+                                                 True, self.__color_texto)
+        self.__screen.blit(tiempo_texto, (self.__posicion[0] + 10, self.__posicion[1] + 90))
+
+    def __dividir_mensaje(self, mensaje: str, max_caracteres: int = 45) -> list[str]:
+        """Divide el mensaje en líneas para que quepa en el cartel"""
+        if len(mensaje) <= max_caracteres:
+            return [mensaje]
+        
+        palabras = mensaje.split(' ')
+        lineas = []
+        linea_actual = ""
+        
+        for palabra in palabras:
+            if len(linea_actual + palabra + " ") <= max_caracteres:
+                linea_actual += palabra + " "
+            else:
+                if linea_actual:
+                    lineas.append(linea_actual.strip())
+                linea_actual = palabra + " "
+        
+        if linea_actual:
+            lineas.append(linea_actual.strip())
+        
+        return lineas[:3]  # Máximo 3 líneas
+
+    def configurar_estilo(self, color_fondo: tuple = None, color_texto: tuple = None, 
+                         posicion: tuple = None, tamaño: tuple = None):
+        """
+        Configura el estilo visual del error
+        
+        Args:
+            color_fondo (tuple): Color RGB del fondo
+            color_texto (tuple): Color RGB del texto
+            posicion (tuple): Posición (x, y) del cartel
+            tamaño (tuple): Tamaño (ancho, alto) del cartel
+        """
+        if color_fondo:
+            self.__color_fondo = color_fondo
+        if color_texto:
+            self.__color_texto = color_texto
+        if posicion:
+            self.__posicion = posicion
+        if tamaño:
+            self.__ancho, self.__alto = tamaño
+
+    def cerrar_error(self):
+        """Cierra el error manualmente"""
+        self.__error_activo = False
+### Fixed
+### cambios
+saque el metodo de cerrar_error porque no lo voy a usar 
+### archivos finales
 
 
 ### modelo

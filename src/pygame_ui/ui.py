@@ -15,16 +15,14 @@ from src.pygame_ui.CamposUI.camposUI import CamposUi
 from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.dado.Dados import Dados
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
-from src.core.helpers.Tablero_Impresor import Tablero_Impresor
-from tkinter import messagebox
-import tkinter as tk
+from src.pygame_ui.Cartel_Error.Cartel_Error import Cartel_ErrorUI
 WINDOW_WIDTH = 1500
 WINDOW_HEIGHT = 700
 BROWN_LIGHT = (222, 184, 135)
 
 
 class BackgammonUI(IJuegoInterfazMovimientos):
-    def __init__(self,backgammon:Backgammon,tableroUI:TableroUI,camposUi:CamposUi,surface:pygame.Surface):
+    def __init__(self,backgammon:Backgammon,tableroUI:TableroUI,camposUi:CamposUi,surface:pygame.Surface,cartel_error:Cartel_ErrorUI):
         pygame.init()
         self.__backgammon = backgammon
         self.__tablero = backgammon.tablero
@@ -35,6 +33,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__screen.fill(BROWN_LIGHT)
         self.__dados_disponibles: list[int] = []
         self.__dados_tirados: bool = False
+        self.__cartel_error = cartel_error
         pygame.display.set_caption("Backgammon")
     
     def tirar_dados(self):
@@ -48,10 +47,13 @@ class BackgammonUI(IJuegoInterfazMovimientos):
     import tkinter as tk
 
     def actualizar_tablero_ui(self,time_delta:int):
+        self.__campos_ui.dados_actuales = self.__dados_disponibles
+        self.__tablero_ui.tablero = self.__backgammon.tablero
         self.__campos_ui.manager.update(time_delta)
         self.__screen.fill(BROWN_LIGHT)
         self.__campos_ui.dibujar_campos(self.__screen)
         self.__tablero_ui.dibujar_tablero(self.__screen)
+        self.__cartel_error.actualizar_y_dibujar(self.__screen)
         pygame.display.flip()
     def realizar_movimiento(self):
         self.seleccion_dado_valida()
@@ -61,12 +63,10 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         seleccion_index = self.__dados_disponibles.index(dado)
         if self.__backgammon.hay_fichas_comidas():
             self.__backgammon.mover_ficha_comida(dado)
-            self.__dados_disponibles.pop(int(seleccion_index))
         else:
             self.__backgammon.mover_ficha(int(triangulo), dado)
             self.__dados_disponibles.pop(int(seleccion_index))
-            Tablero_Impresor.imprimir_tablero(self.__backgammon.tablero) #to do eliminar solo de prueba
-
+        self.actualizar_tablero_ui(0)
 
     def seleccion_triangulo_valida(self):
         """Valida que la selección del triángulo desde la UI sea correcta
@@ -101,24 +101,23 @@ class BackgammonUI(IJuegoInterfazMovimientos):
                             self.realizar_movimiento()
                         except Exception as e:
                             self.mostrar_error(e)
-                        self.realizar_movimiento()
 
                 self.__campos_ui.manager.process_events(event)
             self.actualizar_tablero_ui(time_delta)
         pygame.quit()
         sys.exit()
     def puede_hacer_algun_movimiento(self):
-        pass
-    def mostrar_error(self, mensaje: str):
-        root = tk.Tk()
-        root.withdraw() 
-        tk.messagebox.showerror("Error", mensaje)
-        root.destroy()
+        pass #to do hacer logica para ver si puede hacer algun movimiento
+    def mostrar_error(self, mensaje: Exception):
+        """Muestra un mensaje de error en la UI"""
+        self.__cartel_error.mostrar_error(str(mensaje), duracion=3.0)
+        pygame.display.flip()
 if __name__ == "__main__":
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
     backgammon = Backgammon(tablero,Dados())
     tableroUi = TableroUI(tablero)
-    camposUi = CamposUi(1500, 700)
+    camposUi = CamposUi(WINDOW_WIDTH, WINDOW_HEIGHT)
     pantalla = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    app = BackgammonUI(backgammon, tableroUi, camposUi, pantalla)
+    cartel_error = Cartel_ErrorUI((WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
+    app = BackgammonUI(backgammon, tableroUi, camposUi, pantalla,cartel_error)
     app.jugar()

@@ -27,7 +27,6 @@ python -m src.cli.cli
 ```
 
 ## Cómo Jugar
-Nota: la interfaz ui necesita tkinter, para instalarlo apt-get install python3-tk
 ### Inicio del Juego
 1. Al ejecutar, el juego te pedirá los nombres de los jugadores:
    - **Jugador Rojo**: Primer jugador

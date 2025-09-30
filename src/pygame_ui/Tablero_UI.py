@@ -41,6 +41,14 @@ class TableroUI:
     def punto_height(self):
         """Getter para la altura de cada punto"""
         return self.__punto_height__
+    @property
+    def tablero(self):
+        """Getter para el tablero"""
+        return self.__tablero
+    @tablero.setter
+    def tablero(self, nuevo_tablero):
+        """Setter para el tablero"""
+        self.__tablero = nuevo_tablero
 
     def dibujar_triangulo(self, punto_index, color, screen):
         """Dibuja un triángulo para un punto específico
