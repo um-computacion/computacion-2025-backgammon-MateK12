@@ -267,3 +267,11 @@ tests en caposUi
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.29] - 30-09-2025
+### Agregado
+cartel mostrandose con pygame
+movimiento de ficha en ui
+### Cambiado
+### Arreglado
+### Eliminado

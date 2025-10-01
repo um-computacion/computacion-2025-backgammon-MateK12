@@ -7,7 +7,7 @@ LABEL_WIDTH = 200
 BUTTON_WIDTH = 150
 LABEL_COLOR = (0,0,0)
 class CamposUi:
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width:int, screen_height:int):
         self.__screen_width = screen_width
         self.__screen_height = screen_height
 
@@ -18,7 +18,7 @@ class CamposUi:
         self.__turno_actual:int = None
         self.__boton_mover = None
         self.__font = Font(None, 36)
-        
+        self.select_dado= None
         self.__text_triangulo = None
         self.__text_dado = None
         self.__text_turno = None
@@ -36,6 +36,8 @@ class CamposUi:
     @turno_actual.setter
     def turno_actual(self, value:TipoFicha):
         self.__turno_actual = value
+        self.__actualizar_texto_turno()
+
     @property
     def boton_mover(self):
         return self.__boton_mover
@@ -45,11 +47,8 @@ class CamposUi:
     @dados_actuales.setter
     def dados_actuales(self, dados: list[int]):
         self.__dados_actuales = dados
-        # if self.select_dado:
-        #     self.select_dado.kill()
-        #     self.select_dado = None
-        #     self.__text_dado = None
-        #     self.__elementos_creados = False
+        self.__actualizar_dropdown_dados()
+
     
     def __crear_elementos(self):
         """Crea todos los elementos de la interfaz"""
@@ -91,8 +90,11 @@ class CamposUi:
         
         y_offset += 40
 
-
         self.__text_triangulo = self.__font.render('Seleccione un triangulo', True, LABEL_COLOR)
+
+        self.__actualizar_textos()
+
+
         self.__elementos_creados = True
 
     def __dibujar_textos(self, screen):
@@ -136,7 +138,35 @@ class CamposUi:
             (valor,_) =self.select_triangulo.selected_option
             return int(valor)
         return None
+    def __actualizar_dropdown_dados(self):
+        """Actualiza el dropdown de dados cuando cambian los dados disponibles"""
+        if self.select_dado:
+            self.select_dado.kill()  
+            
+        y_offset = 50 + 50 + 30  
+        opciones_dados = self.__get_opciones_dados()
+        
+        self.select_dado = pygame_gui.elements.UIDropDownMenu(
+            options_list=opciones_dados,
+            starting_option=opciones_dados[0],
+            relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),
+            manager=self.__manager,
+        )
 
+    def __actualizar_textos(self):
+        """Actualiza todas las superficies de texto"""
+        self.__text_triangulo = self.__font.render('Seleccione un triangulo', True, LABEL_COLOR)
+        self.__text_dado = self.__font.render('Seleccionar Dado:', True, LABEL_COLOR)
+        self.__actualizar_texto_turno()
+
+    def __actualizar_texto_turno(self):
+        """Actualiza solo el texto del turno"""
+        texto_turno = self.__get_text_turno()
+        if texto_turno:
+            self.__text_turno = self.__font.render(texto_turno, True, LABEL_COLOR)
+    def __get_opciones_dados(self) -> list[str]:
+        """Obtiene las opciones para el dropdown de dados"""
+        return [f"Dado {i+1}: {valor}" for i, valor in enumerate(self.__dados_actuales)]
     def dibujar_campos(self, screen):
         """Dibuja todos los elementos en la pantalla"""
         self.__dibujar_textos(screen)

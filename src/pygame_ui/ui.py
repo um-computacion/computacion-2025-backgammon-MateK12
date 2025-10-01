@@ -34,6 +34,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__dados_disponibles: list[int] = []
         self.__dados_tirados: bool = False
         self.__cartel_error = cartel_error
+        # self.__time_delta = 
         pygame.display.set_caption("Backgammon")
     
     def tirar_dados(self):
@@ -44,18 +45,19 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__dados_disponibles = resultado
         self.__dados_tirados = True
         return resultado
-    import tkinter as tk
 
-    def actualizar_tablero_ui(self,time_delta:int):
+    def actualizar_tablero_ui(self,time_delta:float):
         self.__campos_ui.dados_actuales = self.__dados_disponibles
         self.__tablero_ui.tablero = self.__backgammon.tablero
-        self.__campos_ui.manager.update(time_delta)
+        self.__campos_ui.manager.update(time_delta)  
         self.__screen.fill(BROWN_LIGHT)
         self.__campos_ui.dibujar_campos(self.__screen)
         self.__tablero_ui.dibujar_tablero(self.__screen)
         self.__cartel_error.actualizar_y_dibujar(self.__screen)
         pygame.display.flip()
+
     def realizar_movimiento(self):
+        """Procesa el movimiento del jugador"""
         self.seleccion_dado_valida()
         self.seleccion_triangulo_valida()
         dado = self.__campos_ui.get_dado_seleccionado()
@@ -66,7 +68,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         else:
             self.__backgammon.mover_ficha(int(triangulo), dado)
             self.__dados_disponibles.pop(int(seleccion_index))
-        self.actualizar_tablero_ui(0)
+        # self.actualizar_tablero_ui(0)
 
     def seleccion_triangulo_valida(self):
         """Valida que la selección del triángulo desde la UI sea correcta
@@ -87,31 +89,45 @@ class BackgammonUI(IJuegoInterfazMovimientos):
     def jugar(self):
         """Loop principal del juego"""
         clock = pygame.time.Clock()
-        time_delta = clock.tick(60) / 1000.0
         self.__backgammon.quien_empieza()
         self.__campos_ui.turno_actual = self.__backgammon.turno
+        self.tirar_dados()
+        self.actualizar_tablero_ui(0)
         while self.__running:
+            time_delta = clock.tick(60) / 1000.0 
             self.tirar_dados()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__running = False
                 if event.type == pygame_gui.UI_BUTTON_START_PRESS:
                     if event.ui_element == self.__campos_ui.boton_mover:
-                        try:
-                            self.realizar_movimiento()
-                        except Exception as e:
-                            self.mostrar_error(e)
-
+                        self.onMove()
                 self.__campos_ui.manager.process_events(event)
-            self.actualizar_tablero_ui(time_delta)
+                self.actualizar_tablero_ui(time_delta)
+
         pygame.quit()
         sys.exit()
+
+    def onMove(self):
+            try:  
+                self.puede_hacer_algun_movimiento()
+                self.realizar_movimiento()
+                if not self.__dados_disponibles:
+                    self.cambiar_turno()
+            except Exception as e:
+                self.mostrar_error(e)
+                
     def puede_hacer_algun_movimiento(self):
         pass #to do hacer logica para ver si puede hacer algun movimiento
+    def cambiar_turno(self):
+        '''Cambia el turno al siguiente jugador dejando los parametros en su estado correspondiente'''
+        self.__backgammon.cambiar_turno()
+        self.__campos_ui.turno_actual = self.__backgammon.turno
+        self.__dados_tirados = False
+        self.__campos_ui.dados_actuales = []
     def mostrar_error(self, mensaje: Exception):
         """Muestra un mensaje de error en la UI"""
         self.__cartel_error.mostrar_error(str(mensaje), duracion=3.0)
-        pygame.display.flip()
 if __name__ == "__main__":
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
     backgammon = Backgammon(tablero,Dados())

@@ -2,19 +2,19 @@ import pygame
 import time
 
 class Cartel_ErrorUI:
-    def __init__(self,posicion:tuple=(0,0)):
+    def __init__(self,posicion:tuple,):
         self.__error_activo = False
         self.__tiempo_error_inicio = 0
         self.__mensaje_error = ""
-        self.__duracion_error = 3.0  
-        
+        self.__duracion_error = 3.0
+
         self.__font_titulo = pygame.font.Font(None, 36)
         self.__font_mensaje = pygame.font.Font(None, 24)
         self.__color_fondo = (255, 0, 0)
         self.__color_texto = (255, 255, 255)
         self.__posicion = posicion
         self.__ancho = 400
-        self.__alto = 120
+        self.__alto = 150
 
     @property
     def error_activo(self) -> bool:
@@ -57,7 +57,7 @@ class Cartel_ErrorUI:
 
         titulo = self.__font_titulo.render("ERROR", True, self.__color_texto)
         titulo_rect = titulo.get_rect()
-        titulo_x = self.__posicion[0] - (offset_x + titulo_rect.width) // 2
+        titulo_x = self.__posicion[0] - (offset_x - 10)
         screen.blit(titulo, (titulo_x, self.__posicion[1]-offset_y + 10))
 
         y_mensaje = self.__posicion[1]+5
@@ -67,8 +67,6 @@ class Cartel_ErrorUI:
             mensaje_surface = self.__font_mensaje.render(linea, True, self.__color_texto)
             screen.blit(mensaje_surface, (self.__posicion[0]-offset_x, y_mensaje))
             y_mensaje += 20
-        mensaje_surface = self.__font_mensaje.render(self.__mensaje_error, True, self.__color_texto)
-        screen.blit(mensaje_surface, (self.__posicion[0]-offset_x, y_mensaje))
 
     def __dividir_mensaje(self, mensaje: str, max_caracteres: int = 45) -> list[str]:
         """Divide el mensaje en líneas para que quepa en el cartel"""
