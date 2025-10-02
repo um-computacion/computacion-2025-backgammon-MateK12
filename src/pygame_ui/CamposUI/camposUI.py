@@ -145,7 +145,6 @@ class CamposUi:
             self.select_dado.kill()  
         y_offset = 50 + 50 + 30  
         opciones_dados = self.__get_opciones_dados()
-        print('')
         self.select_dado = pygame_gui.elements.UIDropDownMenu(
             options_list=opciones_dados,
             starting_option=opciones_dados[0] if opciones_dados else "No hay dados",

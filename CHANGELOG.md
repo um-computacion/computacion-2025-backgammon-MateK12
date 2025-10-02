@@ -282,3 +282,11 @@ se actualiza la vista correctamente al mover ficha
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.31] - 2-10-2025
+### Agregado
+Refactor en cartel para usar misma clase para ganador y excepciones
+mostrar numeros en triangulos
+### Cambiado
+### Arreglado
+### Eliminado
