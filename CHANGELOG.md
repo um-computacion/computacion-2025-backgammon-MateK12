@@ -275,3 +275,10 @@ movimiento de ficha en ui
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.30] - 2-10-2025
+### Agregado
+se actualiza la vista correctamente al mover ficha
+### Cambiado
+### Arreglado
+### Eliminado

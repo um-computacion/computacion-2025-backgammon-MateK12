@@ -46,9 +46,10 @@ class CamposUi:
         return self.__dados_actuales
     @dados_actuales.setter
     def dados_actuales(self, dados: list[int]):
-        self.__dados_actuales = dados
-        self.__actualizar_dropdown_dados()
-
+        old_dados = self.__dados_actuales.copy()
+        self.__dados_actuales = dados.copy()
+        if self.__elementos_creados and old_dados != dados:
+            self.__actualizar_dropdown_dados()
     
     def __crear_elementos(self):
         """Crea todos los elementos de la interfaz"""
@@ -71,7 +72,7 @@ class CamposUi:
         opciones_dados = [f"Dado {i+1}: {valor}" for i, valor in enumerate(self.__dados_actuales)]
         self.select_dado = pygame_gui.elements.UIDropDownMenu(
             options_list=opciones_dados,
-            starting_option=opciones_dados[1],
+            starting_option=opciones_dados[0] if opciones_dados else "No hay dados",
             relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),
             manager=self.__manager,
         )
@@ -142,13 +143,12 @@ class CamposUi:
         """Actualiza el dropdown de dados cuando cambian los dados disponibles"""
         if self.select_dado:
             self.select_dado.kill()  
-            
         y_offset = 50 + 50 + 30  
         opciones_dados = self.__get_opciones_dados()
-        
+        print('')
         self.select_dado = pygame_gui.elements.UIDropDownMenu(
             options_list=opciones_dados,
-            starting_option=opciones_dados[0],
+            starting_option=opciones_dados[0] if opciones_dados else "No hay dados",
             relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),
             manager=self.__manager,
         )
@@ -169,6 +169,6 @@ class CamposUi:
         return [f"Dado {i+1}: {valor}" for i, valor in enumerate(self.__dados_actuales)]
     def dibujar_campos(self, screen):
         """Dibuja todos los elementos en la pantalla"""
-        self.__dibujar_textos(screen)
         self.__crear_elementos()
+        self.__dibujar_textos(screen)
         self.__manager.draw_ui(screen)

@@ -47,7 +47,6 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         return resultado
 
     def actualizar_tablero_ui(self,time_delta:float):
-        self.__campos_ui.dados_actuales = self.__dados_disponibles
         self.__tablero_ui.tablero = self.__backgammon.tablero
         self.__campos_ui.manager.update(time_delta)  
         self.__screen.fill(BROWN_LIGHT)
@@ -68,6 +67,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         else:
             self.__backgammon.mover_ficha(int(triangulo), dado)
             self.__dados_disponibles.pop(int(seleccion_index))
+        self.__campos_ui.dados_actuales = self.__dados_disponibles
         # self.actualizar_tablero_ui(0)
 
     def seleccion_triangulo_valida(self):
@@ -103,7 +103,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
                     if event.ui_element == self.__campos_ui.boton_mover:
                         self.onMove()
                 self.__campos_ui.manager.process_events(event)
-                self.actualizar_tablero_ui(time_delta)
+            self.actualizar_tablero_ui(time_delta)
 
         pygame.quit()
         sys.exit()
@@ -124,7 +124,6 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__backgammon.cambiar_turno()
         self.__campos_ui.turno_actual = self.__backgammon.turno
         self.__dados_tirados = False
-        self.__campos_ui.dados_actuales = []
     def mostrar_error(self, mensaje: Exception):
         """Muestra un mensaje de error en la UI"""
         self.__cartel_error.mostrar_error(str(mensaje), duracion=3.0)
