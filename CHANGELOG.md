@@ -248,3 +248,45 @@ orden de los campos para que se vea bien
 Refactor en codigo para respetar DIP
 ### Arreglado
 ### Eliminado
+
+## [1.0.27] - 27-09-2025
+### Agregado
+callbacks para evento de apretar boton
+metodos para tirar dados y mover ficha en ui
+validacion para triangulo y dado valido ui
+### Cambiado
+interfaz JuegoInterfazDados agregada e implementada en ui y cli
+### Arreglado
+### Eliminado
+quitados atributos no usados en CamposUi
+
+## [1.0.28] - 28-09-2025
+### Agregado
+cartel para manejar excepciones
+tests en caposUi
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [1.0.29] - 30-09-2025
+### Agregado
+cartel mostrandose con pygame
+movimiento de ficha en ui
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [1.0.30] - 2-10-2025
+### Agregado
+se actualiza la vista correctamente al mover ficha
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [1.0.31] - 2-10-2025
+### Agregado
+Refactor en cartel para usar misma clase para ganador y excepciones
+mostrar numeros en triangulos
+### Cambiado
+### Arreglado
+### Eliminado

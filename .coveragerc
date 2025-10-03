@@ -7,7 +7,9 @@ omit =
     Test_*.py
     src/core/exceptions/*
     src/core/enums/*
-    src/core/models/tablero/Tablero_Impresor.py
+    src/core/helpers/Tablero_Impresor.py
+    src/core/interfaces/JuegoInterfazDados.py
+    src/core/interfaces/JuegoInterfazMovimientos.py
     */tests/*
     **/tests/*
     */test_*.py

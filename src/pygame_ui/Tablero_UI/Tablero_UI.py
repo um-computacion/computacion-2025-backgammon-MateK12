@@ -41,14 +41,22 @@ class TableroUI:
     def punto_height(self):
         """Getter para la altura de cada punto"""
         return self.__punto_height__
+    @property
+    def tablero(self):
+        """Getter para el tablero"""
+        return self.__tablero
+    @tablero.setter
+    def tablero(self, nuevo_tablero):
+        """Setter para el tablero"""
+        self.__tablero = nuevo_tablero
 
-    def dibujar_triangulo(self, punto_index, color, screen):
+    def dibujar_triangulo(self, punto_index:int, color:tuple, screen:pygame.Surface):
         """Dibuja un triángulo para un punto específico
         Si son los primeros 12 triangulos apuntan hacia abajo, si son los ultimos 12 triangulos apuntan hacia arriba
         """
         punto_x, punto_y = self.get_punto_position_base(
             punto_index
-        )  # obtengo el vertice base del triangulo
+        )  
 
         if punto_index <= 11:  # triangulo apuntando hacia abajo
             puntos = [
@@ -68,6 +76,23 @@ class TableroUI:
 
         pygame.draw.polygon(screen, color, puntos)
         pygame.draw.polygon(screen, BLACK, puntos, 2)
+    def __dibujar_numero_triangulo(self, punto_index:int, screen:pygame.Surface):
+        """Dibuja el número del triángulo encima o debajo según corresponda"""
+        font = pygame.font.Font(None, 24)
+        
+        base_x, base_y = self.get_punto_position_base(punto_index)
+        
+        text_x = base_x + self.__punto_width__ // 2
+        
+        if punto_index <= 11:  
+            text_y = base_y - 15
+        else:  
+            text_y = base_y + self.__punto_height__ + 15
+        
+        text_surface = font.render(str(punto_index), True, BLACK)
+        text_rect = text_surface.get_rect(center=(text_x, text_y))
+        
+        screen.blit(text_surface, text_rect)
 
     def dibujar_tablero(self, screen):
         """Dibuja el tablero completo
@@ -88,13 +113,15 @@ class TableroUI:
         for i in range(24):  # triangulos alternando el color
             color = DARK if i % 2 == 0 else RED
             self.dibujar_triangulo(i, color, screen)
+            self.__dibujar_numero_triangulo(i, screen)
+
         self.dibujar_todas_las_fichas(screen)
 
     def get_punto_position_base(self, punto_index):
         """Obtiene la posición x, y de un triangulo especifico,
         este punto sera el base ya que en base a este punto se calularan los otros 2 vertices del triangulo
-        @param punto_index: Índice del triángulo (0-23)
-        @return: (x, y) coordenadas del vértice base del triangulo
+        param punto_index: Índice del triángulo (0-23)
+        return: (x, y) coordenadas del vértice base del triangulo
         """
 
         if punto_index <= 11:  # Parte superior
@@ -114,11 +141,7 @@ class TableroUI:
             y = self.__y__
         else:  # Parte inferior
             if punto_index <= 17:
-                x = (
-                    self.__x__
-                    + (punto_index - 12 + 1) * self.__punto_width__
-                    + self.__ancho_tablero__ / 2
-                )  # pos_inicial_x+ desplazamiento en x +ancho_del_tablero/2
+                x = (    self.__x__+ (punto_index - 12 + 1) * self.__punto_width__+ self.__ancho_tablero__ / 2)  # pos_inicial_x+ desplazamiento en x +ancho_del_tablero/2
             else:
                 x = self.__x__ + (punto_index - 18) * self.__punto_width__
             y = self.__y__ + self.__alto_tablero__ - 250
@@ -194,7 +217,6 @@ class TableroUI:
             start_y = base_y + punto_height - 30
             y_offset = -35
 
-        # Dibujar cada ficha
         for i, ficha in enumerate(fichas):
             ficha_y = start_y + (i * y_offset)
             self.dibujar_ficha(center_x, ficha_y, ficha.tipo, screen)

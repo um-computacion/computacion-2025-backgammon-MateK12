@@ -10,11 +10,13 @@ from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.dado.Dados import Dados
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.interfaces.JuegoInterfazMovimientos import IJuegoInterfazMovimientos
+from src.core.interfaces.JuegoInterfazDados import IJuegoInterfazDados
+
 ERROR = "\033[91m"
 RESET = "\033[0m"
 
 
-class CLI(IJuegoInterfazMovimientos):
+class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados):
     def __init__(self, jugador1, jugador2,backgammon:Backgammon):
         self.__jugador_rojo: Jugador = jugador1
         self.__jugador_negro: Jugador = jugador2

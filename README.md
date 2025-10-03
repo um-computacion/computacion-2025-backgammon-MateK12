@@ -27,7 +27,6 @@ python -m src.cli.cli
 ```
 
 ## Cómo Jugar
-
 ### Inicio del Juego
 1. Al ejecutar, el juego te pedirá los nombres de los jugadores:
    - **Jugador Rojo**: Primer jugador
