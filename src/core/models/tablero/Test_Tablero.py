@@ -12,7 +12,8 @@ from unittest.mock import patch
 class TestTablero(unittest.TestCase):
     def setUp(self):
         self.tablero_vacio = [[] for _ in range(24)]
-        self.tablero = Tablero(self.tablero_vacio)
+
+        self.tablero = Tablero(self.tablero_vacio,Tablero_Validador())
 
     def test_mover_ficha_a_espacio_vacio(self):  # mover_ficha()
         ficha = Ficha(TipoFicha.NEGRA.value)

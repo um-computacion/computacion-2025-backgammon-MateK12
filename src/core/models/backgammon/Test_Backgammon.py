@@ -4,13 +4,17 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
 from src.core.models.ficha.Ficha import Ficha
-
+from src.core.models.dado.Dados import Dados
+from src.core.models.tablero.Tablero import Tablero
+from src.core.models.tablero.Tablero import Tablero_Validador
+from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 # pylint: disable=C0116,W0212
 
 
 class TestBackgammon(unittest.TestCase):
     def setUp(self):
-        self.game = Backgammon()
+
+        self.game = Backgammon(Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador()), Dados(),)
 
     def test_tirar_dados(self):
         with patch("src.core.models.dado.Dados.Dados.tirar_dados") as mock_dados:

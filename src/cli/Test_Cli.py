@@ -5,14 +5,19 @@ from src.cli.cli import CLI
 from unittest.mock import patch, Mock
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
-
-
+from src.core.models.backgammon.backgammon import Backgammon
+from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
+from src.core.models.tablero.Tablero import Tablero
+from src.core.models.tablero.Tablero import Tablero_Validador
+from src.core.models.dado.Dados import Dados
 # pylint: disable=C0116
 class TestCli(unittest.TestCase):
     def setUp(self):
         self.jugador1 = Jugador("Juan")
         self.jugador2 = Jugador("Maria")
-        self.cli = CLI(self.jugador1, self.jugador2)
+        tablero =Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador())
+        backgammon = Backgammon(tablero, Dados(),)
+        self.cli = CLI(self.jugador1, self.jugador2, backgammon)
         self.cli.backgammon.quien_empieza()
 
     def test_getter_Jugador_1(self):
@@ -155,7 +160,7 @@ class TestCli(unittest.TestCase):
         ), patch.object(
             self.cli.backgammon, "mover_ficha_comida"
         ) as mock_mover_comida, patch(
-            "src.core.models.tablero.Tablero_Impresor.Tablero_Impresor.imprimir_tablero"
+            "src.core.helpers.Tablero_Impresor.Tablero_Impresor.imprimir_tablero"
         ):
 
             self.cli.realizar_movimiento()
@@ -174,7 +179,7 @@ class TestCli(unittest.TestCase):
         ), patch.object(
             self.cli.backgammon, "mover_ficha"
         ) as mock_mover_ficha, patch(
-            "src.core.models.tablero.Tablero_Impresor.Tablero_Impresor.imprimir_tablero"
+            "src.core.helpers.Tablero_Impresor.Tablero_Impresor.imprimir_tablero"
         ):
 
             self.cli.realizar_movimiento()

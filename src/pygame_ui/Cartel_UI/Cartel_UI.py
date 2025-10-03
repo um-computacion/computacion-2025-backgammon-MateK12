@@ -18,14 +18,15 @@ class Cartel_UI:
 
     @property
     def mensaje_activo(self) -> bool:
-        """Indica si hay un error activo que mostrar"""
-        return self.__error_activo
+        """Indica si hay un mensaje activo que mostrar"""
+        return self.__mensaje_activo
+
     def mostrar_cartel(self, mensaje: str, duracion: float = 3.0,titulo:str="Error"):
         """
-        Configura un error para mostrar durante el tiempo especificado
-        
+        Configura un mensaje para mostrar durante el tiempo especificado
+
         Args:
-            mensaje (str): Mensaje de error a mostrar
+            mensaje (str): Mensaje a mostrar
             duracion (float): Duración en segundos (por defecto 3.0)
         """
         self.__mensaje_activo = True
@@ -57,7 +58,6 @@ class Cartel_UI:
                         (self.__posicion[0]-offset_x, self.__posicion[1]-offset_y, self.__ancho, self.__alto))
 
         titulo = self.__font_titulo.render(self.__titulo, True, self.__color_texto)
-        titulo_rect = titulo.get_rect()
         titulo_x = self.__posicion[0] - (offset_x - 10)
         screen.blit(titulo, (titulo_x, self.__posicion[1]-offset_y + 10))
 
@@ -89,5 +89,5 @@ class Cartel_UI:
         if linea_actual:
             lineas.append(linea_actual.strip())
         
-        return lineas[:3]  # Máximo 3 líneas
+        return lineas
 
