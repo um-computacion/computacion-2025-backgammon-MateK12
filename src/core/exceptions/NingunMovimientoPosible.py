@@ -1,0 +1,2 @@
+class NingunMovimientoPosible(Exception):
+    pass
