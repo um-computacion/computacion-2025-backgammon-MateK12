@@ -290,3 +290,11 @@ mostrar numeros en triangulos
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.32] - 4-10-2025
+### Agregado
+quitados metodos que no se usaban en tablero_ui
+tests agregados en tablero_ui
+### Cambiado
+### Arreglado
+### Eliminado
