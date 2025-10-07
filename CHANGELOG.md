@@ -298,3 +298,10 @@ tests agregados en tablero_ui
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.33] - 4-10-2025
+### Agregado
+test agregados a ui 83% de coverage
+### Cambiado
+### Arreglado
+### Eliminado

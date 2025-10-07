@@ -746,6 +746,29 @@ le quite los tests que no eran tan necesarios, men enfoque en testear que las co
 Test_tablero_ui.py
 
 
+### modelo
+    claude
+### propmt
+sigueindo la estrategia de lso test anteriores (verificar que se llamen los metodos mockeados, haz los tests de estos 2 metodos)
+### respuesta    
+# Verificar número exacto de llamadas
+self.mock_backgammon.dados.tirar_dados.assert_called_once()
+
+# Verificar parámetros específicos
+self.mock_backgammon.mover_ficha.assert_called_with(5, 3)
+
+# Verificar que NO se llamó
+self.mock_backgammon.mover_ficha_comida.assert_not_called()
+
+# Verificar orden de llamadas
+self.assertLess(
+    self.mock_campos_ui.get_dado_seleccionado.call_count,
+    self.mock_backgammon.mover_ficha.call_count
+### Fixed
+### cambios
+saque los escenarios que no me interesaban tanto, y me enfoque en los mas criticos como provesar correctamente el evento onMove
+### archivos finales
+Test_tablero_ui.py
 
 ### modelo
     claude
