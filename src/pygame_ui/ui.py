@@ -96,8 +96,6 @@ class BackgammonUI(IJuegoInterfazMovimientos):
             time_delta = clock.tick(60) / 1000.0 
             self.tirar_dados()
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.__running = False
                 if event.type == pygame_gui.UI_BUTTON_START_PRESS:
                     if event.ui_element == self.__campos_ui.boton_mover:
                         self.onMove()

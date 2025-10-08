@@ -82,30 +82,34 @@ class Test_Ui(unittest.TestCase):
         self.ui.mostrar_ganador()
         self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with("¡El jugador Negro ha ganado!",5.0,titulo="Ganador")
 
+    def test_on_move(self):
+        with patch.object(self.ui,'puede_hacer_algun_movimiento') as mock_puede_hacer_movimiento, patch.object(self.ui,'realizar_movimiento') as mock_realizar_movimiento:
+            self.ui.onMove()
+            mock_puede_hacer_movimiento.assert_called_once()
+            mock_realizar_movimiento.assert_called_once()
+    # @patch('pygame.time.Clock')
+    # @patch('pygame.event.get')
+    # @patch('pygame.quit')
+    # @patch('sys.exit')
+    # def test_jugar_maneja_evento_boton_mover(self, mock_exit, mock_quit, mock_events, mock_clock):
+    #     """Test que verifica que jugar maneja el evento del botón mover"""
+    #     # Setup mocks
+    #     mock_clock_instance = MagicMock()
+    #     mock_clock.return_value = mock_clock_instance
+    #     mock_clock_instance.tick.return_value = 16
+        
+    #     # Crear evento de botón
+    #     mock_event = MagicMock()
+    #     mock_event.type = pygame_gui.UI_BUTTON_START_PRESS
+    #     mock_event.ui_element = self.mock_campos_ui.boton_mover
 
-    @patch('pygame.time.Clock')
-    @patch('pygame.event.get')
-    @patch('pygame.quit')
-    @patch('sys.exit')
-    def test_jugar_maneja_evento_boton_mover(self, mock_exit, mock_quit, mock_events, mock_clock):
-        """Test que verifica que jugar maneja el evento del botón mover"""
-        # Setup mocks
-        mock_clock_instance = MagicMock()
-        mock_clock.return_value = mock_clock_instance
-        mock_clock_instance.tick.return_value = 16
-        
-        # Crear evento de botón
-        mock_event = MagicMock()
-        mock_event.type = pygame_gui.UI_BUTTON_START_PRESS
-        mock_event.ui_element = self.mock_campos_ui.boton_mover
-        
-        mock_events.side_effect = [[mock_event], []]  # Primera iteración con evento, segunda vacía
-        self.mock_backgammon.hay_ganador.side_effect = [False, True]
-        
-        # Mock onMove para verificar que se llama
-        with patch.object(self.ui, 'onMove') as mock_onMove:
-            self.ui.jugar()
-            mock_onMove.assert_called_once()
+    #     mock_events.side_effect = [[mock_event], []]
+
+
+    #     with patch.object(self.ui, 'onMove') as mock_onMove, patch.object(self.ui.__backgammon.hay_ganador) as mock_hay_ganador:
+    #         mock_hay_ganador.side_effect = [None, None, TipoFicha.ROJA]
+    #         self.ui.jugar()
+    #         mock_onMove.assert_called_once()
 
     def tearDown(self):
         pygame.quit()

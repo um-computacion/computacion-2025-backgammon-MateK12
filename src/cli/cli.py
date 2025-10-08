@@ -159,8 +159,14 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados):
                 except Exception as e:
                     print(f"{ERROR}{e}{RESET}")
             self.backgammon.cambiar_turno()
-        print("¡El jugador {} ha ganado!".format(self.backgammon.hay_ganador()))
-
+        self.mostrar_ganador()
+    def mostrar_ganador(self):
+        """Muestra el ganador del juego"""
+        ganador = self.backgammon.hay_ganador()
+        if ganador == TipoFicha.ROJA:
+            print("¡El jugador rojo ha ganado!")
+        elif ganador == TipoFicha.NEGRA:
+            print("¡El jugador negro ha ganado!")
 
 if __name__ == "__main__":
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
