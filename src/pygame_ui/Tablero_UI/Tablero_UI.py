@@ -71,15 +71,18 @@ class TableroUI:
         """Dibuja el número del triángulo encima o debajo según corresponda"""
         font = pygame.font.Font(None, 24)
         
-        base_x, base_y = self.get_punto_position_base(punto_index)
-        
+        _, base_y = self.get_punto_position_base(punto_index)
+        base_x, _ = self.get_punto_position_base_ficha(punto_index)
         text_x = base_x + self.__punto_width__ // 2
         
         if punto_index <= 11:  
             text_y = base_y - 15
-        else:  
+        elif punto_index <= 17 and punto_index >= 12:
+            text_x = base_x + self.__punto_width__ // 2
             text_y = base_y + self.__punto_height__ + 15
-        
+        elif punto_index <= 23 and punto_index >= 18:
+            text_x = base_x + self.__punto_width__// 2
+            text_y = base_y + self.__punto_height__ + 15
         text_surface = font.render(str(punto_index), True, BLACK)
         text_rect = text_surface.get_rect(center=(text_x, text_y))
         
