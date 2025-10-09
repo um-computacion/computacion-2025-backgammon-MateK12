@@ -33,15 +33,6 @@ class TableroUI:
         self.__punto_height__ = (self.__alto_tablero__ - 100) // 2
 
     @property
-    def punto_width(self):
-        """Getter para el ancho de cada punto"""
-        return self.__punto_width__
-
-    @property
-    def punto_height(self):
-        """Getter para la altura de cada punto"""
-        return self.__punto_height__
-    @property
     def tablero(self):
         """Getter para el tablero"""
         return self.__tablero
@@ -105,10 +96,10 @@ class TableroUI:
             3,
         )  # Borde del tablero
 
-        bar_x = self.__x__ + self.__ancho_tablero__ // 2 - 25
+        barra_x = self.__x__ + self.__ancho_tablero__ // 2 - 25
         pygame.draw.rect(
-            screen, DARK, (bar_x, self.__y__, 50, self.__alto_tablero__)
-        )  # barra del medio divisoria
+            screen, DARK, (barra_x, self.__y__, 50, self.__alto_tablero__)
+        )
 
         for i in range(24):  # triangulos alternando el color
             color = DARK if i % 2 == 0 else RED
@@ -205,8 +196,8 @@ class TableroUI:
         if not fichas:
             return
         base_x, base_y = self.get_punto_position_base_ficha(punto_index)
-        punto_width = self.punto_width
-        punto_height = self.punto_height
+        punto_width = self.__punto_width__
+        punto_height = self.__punto_height__
 
         center_x = base_x + punto_width // 2
 
@@ -226,7 +217,3 @@ class TableroUI:
         for punto_index in range(24):
             self.dibujar_fichas_en_punto(punto_index, screen)
 
-    def actualizar_tablero(self, nuevo_tablero=None):
-        """Actualiza el objeto tablero y redibuja"""
-        if nuevo_tablero:
-            self.tablero = nuevo_tablero

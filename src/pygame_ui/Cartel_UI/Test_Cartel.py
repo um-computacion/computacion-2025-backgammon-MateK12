@@ -14,6 +14,7 @@ class TestCartel(unittest.TestCase):
 
     def test_mensaje_activo_inicial(self):
         self.assertFalse(self.cartel.mensaje_activo)
+        
     def test_mostrar_cartel(self):
         self.cartel.mostrar_cartel("Test Message", duracion=2.0,titulo="Test")
         self.assertEqual(self.cartel._Cartel_UI__mensaje ,"Test Message")
@@ -47,3 +48,18 @@ class TestCartel(unittest.TestCase):
         self.assertEqual(lineas[0], "Este es un mensaje de prueba que")
         self.assertEqual(lineas[1], "debería dividirse en varias líneas para")
         self.assertEqual(lineas[2], "caber en el cartel.")
+
+    @patch('pygame.draw.rect')
+    def test_dibujar_cartel(self, mock_draw_rect):
+        mock_screen = MagicMock()
+        self.cartel.mostrar_cartel("Test mensaje", duracion=5.0, titulo="Test Titulo")
+        self.cartel.actualizar_y_dibujar(mock_screen)
+        mock_draw_rect.assert_called_once()
+        with patch.object(self.cartel, '_Cartel_UI__dibujar_mensaje') as mock_dibujar:
+            self.cartel.actualizar_y_dibujar(mock_screen)
+            mock_dibujar.assert_called_once_with(mock_screen)
+        with patch.object(self.cartel, '_Cartel_UI__dividir_mensaje') as mock_dividir:
+            self.cartel.actualizar_y_dibujar(mock_screen)
+            mock_dividir.assert_called()
+if __name__ == '__main__':
+    unittest.main()

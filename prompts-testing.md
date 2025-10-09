@@ -647,6 +647,128 @@ le quite los test de los dados porque no los voy a utizar de momento, le quite m
 test_cli.py
 
 
+### modelo
+    claude
+### propmt
+haz un test que se fije que los pares de numeros que esta devolviendo  sean los que corresponden en base al punto_index
+### respuesta    
+def test_get_punto_position_base_ficha_coordenadas_correctas(self):
+    """Test que verifica que las coordenadas devueltas correspondan al punto_index"""
+    
+    # Constantes esperadas (basadas en la implementación)
+    x_base = BOARD_X  # 100
+    y_superior = BOARD_Y  # 50
+    y_inferior = BOARD_Y + BOARD_HEIGHT - self.tablero_UI._TableroUI__punto_height__
+    punto_width = self.tablero_UI._TableroUI__punto_width__
+    
+    # Test triángulos superiores 0-5 (lado derecho)
+    for i in range(6):
+        x, y = self.tablero_UI.get_punto_position_base_ficha(i)
+        expected_x = x_base + BOARD_WIDTH - (i + 1) * punto_width
+        expected_y = y_superior
+        
+        self.assertEqual(x, expected_x, f"X incorrecta para punto {i}")
+        self.assertEqual(y, expected_y, f"Y incorrecta para punto {i}")
+    
+    # Test triángulos superiores 6-11 (lado izquierdo)
+    for i in range(6, 12):
+        x, y = self.tablero_UI.get_punto_position_base_ficha(i)
+        expected_x = x_base + BOARD_WIDTH - i * punto_width - 150
+        expected_y = y_superior
+        
+        self.assertEqual(x, expected_x, f"X incorrecta para punto {i}")
+        self.assertEqual(y, expected_y, f"Y incorrecta para punto {i}")
+    
+    # Test triángulos inferiores 12-17 (lado izquierdo)
+    for i in range(12, 18):
+        x, y = self.tablero_UI.get_punto_position_base_ficha(i)
+        expected_x = x_base + (i - 12) * punto_width
+        expected_y = y_inferior
+        
+        self.assertEqual(x, expected_x, f"X incorrecta para punto {i}")
+        self.assertEqual(y, expected_y, f"Y incorrecta para punto {i}")
+    
+    # Test triángulos inferiores 18-23 (lado derecho)
+    for i in range(18, 24):
+        x, y = self.tablero_UI.get_punto_position_base_ficha(i)
+        expected_x = (x_base + (i - 18) * punto_width + 
+                     6 * punto_width + 110)
+        expected_y = y_inferior
+        
+        self.assertEqual(x, expected_x, f"X incorrecta para punto {i}")
+        self.assertEqual(y, expected_y, f"Y incorrecta para punto {i}")
+
+def test_coordenadas_son_numeros_validos(self):
+    """Test que verifica que las coordenadas sean números válidos"""
+    for punto_index in range(24):
+        x, y = self.tablero_UI.get_punto_position_base_ficha(punto_index)
+        
+        # Verificar que son números
+        self.assertIsInstance(x, (int, float), f"X no es número para punto {punto_index}")
+        self.assertIsInstance(y, (int, float), f"Y no es número para punto {punto_index}")
+        
+        # Verificar que están dentro del rango del tablero
+        self.assertGreaterEqual(x, 0, f"X negativa para punto {punto_index}")
+        self.assertGreaterEqual(y, 0, f"Y negativa para punto {punto_index}")
+
+def test_triangulos_superiores_vs_inferiores_diferentes_y(self):
+    """Test que verifica que triángulos superiores e inferiores tengan Y diferentes"""
+    x_sup, y_sup = self.tablero_UI.get_punto_position_base_ficha(0)  # Superior
+    x_inf, y_inf = self.tablero_UI.get_punto_position_base_ficha(12)  # Inferior
+    
+    # Y debe ser diferente
+    self.assertNotEqual(y_sup, y_inf, "Triángulos superior e inferior tienen misma Y")
+    
+    # Superior debe estar arriba (Y menor)
+    self.assertLess(y_sup, y_inf, "Triángulo superior no está arriba del inferior")
+
+def test_secuencia_x_triangulos_consecutivos(self):
+    """Test que verifica que triángulos consecutivos tengan X en secuencia lógica"""
+    # Para triángulos superiores 0-5 (X debe decrecer)
+    x_prev = None
+    for i in range(6):
+        x, _ = self.tablero_UI.get_punto_position_base_ficha(i)
+        if x_prev is not None:
+            self.assertLess(x, x_prev, f"X no decrece correctamente entre puntos {i-1} y {i}")
+        x_prev = x
+    
+    # Para triángulos inferiores 12-17 (X debe crecer)
+    x_prev = None
+    for i in range(12, 18):
+        x, _ = self.tablero_UI.get_punto_position_base_ficha(i)
+        if x_prev is not None:
+            self.assertGreater(x, x_prev, f"X no crece correctamente entre puntos {i-1} y {i}")
+        x_prev = x
+### Fixed
+### cambios 
+le quite los tests que no eran tan necesarios, men enfoque en testear que las coordenadas sean correctas dado un index de triangulo, le quite textos inecesarios
+### archivos finales
+Test_tablero_ui.py
+
+
+### modelo
+    claude
+### propmt
+sigueindo la estrategia de lso test anteriores (verificar que se llamen los metodos mockeados, haz los tests de estos 2 metodos)
+### respuesta    
+# Verificar número exacto de llamadas
+self.mock_backgammon.dados.tirar_dados.assert_called_once()
+
+# Verificar parámetros específicos
+self.mock_backgammon.mover_ficha.assert_called_with(5, 3)
+
+# Verificar que NO se llamó
+self.mock_backgammon.mover_ficha_comida.assert_not_called()
+
+# Verificar orden de llamadas
+self.assertLess(
+    self.mock_campos_ui.get_dado_seleccionado.call_count,
+    self.mock_backgammon.mover_ficha.call_count
+### Fixed
+### cambios
+saque los escenarios que no me interesaban tanto, y me enfoque en los mas criticos como provesar correctamente el evento onMove
+### archivos finales
+Test_tablero_ui.py
 
 ### modelo
     claude

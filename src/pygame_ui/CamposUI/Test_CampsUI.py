@@ -20,7 +20,7 @@ class TestCampsUI(unittest.TestCase):
         self.assertFalse(self.campos_ui.elementos_creados)
         self.campos_ui._CamposUi__crear_elementos()
         self.assertIsNotNone(self.campos_ui.select_triangulo)
-        self.assertIsNotNone(self.campos_ui.select_dado)
+        self.assertIsNotNone(self.campos_ui._CamposUi__select_dado)
         self.assertIsNotNone(self.campos_ui.boton_mover)
         self.assertIsNotNone(self.campos_ui._CamposUi__text_triangulo)
         self.assertIsNotNone(self.campos_ui._CamposUi__text_dado)
@@ -37,7 +37,7 @@ class TestCampsUI(unittest.TestCase):
         self.assertEqual(mock_button.call_count, 1)
         
         self.assertIsNotNone(self.campos_ui.select_triangulo)
-        self.assertIsNotNone(self.campos_ui.select_dado)
+        self.assertIsNotNone(self.campos_ui._CamposUi__select_dado)
         self.assertIsNotNone(self.campos_ui.boton_mover)
     def test_manager_getter(self):
         manager = self.campos_ui.manager
@@ -91,6 +91,25 @@ class TestCampsUI(unittest.TestCase):
         self.campos_ui.turno_actual = TipoFicha.NEGRA.value
         texto = self.campos_ui._CamposUi__get_text_turno()
         self.assertEqual(texto, "Turno del jugador Negro")
+
+    def test_dibujar_textos(self):
+        screen = MagicMock()
+        self.campos_ui._CamposUi__text_dado = MagicMock()
+        self.campos_ui._CamposUi__text_turno = MagicMock()
+        self.campos_ui._CamposUi__text_triangulo = MagicMock()
+        self.campos_ui._CamposUi__dibujar_textos(screen)
+        screen.blit.assert_called()
+        self.assertEqual(screen.blit.call_count, 3)
+    def test_get_dado_seleccionado(self):
+        self.campos_ui._CamposUi__select_dado = MagicMock()
+        self.campos_ui._CamposUi__select_dado.selected_option = ("Dado 1: 3", None)
+        dado = self.campos_ui.get_dado_seleccionado()
+        self.assertEqual(dado, 3)
+    def test_get_dado_no_seleccionado(self):
+        self.campos_ui._CamposUi__select_dado = MagicMock()
+        self.campos_ui._CamposUi__select_dado.selected_option = None
+        dado = self.campos_ui.get_dado_seleccionado()
+        self.assertIsNone(dado)
 
 if __name__ == '__main__':
     unittest.main()

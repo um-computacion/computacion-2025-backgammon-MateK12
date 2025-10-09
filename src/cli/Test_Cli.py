@@ -10,6 +10,8 @@ from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.tablero.Tablero import Tablero
 from src.core.models.tablero.Tablero import Tablero_Validador
 from src.core.models.dado.Dados import Dados
+from unittest.mock import patch, MagicMock
+from src.core.helpers.Tablero_Impresor import Tablero_Impresor
 # pylint: disable=C0116
 class TestCli(unittest.TestCase):
     def setUp(self):
@@ -112,42 +114,6 @@ class TestCli(unittest.TestCase):
 
     # endregion
 
-    # # #region tirar_dados
-    # def test_tirar_dados_sin_dobles(self):
-    #     """Test tirar dados cuando NO salen dobles"""
-    #     with patch.object(self.cli.backgammon.dados, 'tirar_dados', return_value=[3, 5]), \
-    #          patch.object(self.cli.backgammon.dados, 'doble', False), \
-    #          patch('builtins.print'):
-    #         resultado = self.cli.tirar_dados()
-    #         self.assertEqual(resultado, [3, 5])
-    #         self.assertEqual(self.cli.dados_disponibles, [3, 5])
-
-    # def test_tirar_dados_con_dobles(self):
-    #     """Test tirar dados cuando salen dobles"""
-    #     with patch.object(self.cli.backgammon.dados, 'tirar_dados', return_value=[4, 4, 4, 4]), \
-    #          patch.object(self.cli.backgammon.dados, 'doble', True), \
-    #          patch('builtins.print'):
-    #         resultado = self.cli.tirar_dados()
-    #         self.assertEqual(resultado, [4, 4, 4, 4])
-    #         self.assertEqual(self.cli.dados_disponibles, [4, 4, 4, 4])
-    # endregion
-
-    # region mostrar_turno_actual
-    # def test_mostrar_turno_actual_jugador_rojo(self):
-    #     """Test mostrar turno del jugador rojo"""
-    #     with patch.object(self.cli.backgammon, 'turno', TipoFicha.ROJA.value), \
-    #          patch('builtins.print') as mock_print:
-    #         self.cli.mostrar_turno_actual()
-    #         mock_print.assert_called_once_with('Turno del jugador rojo: Juan')
-
-    # def test_mostrar_turno_actual_jugador_negro(self):
-    #     """Test mostrar turno del jugador negro"""
-    #     with patch.object(self.cli.backgammon, 'turno', TipoFicha.NEGRA.value), \
-    #          patch('builtins.print') as mock_print:
-    #         self.cli.mostrar_turno_actual()
-    #         mock_print.assert_called_once_with('Turno del jugador negro: Maria')
-    # endregion
-
     # region realizar_movimiento
     def test_realizar_movimiento_con_fichas_comidas_dado_valido(self):
         """Test realizar movimiento cuando hay fichas comidas y el dado es válido"""
@@ -248,7 +214,41 @@ class TestCli(unittest.TestCase):
             self.assertEqual(self.cli.dados_disponibles, [3, 3, 3, 3])
 
     # endregion
+    def test_mostrar_ganador_rojo(self):
+        """Test mostrar ganador cuando gana el jugador rojo"""
+        with patch.object(
+            self.cli.backgammon, "hay_ganador", return_value=TipoFicha.ROJA
+        ), patch("builtins.print") as mock_print:
+            self.cli.mostrar_ganador()
+            mock_print.assert_called_once_with("¡El jugador rojo ha ganado!")
+    def test_mostrar_ganador_negro(self):
+        """Test mostrar ganador cuando gana el jugador negro"""
+        with patch.object(
+            self.cli.backgammon, "hay_ganador", return_value=TipoFicha.NEGRA
+        ), patch("builtins.print") as mock_print:
+            self.cli.mostrar_ganador()
+            mock_print.assert_called_once_with("¡El jugador negro ha ganado!")
+    def test_jugar(self):
+        """Test jugar"""
+        with patch("builtins.print") as mock_print, patch.object(
+            Tablero_Impresor, "imprimir_tablero"
+        ) as mock_tablero_impresor, patch.object(self.cli, 'tirar_dados') as mock_tirar_dados, unittest.mock.patch('builtins.input', return_value=''), patch.object(self.cli,'mostrar_ganador') as mock_mostrar_ganador:
+            self.cli.backgammon.hay_ganador = MagicMock(side_effect=[None,None, TipoFicha.ROJA])
 
+            self.cli.jugar()
+            mock_print.assert_called()
+            mock_tablero_impresor.assert_called_once()
+            mock_tirar_dados.assert_called()
+            mock_mostrar_ganador.assert_called_once()
+
+    def test_puede_hacer_algun_movimiento(self):
+        """Test puede hacer algún movimiento"""
+        self.cli.dados_disponibles = [2, 6]
+        self.cli.backgammon.hay_fichas_comidas = MagicMock(return_value=False)
+        self.cli.backgammon.puede_hacer_movimiento = MagicMock(return_value=True)
+
+        resultado = self.cli.puede_hacer_algun_movimiento()
+        self.assertTrue(resultado)
 
 if __name__ == "__main__":
     unittest.main()

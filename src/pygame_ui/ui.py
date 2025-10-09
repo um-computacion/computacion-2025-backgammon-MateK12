@@ -43,7 +43,6 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__campos_ui.dados_actuales = resultado
         self.__dados_disponibles = resultado
         self.__dados_tirados = True
-        return resultado
 
     def actualizar_tablero_ui(self,time_delta:float):
         self.__tablero_ui.tablero = self.__backgammon.tablero
@@ -64,6 +63,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         seleccion_index = self.__dados_disponibles.index(dado)
         if self.__backgammon.hay_fichas_comidas():
             self.__backgammon.mover_ficha_comida(dado)
+            self.__dados_disponibles.pop(int(seleccion_index))
         else:
             self.__backgammon.mover_ficha(int(triangulo), dado)
             self.__dados_disponibles.pop(int(seleccion_index))
@@ -96,8 +96,6 @@ class BackgammonUI(IJuegoInterfazMovimientos):
             time_delta = clock.tick(60) / 1000.0 
             self.tirar_dados()
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.__running = False
                 if event.type == pygame_gui.UI_BUTTON_START_PRESS:
                     if event.ui_element == self.__campos_ui.boton_mover:
                         self.onMove()
@@ -135,6 +133,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__backgammon.cambiar_turno()
         self.__campos_ui.turno_actual = self.__backgammon.turno
         self.__dados_tirados = False
+
     def mostrar_ganador(self):
         """Muestra el ganador en la UI"""
         ganador = self.__backgammon.hay_ganador()
@@ -142,6 +141,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
             self.__cartel_victoria.mostrar_cartel("¡El jugador Rojo ha ganado!", duracion=5.0,titulo="Ganador")
         elif ganador == TipoFicha.NEGRA.value:
             self.__cartel_victoria.mostrar_cartel("¡El jugador Negro ha ganado!", duracion=5.0,titulo="Ganador")
+
 
 if __name__ == "__main__":
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
