@@ -3,6 +3,7 @@ import pygame
 from src.pygame_ui.ui import BackgammonUI,WINDOW_HEIGHT,WINDOW_WIDTH
 from unittest.mock import Mock, MagicMock,patch
 from src.core.enums.TipoFicha import TipoFicha
+from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
 import pygame_gui
 class Test_Ui(unittest.TestCase):
     def setUp(self):
@@ -110,6 +111,24 @@ class Test_Ui(unittest.TestCase):
     #         mock_hay_ganador.side_effect = [None, None, TipoFicha.ROJA]
     #         self.ui.jugar()
     #         mock_onMove.assert_called_once()
+
+    def test_puede_hacer_algun_movimiento_true(self):
+        self.ui._BackgammonUI__dados_disponibles = [3, 5]
+        self.mock_backgammon.turno = TipoFicha.ROJA.value
+        self.mock_backgammon.puede_mover_ficha = MagicMock(side_effect=[False, True])
+        resultado = self.ui.puede_hacer_algun_movimiento()
+        self.assertTrue(resultado)
+        call_count = self.mock_backgammon.puede_mover_ficha.call_count
+        self.assertEqual(call_count, 2)
+    def test_puede_hacer_algun_movimiento_false(self):
+        self.ui._BackgammonUI__dados_disponibles = [3, 5]
+        self.mock_backgammon.turno = TipoFicha.ROJA.value
+        self.mock_backgammon.puede_mover_ficha = MagicMock(side_effect=[False, False])
+        with self.assertRaises(NingunMovimientoPosible):
+            self.ui.puede_hacer_algun_movimiento()
+            call_count = self.mock_backgammon.puede_mover_ficha.call_count
+            self.assertEqual(call_count, 2)
+
 
     def tearDown(self):
         pygame.quit()

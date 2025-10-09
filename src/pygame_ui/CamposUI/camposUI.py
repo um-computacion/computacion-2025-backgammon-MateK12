@@ -18,7 +18,7 @@ class CamposUi:
         self.__turno_actual:int = None
         self.__boton_mover = None
         self.__font = Font(None, 36)
-        self.select_dado= None
+        self.__select_dado= None
         self.__text_triangulo = None
         self.__text_dado = None
         self.__text_turno = None
@@ -70,7 +70,7 @@ class CamposUi:
         self.__text_dado = self.__font.render('Seleccionar Dado:', True, LABEL_COLOR)
 
         opciones_dados = [f"Dado {i+1}: {valor}" for i, valor in enumerate(self.__dados_actuales)]
-        self.select_dado = pygame_gui.elements.UIDropDownMenu(
+        self.__select_dado = pygame_gui.elements.UIDropDownMenu(
             options_list=opciones_dados,
             starting_option=opciones_dados[0] if opciones_dados else "No hay dados",
             relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),
@@ -99,7 +99,7 @@ class CamposUi:
         self.__elementos_creados = True
 
     def __dibujar_textos(self, screen):
-        """Dibuja todos los elementos en la pantalla"""
+        """poner los textos (etiquetas) en la pantalla"""
         y_offset = 50
         spacing = 50
         
@@ -128,8 +128,8 @@ class CamposUi:
         elif self.__turno_actual == TipoFicha.NEGRA.value:    
             return "Turno del jugador Negro"
     def get_dado_seleccionado(self) -> int | None:
-        if self.select_dado and self.select_dado.selected_option:
-            (valor,_) =self.select_dado.selected_option
+        if self.__select_dado and self.__select_dado.selected_option:
+            (valor,_) =self.__select_dado.selected_option
             valor = valor.split(': ')[1]
             return int(valor)
         return None
@@ -141,11 +141,11 @@ class CamposUi:
         return None
     def __actualizar_dropdown_dados(self):
         """Actualiza el dropdown de dados cuando cambian los dados disponibles"""
-        if self.select_dado:
-            self.select_dado.kill()  
+        if self.__select_dado:
+            self.__select_dado.kill()  
         y_offset = 50 + 50 + 30  
         opciones_dados = self.__get_opciones_dados()
-        self.select_dado = pygame_gui.elements.UIDropDownMenu(
+        self.__select_dado = pygame_gui.elements.UIDropDownMenu(
             options_list=opciones_dados,
             starting_option=opciones_dados[0] if opciones_dados else "No hay dados",
             relative_rect=pygame.Rect(self.__base_x, y_offset + 30, ELEMENT_WIDTH, 35),

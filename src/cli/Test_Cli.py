@@ -241,5 +241,14 @@ class TestCli(unittest.TestCase):
             mock_tirar_dados.assert_called()
             mock_mostrar_ganador.assert_called_once()
 
+    def test_puede_hacer_algun_movimiento(self):
+        """Test puede hacer algún movimiento"""
+        self.cli.dados_disponibles = [2, 6]
+        self.cli.backgammon.hay_fichas_comidas = MagicMock(return_value=False)
+        self.cli.backgammon.puede_hacer_movimiento = MagicMock(return_value=True)
+
+        resultado = self.cli.puede_hacer_algun_movimiento()
+        self.assertTrue(resultado)
+
 if __name__ == "__main__":
     unittest.main()
