@@ -9,9 +9,13 @@ from src.pygame_ui.Tablero_UI.Tablero_UI import TableroUI
 from src.core.models.tablero.Tablero import Tablero
 from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
-from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
-from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
+from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
+from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
+
+
+
 from src.pygame_ui.CamposUI.camposUI import CamposUi
 from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.dado.Dados import Dados
@@ -43,7 +47,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__campos_ui.dados_actuales = resultado
         self.__dados_disponibles = resultado
         self.__dados_tirados = True
-
+        self.puede_hacer_algun_movimiento()
     def actualizar_tablero_ui(self,time_delta:float):
         self.__tablero_ui.tablero = self.__backgammon.tablero
         self.__campos_ui.manager.update(time_delta)  
@@ -56,8 +60,6 @@ class BackgammonUI(IJuegoInterfazMovimientos):
 
     def realizar_movimiento(self):
         """Procesa el movimiento del jugador"""
-        self.seleccion_dado_valida()
-        self.seleccion_triangulo_valida()
         dado = self.__campos_ui.get_dado_seleccionado()
         triangulo = self.__campos_ui.get_seleccion_triangulo()
         seleccion_index = self.__dados_disponibles.index(dado)
@@ -68,23 +70,8 @@ class BackgammonUI(IJuegoInterfazMovimientos):
             self.__backgammon.mover_ficha(int(triangulo), dado)
             self.__dados_disponibles.pop(int(seleccion_index))
         self.__campos_ui.dados_actuales = self.__dados_disponibles
+        self.__campos_ui.fichas_comidas = self.__backgammon.tablero.fichas_comidas
 
-    def seleccion_triangulo_valida(self):
-        """Valida que la selección del triángulo desde la UI sea correcta
-        Raises:
-            SeleccionTrianguloInvalida
-        """
-        if self.__campos_ui.get_seleccion_triangulo() is not None:
-            return
-        raise SeleccionTrianguloInvalida("Selección de triángulo inválida")
-    def seleccion_dado_valida(self):
-        """Valida que la selección del dado desde la UI sea correcta
-        Raises:
-            SeleccionDadoInvalida
-        """
-        if self.__campos_ui.get_dado_seleccionado() is not None:
-            return True
-        raise SeleccionDadoInvalida("Selección de dado inválida")
     def jugar(self):
         """Loop principal del juego"""
         clock = pygame.time.Clock()
@@ -93,27 +80,27 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.tirar_dados()
         self.actualizar_tablero_ui(0)
         while not self.__backgammon.hay_ganador():
-            time_delta = clock.tick(60) / 1000.0 
-            self.tirar_dados()
-            for event in pygame.event.get():
-                if event.type == pygame_gui.UI_BUTTON_START_PRESS:
-                    if event.ui_element == self.__campos_ui.boton_mover:
+            try:
+                time_delta = clock.tick(60) / 1000.0 
+                self.tirar_dados()
+                for event in pygame.event.get():
+                    if event.type == pygame_gui.UI_BUTTON_START_PRESS and event.ui_element == self.__campos_ui.boton_mover:
                         self.onMove()
-                self.__campos_ui.manager.process_events(event)
-            self.actualizar_tablero_ui(time_delta)
+                        if self.__dados_disponibles:
+                            self.puede_hacer_algun_movimiento()
+                    self.__campos_ui.manager.process_events(event)
+                if not self.__dados_disponibles:
+                    self.cambiar_turno()
+                self.actualizar_tablero_ui(time_delta)
+            except (NingunMovimientoPosible,NoHayFichaEnTriangulo,MovimientoNoJustoParaGanar,CasillaOcupadaException) as e:
+                self.__cartel_error.mostrar_cartel(str(e), duracion=5.0)
         self.mostrar_ganador()
         pygame.quit()
         sys.exit()
 
     def onMove(self):
         """Procesa el movimiento del jugador"""
-        try:  
-            self.puede_hacer_algun_movimiento()
-            self.realizar_movimiento()
-            if not self.__dados_disponibles:
-                self.cambiar_turno()
-        except Exception as e:
-            self.__cartel_error.mostrar_cartel(str(e), duracion=3.0)
+        self.realizar_movimiento()
 
     def puede_hacer_algun_movimiento(self):
         """Verifica si el jugador actual puede hacer algún movimiento con los dados disponibles
@@ -124,9 +111,8 @@ class BackgammonUI(IJuegoInterfazMovimientos):
             if self.__backgammon.puede_mover_ficha(tipo, dado):
                 return True
         self.__dados_disponibles = []
-        raise NingunMovimientoPosible(
-            "No hay movimientos posibles con los dados disponibles"
-        )
+        self.cambiar_turno()
+        raise NingunMovimientoPosible("No hay movimientos posibles con los dados disponibles" + str(self.__dados_disponibles))
 
     def cambiar_turno(self):
         '''Cambia el turno al siguiente jugador dejando los parametros en su estado correspondiente'''
@@ -143,7 +129,8 @@ class BackgammonUI(IJuegoInterfazMovimientos):
             self.__cartel_victoria.mostrar_cartel("¡El jugador Negro ha ganado!", duracion=5.0,titulo="Ganador")
 
 
-if __name__ == "__main__":
+
+def main ():
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
     backgammon = Backgammon(tablero,Dados())
     tableroUi = TableroUI(tablero)
@@ -153,3 +140,6 @@ if __name__ == "__main__":
     cartel_victoria = Cartel_UI((WINDOW_WIDTH/2, WINDOW_HEIGHT/2),color_fondo=(0,128,0),color_texto=(255,255,255))
     app = BackgammonUI(backgammon, tableroUi, camposUi, pantalla,cartel_error, cartel_victoria)
     app.jugar()
+
+if __name__ == "__main__":
+    main()

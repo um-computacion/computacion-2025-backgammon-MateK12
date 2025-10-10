@@ -78,16 +78,15 @@ En clases como CLI se testea las llamadas correctas a las funciones de otras cla
 Separo la responsabilidad de validar movimientos en una clase aparte, y la responsabilidad de imprimir el tablero en otra clase aparte, y la responsabilidad de manejar la logica del juego en otra clase aparte
 
 #### 🔸 Open/Closed Principle (OCP)
-
+Las interfaces usan interfaces como IJuegoInterfazMovimientos, IJuegoInterfazDados, IJuegoInterfazDadosValidaciones permitiendo asi la extension del codigo sin modificar las clases existentes
 
 #### 🔸 Liskov Substitution Principle (LSP)
-
+No uso herencia
 
 #### 🔸 Interface Segregation Principle (ISP)
-
-
+Hay interfaces separadas como JuegoInterfazDados y JuegoInterfazDadosValidaciones, ya que si ambas interfaces estuvieran juntas, las interfaces que no necesiten validar el dado (como la ui) tendrian que implementar un metodo que no usan
 #### 🔸 Dependency Inversion Principle (DIP)
-
+Todas las clases dependen de abstracciones, y son pasadas en el constructor, no se instancian en el constructor como estaba antes
 
 ## 📎 Anexos
 

@@ -32,7 +32,19 @@ class Test_Ui(unittest.TestCase):
             cartel_error=self.mock_cartel_error,
             cartel_victoria=self.mock_cartel_victoria
         )
-
+    @patch('src.pygame_ui.ui.BackgammonUI')
+    @patch('src.pygame_ui.ui.pygame.display.set_mode')
+    def test_main_function(self, mock_display, mock_ui):
+        """Test de la función main"""
+        from src.pygame_ui.ui import main
+        
+        mock_ui_instance = MagicMock()
+        mock_ui.return_value = mock_ui_instance
+        
+        main()
+        
+        mock_ui.assert_called_once()
+        mock_ui_instance.jugar.assert_called_once()
     def test_tirar_dados(self):
         self.ui.tirar_dados()
         self.mock_backgammon.dados.tirar_dados.assert_called_once()
@@ -88,30 +100,6 @@ class Test_Ui(unittest.TestCase):
             self.ui.onMove()
             mock_puede_hacer_movimiento.assert_called_once()
             mock_realizar_movimiento.assert_called_once()
-    # @patch('pygame.time.Clock')
-    # @patch('pygame.event.get')
-    # @patch('pygame.quit')
-    # @patch('sys.exit')
-    # def test_jugar_maneja_evento_boton_mover(self, mock_exit, mock_quit, mock_events, mock_clock):
-    #     """Test que verifica que jugar maneja el evento del botón mover"""
-    #     # Setup mocks
-    #     mock_clock_instance = MagicMock()
-    #     mock_clock.return_value = mock_clock_instance
-    #     mock_clock_instance.tick.return_value = 16
-        
-    #     # Crear evento de botón
-    #     mock_event = MagicMock()
-    #     mock_event.type = pygame_gui.UI_BUTTON_START_PRESS
-    #     mock_event.ui_element = self.mock_campos_ui.boton_mover
-
-    #     mock_events.side_effect = [[mock_event], []]
-
-
-    #     with patch.object(self.ui, 'onMove') as mock_onMove, patch.object(self.ui.__backgammon.hay_ganador) as mock_hay_ganador:
-    #         mock_hay_ganador.side_effect = [None, None, TipoFicha.ROJA]
-    #         self.ui.jugar()
-    #         mock_onMove.assert_called_once()
-
     def test_puede_hacer_algun_movimiento_true(self):
         self.ui._BackgammonUI__dados_disponibles = [3, 5]
         self.mock_backgammon.turno = TipoFicha.ROJA.value

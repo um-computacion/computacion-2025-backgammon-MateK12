@@ -2,6 +2,7 @@ import pygame
 import pygame_gui
 from pygame.font import Font
 from src.core.enums.TipoFicha import TipoFicha
+from src.core.models.ficha.Ficha import Ficha
 ELEMENT_WIDTH = 250
 LABEL_WIDTH = 200
 BUTTON_WIDTH = 150
@@ -23,7 +24,8 @@ class CamposUi:
         self.__text_dado = None
         self.__text_turno = None
         self.__elementos_creados = False
-        
+        self.__text_fichas_comidas = None
+        self.__fichas_comidas:list[Ficha]=[]
     @property
     def manager(self):
         return self.__manager
@@ -50,7 +52,18 @@ class CamposUi:
         self.__dados_actuales = dados.copy()
         if self.__elementos_creados and old_dados != dados:
             self.__actualizar_dropdown_dados()
-    
+
+    @property
+    def fichas_comidas(self):
+        return self.__fichas_comidas
+    @fichas_comidas.setter
+    def fichas_comidas(self, fichas: list[Ficha]):
+        self.__fichas_comidas = fichas
+        self.__text_fichas_comidas = self.__font.render(self.__get_text_fichas_comidas(), True, LABEL_COLOR)
+
+    @property
+    def select_dado(self):
+        return self.__select_dado
     def __crear_elementos(self):
         """Crea todos los elementos de la interfaz"""
         if self.__elementos_creados:
@@ -85,14 +98,14 @@ class CamposUi:
             manager=self.__manager,
         )
         
-        y_offset += spacing + 10
+        # y_offset += spacing + 10
 
         self.__text_turno = self.__font.render(self.__get_text_turno(), True, LABEL_COLOR)
         
-        y_offset += 40
+        # y_offset += 40
 
         self.__text_triangulo = self.__font.render('Seleccione un triangulo', True, LABEL_COLOR)
-
+        self.__text_fichas_comidas = self.__font.render(self.__get_text_fichas_comidas(), True, LABEL_COLOR)
         self.__actualizar_textos()
 
 
@@ -115,18 +128,13 @@ class CamposUi:
         
         if self.__text_turno:
             screen.blit(self.__text_turno, (self.__base_x,10))
-        
+        if self.__text_fichas_comidas:
+            screen.blit(self.__text_fichas_comidas, (self.__base_x, y_offset + 20))
+
+
         y_offset += 40
         
         
-    def __get_text_turno(self)-> str:
-        '''Obtiene el texto del turno actual
-            Returns: str: Texto del turno actual
-        '''
-        if self.__turno_actual == TipoFicha.ROJA.value:
-            return "Turno del jugador Rojo"
-        elif self.__turno_actual == TipoFicha.NEGRA.value:    
-            return "Turno del jugador Negro"
     def get_dado_seleccionado(self) -> int | None:
         if self.__select_dado and self.__select_dado.selected_option:
             (valor,_) =self.__select_dado.selected_option
@@ -163,9 +171,28 @@ class CamposUi:
         texto_turno = self.__get_text_turno()
         if texto_turno:
             self.__text_turno = self.__font.render(texto_turno, True, LABEL_COLOR)
+    
+
     def __get_opciones_dados(self) -> list[str]:
         """Obtiene las opciones para el dropdown de dados"""
         return [f"Dado {i+1}: {valor}" for i, valor in enumerate(self.__dados_actuales)]
+    def __get_text_turno(self)-> str:
+        '''Obtiene el texto del turno actual
+            Returns: str: Texto del turno actual
+        '''
+        if self.__turno_actual == TipoFicha.ROJA.value:
+            return "Turno del jugador Rojo"
+        elif self.__turno_actual == TipoFicha.NEGRA.value:    
+            return "Turno del jugador Negro"
+    def __get_text_fichas_comidas(self)-> str:
+        '''Obtiene el texto de las fichas comidas
+            Returns: str: Texto de las fichas comidas
+        '''
+        negras = len([f for f in self.__fichas_comidas if f.tipo == TipoFicha.NEGRA.value])
+        rojas = len([f for f in self.__fichas_comidas if f.tipo == TipoFicha.ROJA.value])
+        return f'Fichas comidas - Negras: {negras} Rojas: {rojas}'
+
+
     def dibujar_campos(self, screen):
         """Dibuja todos los elementos en la pantalla"""
         self.__crear_elementos()

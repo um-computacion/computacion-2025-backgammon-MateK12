@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from src.core.enums.TipoFicha import TipoFicha
+from src.core.models.ficha.Ficha import Ficha
 
 class TestCampsUI(unittest.TestCase):
     @patch('pygame_gui.UIManager')
@@ -110,6 +111,33 @@ class TestCampsUI(unittest.TestCase):
         self.campos_ui._CamposUi__select_dado.selected_option = None
         dado = self.campos_ui.get_dado_seleccionado()
         self.assertIsNone(dado)
+    def test_get_text_fichas_comidas(self):
+        self.campos_ui.fichas_comidas = [
+            Ficha(TipoFicha.NEGRA.value),
+            Ficha(TipoFicha.NEGRA.value),
+            Ficha(TipoFicha.ROJA.value)
+        ]
+        texto = self.campos_ui._CamposUi__get_text_fichas_comidas()
+        self.assertEqual(texto, 'Fichas comidas - Negras: 2 Rojas: 1')
+    def test_get_text_fichas_comidas_vacio(self):
+        self.campos_ui.fichas_comidas = []
+        texto = self.campos_ui._CamposUi__get_text_fichas_comidas()
+        self.assertEqual(texto, 'Fichas comidas - Negras: 0 Rojas: 0')
+    def test_getter_fichas_comidas(self):
+        self.campos_ui.fichas_comidas=[Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.ROJA.value)]
+        self.assertEqual(len(self.campos_ui.fichas_comidas),2)
+        self.assertEqual(self.campos_ui.fichas_comidas[0].tipo,TipoFicha.NEGRA.value)
+        self.assertEqual(self.campos_ui.fichas_comidas[1].tipo,TipoFicha.ROJA.value)
+    def test_setter_fichas_comidas(self):
+        self.campos_ui.fichas_comidas=[Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.ROJA.value)]
+        self.assertEqual(len(self.campos_ui.fichas_comidas),2)
+        self.campos_ui.fichas_comidas=[Ficha(TipoFicha.NEGRA.value)]
+        self.assertEqual(len(self.campos_ui.fichas_comidas),1)
+    def test_getter_select_dado(self):
+        self.campos_ui._CamposUi__select_dado = MagicMock()
+        self.assertIsNotNone(self.campos_ui.select_dado)
+        self.assertEqual(self.campos_ui.select_dado, self.campos_ui._CamposUi__select_dado)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -164,7 +164,16 @@ class TestBackgammon(unittest.TestCase):
 
         resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 3)
         self.assertFalse(resultado)
+    def test_puede_mover_ficha_roja_desde_5(self):
+        self.game._Backgammon__turno = TipoFicha.ROJA.value
 
+        # Limpiar tablero
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+        self.game.tablero.tablero[5] = [Ficha(TipoFicha.ROJA.value)]
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 6)
+        self.assertTrue(resultado)
     def test_puede_mover_ficha_fichas_comidas_no_pueden_entrar(self):
         """Test cuando hay fichas comidas pero no pueden entrar al tablero"""
         self.game._Backgammon__turno = TipoFicha.NEGRA.value
@@ -198,6 +207,33 @@ class TestBackgammon(unittest.TestCase):
 
         resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 2)
         self.assertFalse(resultado)
+    def test_puede_mover_ficha_roja_unica_opcion_bloqueada_comida(self):
+        self.game._Backgammon__turno = TipoFicha.ROJA.value
+
+        ficha_comida = Ficha(TipoFicha.ROJA.value)
+        self.game.tablero.fichas_comidas.append(ficha_comida)
+
+        self.game.tablero.tablero[22] = [
+                Ficha(TipoFicha.NEGRA.value),
+                Ficha(TipoFicha.NEGRA.value),
+            ]
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 2)
+        self.assertFalse(resultado)
+    def test_puede_mover_ficha_negra_unica_opcion_bloqueada_comida(self):
+        self.game._Backgammon__turno = TipoFicha.NEGRA.value
+
+        ficha_comida = Ficha(TipoFicha.NEGRA.value)
+        self.game.tablero.fichas_comidas.append(ficha_comida)
+
+        self.game.tablero.tablero[1] = [
+                Ficha(TipoFicha.ROJA.value),
+                Ficha(TipoFicha.ROJA.value),
+            ]
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 2)
+        self.assertFalse(resultado)
+
 
     def test_puede_mover_ficha_se_pasa_sin_poder_ganar(self):
         """Test cuando el movimiento se pasa del tablero y no puede ganar"""
