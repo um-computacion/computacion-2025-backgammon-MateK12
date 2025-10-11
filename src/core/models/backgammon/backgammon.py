@@ -119,9 +119,9 @@ class Backgammon:
             for ficha in self.__tablero__.fichas_ganadas
             if ficha.tipo == TipoFicha.NEGRA.value
         ]
-        if len(fichas_rojas) == 24:
+        if len(fichas_rojas) == 15:
             return TipoFicha.ROJA.value
-        if len(fichas_negras) == 24:
+        if len(fichas_negras) == 15:
             return TipoFicha.NEGRA.value
         return None
 
@@ -178,11 +178,13 @@ class Backgammon:
                     continue
                 if se_pasa:
                     continue
+                if puede_ganar:
+                    return True
                 no_hay_fichas_rivales = (
                     not self.tablero.validador.triangulo_con_fichas_rivales(
                         self.tablero.tablero, triangulo_destino, Ficha(tipo)
                     )
                 )
-                if puede_ganar or no_hay_fichas_rivales:
+                if no_hay_fichas_rivales:
                     return True
             return False

@@ -4,8 +4,12 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
-from src.core.helpers.Tablero_Impresor import Tablero_Impresor
+from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
+from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
+from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+
+from src.core.helpers.Tablero_Impresor import Tablero_Impresor
 from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.dado.Dados import Dados
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
@@ -156,7 +160,7 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados,IJuegoInterfazDadosValid
                 try:
                     self.puede_hacer_algun_movimiento()
                     self.realizar_movimiento()
-                except Exception as e:
+                except (SeleccionDadoInvalida, SeleccionTrianguloInvalida, NingunMovimientoPosible,CasillaOcupadaException,NoHayFichaEnTriangulo,MovimientoNoJustoParaGanar) as e:
                     print(f"{ERROR}{e}{RESET}")
             self.backgammon.cambiar_turno()
         self.mostrar_ganador()

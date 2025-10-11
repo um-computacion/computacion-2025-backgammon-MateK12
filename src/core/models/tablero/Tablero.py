@@ -36,7 +36,10 @@ class Tablero:
     def validador(self) -> Tablero_Validador:
         """Retorna el validador"""
         return self.__validador__
-
+    @fichas_ganadas.setter
+    def fichas_ganadas(self, valor: list[Ficha]) -> None:
+        """Establece las fichas ganadas"""
+        self.__fichas_ganadas__ = valor
     def mover_ficha(
         self, ficha: Ficha, triangulo_origen: int, movimiento: int, comida: bool = False
     ) -> None:

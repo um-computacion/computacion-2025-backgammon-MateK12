@@ -78,6 +78,18 @@ class TestBackgammon(unittest.TestCase):
         resultado = self.game.hay_ganador()
         self.assertIsNone(resultado)
 
+    def test_hay_ganador_Rojo(self):
+        self.game.__tablero__.fichas_ganadas = [Ficha(TipoFicha.ROJA.value) for _ in range(15)]
+        self.assertEqual(self.game.hay_ganador(), TipoFicha.ROJA.value)
+
+    def test_hay_ganador_Negra(self):
+        self.game.__tablero__.fichas_ganadas = [Ficha(TipoFicha.NEGRA.value) for _ in range(15)]
+        self.assertEqual(self.game.hay_ganador(), TipoFicha.NEGRA.value)
+
+    def test_casi_ganador(self):
+        self.game.__tablero__.fichas_ganadas = [Ficha(TipoFicha.ROJA.value) for _ in range(14)]
+        self.assertIsNone(self.game.hay_ganador())
+    
     def test_seleccionar_ficha_no_existente(self):
         with self.assertRaises(NoHayFichaEnTriangulo):
             self.game.seleccionar_ficha(1, TipoFicha.NEGRA.value)
