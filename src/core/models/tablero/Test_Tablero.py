@@ -62,7 +62,6 @@ class TestTablero(unittest.TestCase):
         self.assertEqual(self.tablero.__tablero__[1][0], ficha_negra)
         self.assertEqual(len(self.tablero.fichas_comidas), 1)  # ficha roja
         self.assertEqual(self.tablero.fichas_comidas[0], ficha_roja)
-        self.assertTrue(self.tablero.fichas_comidas[0].comida)
 
     def test_mover_ficha_fuera_del_tablero(self):
         ficha = Ficha(TipoFicha.NEGRA.value)

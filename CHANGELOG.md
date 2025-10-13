@@ -305,3 +305,10 @@ test agregados a ui 83% de coverage
 ### Cambiado
 ### Arreglado
 ### Eliminado
+
+## [1.0.33] - 4-10-2025
+### Agregado
+Responsabilidad de cambiar turno en turnero, seprada de backgammon, test actualizados
+### Cambiado
+### Arreglado
+### Eliminado

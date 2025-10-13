@@ -83,7 +83,7 @@ class Test_Ui(unittest.TestCase):
         self.ui.cambiar_turno()
 
 
-        self.mock_backgammon.cambiar_turno.assert_called_once()
+        self.mock_backgammon.turnero.cambiar_turno.assert_called_once()
         self.assertFalse(self.ui._BackgammonUI__dados_tirados)
 
     def mostrar_ganador_rojo(self):
@@ -95,11 +95,6 @@ class Test_Ui(unittest.TestCase):
         self.ui.mostrar_ganador()
         self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with("¡El jugador Negro ha ganado!",5.0,titulo="Ganador")
 
-    def test_on_move(self):
-        with patch.object(self.ui,'puede_hacer_algun_movimiento') as mock_puede_hacer_movimiento, patch.object(self.ui,'realizar_movimiento') as mock_realizar_movimiento:
-            self.ui.onMove()
-            mock_puede_hacer_movimiento.assert_called_once()
-            mock_realizar_movimiento.assert_called_once()
     def test_puede_hacer_algun_movimiento_true(self):
         self.ui._BackgammonUI__dados_disponibles = [3, 5]
         self.mock_backgammon.turno = TipoFicha.ROJA.value

@@ -4,5 +4,5 @@ class IJuegoInterfazDadosValidaciones(ABC):
 
 
     @abstractmethod
-    def seleccion_dado_valida(self) -> bool:
+    def seleccion_dado_valida(self):
         pass

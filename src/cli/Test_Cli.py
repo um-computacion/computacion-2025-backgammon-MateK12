@@ -12,15 +12,17 @@ from src.core.models.tablero.Tablero import Tablero_Validador
 from src.core.models.dado.Dados import Dados
 from unittest.mock import patch, MagicMock
 from src.core.helpers.Tablero_Impresor import Tablero_Impresor
+from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
 # pylint: disable=C0116
 class TestCli(unittest.TestCase):
     def setUp(self):
         self.jugador1 = Jugador("Juan")
         self.jugador2 = Jugador("Maria")
         tablero =Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador())
-        backgammon = Backgammon(tablero, Dados(),)
+        turnero = Backgammon_Turnos(Dados())
+        backgammon = Backgammon(tablero, Dados(), turnero)
         self.cli = CLI(self.jugador1, self.jugador2, backgammon)
-        self.cli.backgammon.quien_empieza()
+        self.cli.backgammon.turnero.quien_empieza()
 
     def test_getter_Jugador_1(self):
         self.assertEqual(self.cli.jugador_rojo, self.jugador1)
@@ -101,7 +103,7 @@ class TestCli(unittest.TestCase):
         with patch(
             "builtins.input", side_effect=["Jugador1", "Jugador2"]
         ), patch.object(
-            self.cli.backgammon, "quien_empieza"
+            self.cli.backgammon.turnero, "quien_empieza"
         ) as mock_quien_empieza, patch(
             "builtins.print"
         ):

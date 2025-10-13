@@ -73,10 +73,8 @@ class Tablero:
         else:
             if self.__validador__.puede_comer(self.tablero, triangulo_destino, ficha):
                 ficha_comida = self.__tablero__[triangulo_destino].pop()
-                ficha_comida.comida = True
                 self.__fichas_comidas__.append(ficha_comida)
             if comida:
-                ficha.comida = False
                 self.__fichas_comidas__.remove(ficha)
             else:
                 self.__tablero__[triangulo_origen].pop()
