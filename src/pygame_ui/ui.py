@@ -125,6 +125,13 @@ class BackgammonUI(IJuegoInterfazMovimientos):
             self.__cartel_victoria.mostrar_cartel("¡El jugador Rojo ha ganado!", duracion=5.0,titulo="Ganador")
         elif ganador == TipoFicha.NEGRA.value:
             self.__cartel_victoria.mostrar_cartel("¡El jugador Negro ha ganado!", duracion=5.0,titulo="Ganador")
+        fin_ms = pygame.time.get_ticks() + 5000
+        clock = pygame.time.Clock()
+        while pygame.time.get_ticks() < fin_ms:
+            time_delta = clock.tick(60) / 1000.0
+            for event in pygame.event.get():
+                self.__campos_ui.manager.process_events(event)
+            self.actualizar_tablero_ui(time_delta)
 
 
 

@@ -771,6 +771,34 @@ saque los escenarios que no me interesaban tanto, y me enfoque en los mas critic
 Test_tablero_ui.py
 
 ### modelo
+    GPT-5
+### propmt
+testea este metodo, sobre todo la parte del while (mostrar ganador)
+### respuesta
+    @patch('src.pygame_ui.ui.pygame.time.get_ticks')
+    @patch('src.pygame_ui.ui.pygame.time.Clock')
+    @patch('src.pygame_ui.ui.pygame.event.get')
+    def test_mostrar_ganador_loop_actualiza_hasta_timeout(self, mock_event_get, mock_clock_cls, mock_get_ticks):
+        self.mock_backgammon.hay_ganador.return_value = TipoFicha.ROJA.value
+        mock_get_ticks.side_effect = [1000, 2000, 3000, 6001]
+        mock_clock = Mock()
+        mock_clock.tick.return_value = 16
+        mock_clock_cls.return_value = mock_clock
+        mock_event_get.return_value = []
+
+        with patch.object(self.ui, 'actualizar_tablero_ui') as mock_update:
+            self.ui.mostrar_ganador()
+            self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with(
+                "¡El jugador Rojo ha ganado!", duracion=5.0, titulo="Ganador"
+            )
+            self.assertGreaterEqual(mock_update.call_count, 2)
+### cambios
+Agrege un test simialr para mostrar el cartel cuando gane el negro
+### archivos finales
+Test_ui.py
+
+
+### modelo
     claude
 ### propmt
 ### respuesta    

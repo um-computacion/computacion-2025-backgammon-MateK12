@@ -270,3 +270,15 @@ le saque lo del contacto porque no tenia sentido, y la estructura del proyecto p
 Readme.md
 
 
+### modelo
+    claude
+### propmt
+
+cambia las versiones de este changelog, los que tengan ## al final, incrementa el numero del medio, los que tenga ### incrementa el primer numer (el mas a la izquierda) los demas el numero final, ten en cuenta que debes arrancar por el primero del archivo, y que tiene que arrancar en 1.0.0
+### respuesta    
+hizo lo que le pedi, y lo use asi
+### Fixed
+### cambios 
+### archivos finales
+CHANGELOG.md
+
