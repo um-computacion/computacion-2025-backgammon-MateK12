@@ -15,12 +15,13 @@ from src.core.models.dado.Dados import Dados
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.interfaces.JuegoInterfazMovimientos import IJuegoInterfazMovimientos
 from src.core.interfaces.JuegoInterfazDados import IJuegoInterfazDados
-from src.core.interfaces.JuegoInterfazDadosValidaciones import IJuegoInterfazDadosValidaciones
+from src.core.interfaces.DadosValidaciones import IDadosValidaciones
+from src.core.interfaces.TrianguloValidaciones import ITrianguloValidaciones
 ERROR = "\033[91m"
 RESET = "\033[0m"
 
 
-class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados,IJuegoInterfazDadosValidaciones):
+class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados,IDadosValidaciones,ITrianguloValidaciones):
     def __init__(self, jugador1, jugador2,backgammon:Backgammon):
         self.__jugador_rojo: Jugador = jugador1
         self.__jugador_negro: Jugador = jugador2
@@ -68,6 +69,8 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados,IJuegoInterfazDadosValid
             triangulo_origen (int): El triángulo de origen
             movimiento (int): El movimiento a realizar
         Llama al método mover_ficha del Backgammon"""
+        self.seleccion_dado_valida(movimiento)
+        self.se
         self.__backgammon.mover_ficha(
             triangulo_origen, movimiento, self.__backgammon.turnero.turno
         )
@@ -126,15 +129,10 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados,IJuegoInterfazDadosValid
         Raises:
             bool: True si puede hacer algún movimiento, False en caso contrario
         """
-        tipo = self.backgammon.turnero.turno
-        for dado in self.dados_disponibles:
-            if self.backgammon.puede_mover_ficha(tipo, dado):
-                return True
-        self.dados_disponibles = []
-        raise NingunMovimientoPosible(
-            "No hay movimientos posibles con los dados disponibles"
-        )
-
+        try:
+            self.backgammon.puede_mover_ficha(self.backgammon.turnero.turno, self.dados_disponibles)
+        except NingunMovimientoPosible:
+            self.dados_disponibles = []
     def seleccion_triangulo_valida(self, seleccion: str) -> bool:
         """Valida que la selección del triángulo sea correcta
         Parámetros:

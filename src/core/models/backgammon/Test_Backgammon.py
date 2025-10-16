@@ -9,6 +9,9 @@ from src.core.models.tablero.Tablero import Tablero
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos  
+from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
+from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
+from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
 # pylint: disable=C0116,W0212
 
 
@@ -126,13 +129,20 @@ class TestBackgammon(unittest.TestCase):
             Ficha(TipoFicha.ROJA.value),
             Ficha(TipoFicha.ROJA.value),
         ]
+        self.game.tablero.tablero[19] = [
+            Ficha(TipoFicha.ROJA.value),
+            Ficha(TipoFicha.ROJA.value),
+        ]
         self.game.tablero.tablero[18] = [
             Ficha(TipoFicha.ROJA.value),
             Ficha(TipoFicha.ROJA.value),
         ]
-
-        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 3)
-        self.assertFalse(resultado)
+        self.game.tablero.tablero[14] = [
+            Ficha(TipoFicha.ROJA.value),
+            Ficha(TipoFicha.ROJA.value),
+        ]
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [3, 4])
 
     def test_puede_mover_ficha_roja_desde_5(self):
         self.game.turnero.turno = TipoFicha.ROJA.value
@@ -141,7 +151,7 @@ class TestBackgammon(unittest.TestCase):
             self.game.tablero.tablero[i] = []
 
         self.game.tablero.tablero[5] = [Ficha(TipoFicha.ROJA.value)]
-        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 6)
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6])
         self.assertTrue(resultado)
 
     def test_puede_mover_ficha_fichas_comidas_no_pueden_entrar(self):
@@ -158,8 +168,8 @@ class TestBackgammon(unittest.TestCase):
             ]
 
         for dado in range(1, 7):
-            resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, dado)
-            self.assertFalse(resultado)
+            with self.assertRaises(NingunMovimientoPosible):
+                self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [dado])
 
     def test_puede_mover_ficha_roja_fichas_comidas_bloqueadas(self):
         self.game.turnero.turno = TipoFicha.ROJA.value
@@ -174,8 +184,8 @@ class TestBackgammon(unittest.TestCase):
                 Ficha(TipoFicha.NEGRA.value),
             ]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 2)
-        self.assertFalse(resultado)
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.ROJA.value, [2])
 
     def test_puede_mover_ficha_roja_unica_opcion_bloqueada_comida(self):
         self.game.turnero.turno = TipoFicha.ROJA.value
@@ -188,8 +198,8 @@ class TestBackgammon(unittest.TestCase):
                 Ficha(TipoFicha.NEGRA.value),
             ]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 2)
-        self.assertFalse(resultado)
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.ROJA.value, [2])
 
     def test_puede_mover_ficha_negra_unica_opcion_bloqueada_comida(self):
         self.game.turnero.turno = TipoFicha.NEGRA.value
@@ -202,8 +212,8 @@ class TestBackgammon(unittest.TestCase):
                 Ficha(TipoFicha.ROJA.value),
             ]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 2)
-        self.assertFalse(resultado)
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [2])
 
     def test_puede_mover_ficha_se_pasa_sin_poder_ganar(self):
         self.game.turnero.turno = TipoFicha.ROJA.value
@@ -214,7 +224,7 @@ class TestBackgammon(unittest.TestCase):
         self.game.tablero.tablero[2] = [Ficha(TipoFicha.ROJA.value)]
         self.game.tablero.tablero[15] = [Ficha(TipoFicha.ROJA.value)]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 6)
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6])
         self.assertTrue(resultado)
 
     def test_puede_mover_ficha_completamente_bloqueado_negro(self):
@@ -227,7 +237,7 @@ class TestBackgammon(unittest.TestCase):
 
         self.game.tablero.tablero[10] = [Ficha(TipoFicha.NEGRA.value)]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 3)
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [3])
         self.assertTrue(resultado)
 
     def test_puede_mover_ficha_solo_una_ficha_completamente_bloqueada(self):
@@ -243,8 +253,8 @@ class TestBackgammon(unittest.TestCase):
             Ficha(TipoFicha.ROJA.value),
         ]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 2)
-        self.assertFalse(resultado)
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [2])
 
     def test_puede_mover_ficha_pared_completa_bloqueo(self):
         self.game.turnero.turno = TipoFicha.NEGRA.value
@@ -264,8 +274,8 @@ class TestBackgammon(unittest.TestCase):
             Ficha(TipoFicha.ROJA.value),
         ]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, 2)
-        self.assertFalse(resultado)
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [2])
 
     def test_puede_mover_ficha_todas_se_pasan_no_zona_ganancia(self):
         self.game.turnero.turno = TipoFicha.ROJA.value
@@ -278,10 +288,45 @@ class TestBackgammon(unittest.TestCase):
 
         self.game.tablero.tablero[10] = [Ficha(TipoFicha.ROJA.value)]
 
-        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, 6)
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6])
         self.assertTrue(resultado)
-
 # end region
-
+    def test_seleccion_dado_valida_valido(self):
+        dado = 3
+        resultado = self.game.seleccion_dado_valida(dado)
+        self.assertTrue(resultado)
+    def test_seleccion_dado_valida_no_entero(self):
+        dado = "a"
+        with self.assertRaises(SeleccionDadoInvalida):
+            self.game.seleccion_dado_valida(dado)
+    def test_dado_mayor_a_6(self):
+        dado = 7
+        with self.assertRaises(SeleccionDadoInvalida):
+            self.game.seleccion_dado_valida(dado)
+    def test_dado_menor_a_1(self):
+        dado = 0
+        with self.assertRaises(SeleccionDadoInvalida):
+            self.game.seleccion_dado_valida(dado)
+    def test_dado_indefinido(self):
+        dado = None
+        with self.assertRaises(SeleccionDadoInvalida):
+            self.game.seleccion_dado_valida(dado)
+    def test_triangulo_valido(self):
+        for i in range(24):
+            resultado = self.game.seleccion_triangulo_valida(i)
+            self.assertTrue(resultado)
+    def test_triangulo_menor_a_0(self):
+        with self.assertRaises(SeleccionTrianguloInvalida):
+            self.game.seleccion_triangulo_valida(-1)
+    def test_triangulo_mayor_a_23(self):
+        with self.assertRaises(SeleccionTrianguloInvalida):
+            self.game.seleccion_triangulo_valida(24)
+    def test_triangulo_no_entero(self):
+        with self.assertRaises(SeleccionTrianguloInvalida):
+            self.game.seleccion_triangulo_valida("a")
+    def test_triangulo_indefinido(self):
+        with self.assertRaises(SeleccionTrianguloInvalida):
+            triangulo = None
+            self.game.seleccion_triangulo_valida(triangulo)
 if __name__ == "__main__":
     unittest.main()

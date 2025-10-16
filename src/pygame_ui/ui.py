@@ -13,9 +13,8 @@ from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
 from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
 from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
 from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
-
-
-
+from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
+from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
 from src.pygame_ui.CamposUI.camposUI import CamposUi
 from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.dado.Dados import Dados
@@ -40,6 +39,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         self.__cartel_error = cartel_error
         self.__cartel_victoria = cartel_victoria
         pygame.display.set_caption("Backgammon")
+    
     
     def tirar_dados(self):
         if self.__dados_tirados:
@@ -93,7 +93,7 @@ class BackgammonUI(IJuegoInterfazMovimientos):
                 if not self.__dados_disponibles:
                     self.cambiar_turno()
                 self.actualizar_tablero_ui(time_delta)
-            except (NingunMovimientoPosible,NoHayFichaEnTriangulo,MovimientoNoJustoParaGanar,CasillaOcupadaException) as e:
+            except (NingunMovimientoPosible,NoHayFichaEnTriangulo,MovimientoNoJustoParaGanar,CasillaOcupadaException,SeleccionDadoInvalida,SeleccionTrianguloInvalida) as e:
                 self.__cartel_error.mostrar_cartel(str(e), duracion=5.0)
         self.mostrar_ganador()
         pygame.quit()
@@ -105,11 +105,11 @@ class BackgammonUI(IJuegoInterfazMovimientos):
         Raises: NingunMovimientoPosible
         """
         tipo = self.__backgammon.turnero.turno
-        for dado in self.__dados_disponibles:
-            if self.__backgammon.puede_mover_ficha(tipo, dado):
-                return True
-        self.__dados_disponibles = []
-        self.cambiar_turno()
+        try:
+            self.__backgammon.puede_mover_ficha(tipo, self.__dados_disponibles)
+        except NingunMovimientoPosible:
+            self.__dados_disponibles = []
+            self.cambiar_turno()
         raise NingunMovimientoPosible("No hay movimientos posibles con los dados disponibles" + str(self.__dados_disponibles))
 
     def cambiar_turno(self):

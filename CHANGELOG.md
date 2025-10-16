@@ -312,3 +312,10 @@ Responsabilidad de cambiar turno en turnero, seprada de backgammon, test actuali
 ### Cambiado
 ### Arreglado
 ###
+
+## [2.2.1] - 4-10-2025 ##
+### Agregado
+### Cambiado
+excepciones levantadas en clase backgammon para asegurar consistencia
+### Arreglado
+###

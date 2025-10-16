@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class IJuegoInterfazDadosValidaciones(ABC):
+class IDadosValidaciones(ABC):
 
 
     @abstractmethod

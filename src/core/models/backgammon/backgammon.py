@@ -4,7 +4,12 @@ from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
 from src.core.models.ficha.Ficha import Ficha
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
-class Backgammon:
+from src.core.interfaces.DadosValidaciones import IDadosValidaciones
+from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
+from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
+from src.core.interfaces.TrianguloValidaciones import ITrianguloValidaciones
+from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
     def __init__(self,tablero:Tablero,dados:Dados,BackgammonTurno:Backgammon_Turnos):
         self.__dados__: Dados = dados
         self.__tablero__: Tablero = tablero
@@ -23,7 +28,38 @@ class Backgammon:
     def turnero(self):
         """Retorna el tunero de backgammon"""
         return self.__backgammon_turno
-    
+    def seleccion_triangulo_valida(self,triangulo:int):
+        """Verifica si la seleccion de triangulo es valida
+        Parametros:
+            triangulo (int): Numero del triangulo seleccionado
+        Retorna:
+            bool: True si la seleccion es valida, False en caso contrario
+        Raises:
+            SeleccionTrianguloInvalida: Si la seleccion no es valida
+        """
+        if triangulo is None:
+            raise SeleccionTrianguloInvalida("El triangulo no puede ser indefinido")
+        if type(triangulo) is not int:
+            raise SeleccionTrianguloInvalida("El triangulo debe ser un numero entero")
+        if not (0 <= triangulo <= 23):
+            raise SeleccionTrianguloInvalida(f"El triangulo {triangulo} no es valido")
+        return True
+    def seleccion_dado_valida(self,dado:int):
+        """Verifica si la seleccion de dados es valida
+        Parametros:
+            dados (list[int]): Lista de dados seleccionados
+        Retorna:
+            bool: True si la seleccion es valida, False en caso contrario
+        Raises:
+            SeleccionDadoInvalida: Si la seleccion no es valida
+        """
+        if not dado:
+            raise SeleccionDadoInvalida("El dado no puede ser indefinido")
+        if type(dado) is not int:
+            raise SeleccionDadoInvalida("El dado debe ser un numero entero")
+        if not (dado <= 6 and dado >= 1):
+            raise SeleccionDadoInvalida(f"El dado {dado} no es valido")
+        return True
 
     def hay_fichas_comidas(self) -> bool:
         """Verifica si hay fichas comidas del tipo de ficha correspondiente
@@ -65,6 +101,8 @@ class Backgammon:
             triangulo_origen (int): Numero del triangulo de origen (0-23)
             movimiento (int): Numero de posiciones a mover (positivo)
         Retorna: void"""
+        self.seleccion_triangulo_valida(triangulo_origen)
+        self.seleccion_dado_valida(movimiento)
         ficha: Ficha = self.seleccionar_ficha(triangulo_origen, self.__backgammon_turno.turno)
         movimiento = (
             movimiento if self.__backgammon_turno.turno == TipoFicha.NEGRA.value else -movimiento
@@ -76,6 +114,7 @@ class Backgammon:
         Parametros:
             movimiento (int): Numero de posiciones a mover (positivo)
         Retorna: void"""
+        self.seleccion_dado_valida(movimiento)
         ficha: Ficha = [
             ficha
             for ficha in self.__tablero__.fichas_comidas
@@ -109,7 +148,7 @@ class Backgammon:
             return TipoFicha.NEGRA.value
         return None
 
-    def puede_mover_ficha(self, tipo: int, movimiento: int) -> bool:
+    def puede_mover_ficha(self, tipo: int, dados: list[int]) -> bool:
         """Verifica si el jugador puede mover alguna ficha de su tipo en base a un movimiento
         Parametros:
             tipo (TipoFicha): Tipo de ficha a verificar
@@ -117,43 +156,43 @@ class Backgammon:
         Retorna:
             bool: True si puede mover alguna ficha, False en caso contrario
         """
-        if self.hay_fichas_comidas():
-            triangulo_origen = -1 if TipoFicha.NEGRA.value == self.__backgammon_turno.turno else 24
-            triangulo_destino = (
-                triangulo_origen + movimiento
-                if tipo == TipoFicha.NEGRA.value
-                else triangulo_origen - movimiento
-            )
-            return not self.tablero.validador.triangulo_con_fichas_rivales(
-                self.tablero.tablero, triangulo_destino, Ficha(self.__backgammon_turno.turno)
-            )
-        else:
-            for i in range(24):
+        for movimiento in dados:
+            if self.hay_fichas_comidas():
+                triangulo_origen = -1 if TipoFicha.NEGRA.value == self.__backgammon_turno.turno else 24
                 triangulo_destino = (
-                    i + movimiento if tipo == TipoFicha.NEGRA.value else i - movimiento
+                    triangulo_origen + movimiento
+                    if tipo == TipoFicha.NEGRA.value
+                    else triangulo_origen - movimiento
                 )
-                tiene_fichas = [
-                    ficha for ficha in self.tablero.tablero[i] if ficha.tipo == tipo
-                ]
-                puede_ganar = self.tablero.validador.puede_ganar(
-                    Ficha(tipo), triangulo_destino, i
-                ) and not self.tablero.validador.se_pasa_del_tablero(
-                    Ficha(tipo), triangulo_destino, i
-                )
-                se_pasa = self.tablero.validador.se_pasa_del_tablero(
-                    Ficha(tipo), triangulo_destino, i
-                )
-                if not tiene_fichas:
+                if self.__tablero__.validador.triangulo_con_fichas_rivales(self.__tablero__.tablero, triangulo_destino, Ficha(tipo)):
                     continue
-                if se_pasa:
-                    continue
-                if puede_ganar:
-                    return True
-                no_hay_fichas_rivales = (
-                    not self.tablero.validador.triangulo_con_fichas_rivales(
-                        self.tablero.tablero, triangulo_destino, Ficha(tipo)
+            else:
+                for i in range(24):
+                    triangulo_destino = (
+                        i + movimiento if tipo == TipoFicha.NEGRA.value else i - movimiento
                     )
-                )
-                if no_hay_fichas_rivales:
-                    return True
-            return False
+                    tiene_fichas = [
+                        ficha for ficha in self.tablero.tablero[i] if ficha.tipo == tipo
+                    ]
+                    puede_ganar = self.tablero.validador.puede_ganar(
+                        Ficha(tipo), triangulo_destino, i
+                    ) and not self.tablero.validador.se_pasa_del_tablero(
+                        Ficha(tipo), triangulo_destino, i
+                    )
+                    se_pasa = self.tablero.validador.se_pasa_del_tablero(
+                        Ficha(tipo), triangulo_destino, i
+                    )
+                    if not tiene_fichas:
+                        continue
+                    if se_pasa:
+                        continue
+                    if puede_ganar:
+                        return True
+                    no_hay_fichas_rivales = (
+                        not self.tablero.validador.triangulo_con_fichas_rivales(
+                            self.tablero.tablero, triangulo_destino, Ficha(tipo)
+                        )
+                    )
+                    if no_hay_fichas_rivales:
+                        return True
+        raise NingunMovimientoPosible("No hay movimientos posibles")

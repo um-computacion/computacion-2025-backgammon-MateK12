@@ -45,15 +45,19 @@ class Test_Ui(unittest.TestCase):
         
         mock_ui.assert_called_once()
         mock_ui_instance.jugar.assert_called_once()
-    def test_tirar_dados(self):
+    @patch('src.pygame_ui.ui.BackgammonUI.puede_hacer_algun_movimiento')
+    def test_tirar_dados(self, mock_puede_hacer_algun_movimiento):
         self.ui.tirar_dados()
         self.mock_backgammon.dados.tirar_dados.assert_called_once()
         self.assertTrue(self.ui._BackgammonUI__dados_tirados)
         self.assertEqual(self.mock_campos_ui.dados_actuales, [3, 5])
-    def test_tirar_dados_no_repite(self):
+        mock_puede_hacer_algun_movimiento.assert_called_once()
+    @patch('src.pygame_ui.ui.BackgammonUI.puede_hacer_algun_movimiento')
+    def test_tirar_dados_no_repite(self, mock_puede_hacer_algun_movimiento):
         self.ui.tirar_dados()
         self.ui.tirar_dados()
         self.mock_backgammon.dados.tirar_dados.assert_called_once()
+        mock_puede_hacer_algun_movimiento.assert_called_once()
 
     def test_actualizar_tablero_ui(self):
         self.ui.actualizar_tablero_ui(0.016)
@@ -95,14 +99,6 @@ class Test_Ui(unittest.TestCase):
         self.ui.mostrar_ganador()
         self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with("¡El jugador Negro ha ganado!",5.0,titulo="Ganador")
 
-    def test_puede_hacer_algun_movimiento_true(self):
-        self.ui._BackgammonUI__dados_disponibles = [3, 5]
-        self.mock_backgammon.turno = TipoFicha.ROJA.value
-        self.mock_backgammon.puede_mover_ficha = MagicMock(side_effect=[False, True])
-        resultado = self.ui.puede_hacer_algun_movimiento()
-        self.assertTrue(resultado)
-        call_count = self.mock_backgammon.puede_mover_ficha.call_count
-        self.assertEqual(call_count, 2)
     def test_puede_hacer_algun_movimiento_false(self):
         self.ui._BackgammonUI__dados_disponibles = [3, 5]
         self.mock_backgammon.turno = TipoFicha.ROJA.value
