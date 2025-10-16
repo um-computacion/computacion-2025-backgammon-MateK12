@@ -166,6 +166,7 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
                 )
                 if self.__tablero__.validador.triangulo_con_fichas_rivales(self.__tablero__.tablero, triangulo_destino, Ficha(tipo)):
                     continue
+                return True
             else:
                 for i in range(24):
                     triangulo_destino = (

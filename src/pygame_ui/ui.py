@@ -3,7 +3,7 @@ import sys
 
 import pygame_gui
 from src.core.interfaces.JuegoInterfazMovimientos import IJuegoInterfazMovimientos
-from src.core.interfaces.JuegoInterfazDados import IJuegoInterfazDados
+from src.core.interfaces.PuedeHacerMovimiento import IPuedeHacerMovimiento
 from src.core.models.backgammon.backgammon import Backgammon
 from src.pygame_ui.Tablero_UI.Tablero_UI import TableroUI
 from src.core.models.tablero.Tablero import Tablero
@@ -26,7 +26,7 @@ WINDOW_HEIGHT = 700
 BROWN_LIGHT = (222, 184, 135)
 
 
-class BackgammonUI(IJuegoInterfazMovimientos):
+class BackgammonUI(IJuegoInterfazMovimientos,IPuedeHacerMovimiento):
     def __init__(self,backgammon:Backgammon,tableroUI:TableroUI,camposUi:CamposUi,surface:pygame.Surface,cartel_error:Cartel_UI,cartel_victoria:Cartel_UI):
         pygame.init()
         self.__backgammon = backgammon
