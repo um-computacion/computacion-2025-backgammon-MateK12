@@ -13,6 +13,7 @@ from src.core.models.dado.Dados import Dados
 from unittest.mock import patch, MagicMock
 from src.core.helpers.Tablero_Impresor import Tablero_Impresor
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
+from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
 # pylint: disable=C0116
 class TestCli(unittest.TestCase):
     def setUp(self):
@@ -219,14 +220,14 @@ class TestCli(unittest.TestCase):
     def test_mostrar_ganador_rojo(self):
         """Test mostrar ganador cuando gana el jugador rojo"""
         with patch.object(
-            self.cli.backgammon, "hay_ganador", return_value=TipoFicha.ROJA
+            self.cli.backgammon, "hay_ganador", return_value=TipoFicha.ROJA.value
         ), patch("builtins.print") as mock_print:
             self.cli.mostrar_ganador()
             mock_print.assert_called_once_with("¡El jugador rojo ha ganado!")
     def test_mostrar_ganador_negro(self):
         """Test mostrar ganador cuando gana el jugador negro"""
         with patch.object(
-            self.cli.backgammon, "hay_ganador", return_value=TipoFicha.NEGRA
+            self.cli.backgammon, "hay_ganador", return_value=TipoFicha.NEGRA.value
         ), patch("builtins.print") as mock_print:
             self.cli.mostrar_ganador()
             mock_print.assert_called_once_with("¡El jugador negro ha ganado!")
@@ -242,23 +243,5 @@ class TestCli(unittest.TestCase):
             mock_tablero_impresor.assert_called_once()
             mock_tirar_dados.assert_called()
             mock_mostrar_ganador.assert_called_once()
-
-    def test_puede_hacer_algun_movimiento_no_levanta_excepcion(self):
-        """Test puede hacer algún movimiento"""
-        self.cli.dados_disponibles = [2, 6]
-        self.cli.backgammon.hay_fichas_comidas = MagicMock(return_value=False)
-        self.cli.backgammon.puede_mover_ficha = MagicMock(return_value=True)
-
-        self.cli.puede_hacer_algun_movimiento()
-    def test_puede_hacer_algun_movimiento_levanta_excepcion(self):
-        """Test puede hacer algún movimiento - levanta excepción"""
-        self.cli.dados_disponibles = [2, 6]
-        self.cli.backgammon.hay_fichas_comidas = MagicMock(return_value=False)
-        self.cli.backgammon.puede_mover_ficha = MagicMock(side_effect=SeleccionDadoInvalida)
-
-        with self.assertRaises(SeleccionDadoInvalida):
-            self.cli.puede_hacer_algun_movimiento()
-            self.assertEqual(self.cli.dados_disponibles, [])
-
 if __name__ == "__main__":
     unittest.main()

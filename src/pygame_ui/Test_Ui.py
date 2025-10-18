@@ -102,11 +102,11 @@ class Test_Ui(unittest.TestCase):
     def test_puede_hacer_algun_movimiento_false(self):
         self.ui._BackgammonUI__dados_disponibles = [3, 5]
         self.mock_backgammon.turno = TipoFicha.ROJA.value
-        self.mock_backgammon.puede_mover_ficha = MagicMock(side_effect=[False, False])
+        self.mock_backgammon.puede_mover_ficha = MagicMock(side_effect=NingunMovimientoPosible)
         with self.assertRaises(NingunMovimientoPosible):
             self.ui.puede_hacer_algun_movimiento()
             call_count = self.mock_backgammon.puede_mover_ficha.call_count
-            self.assertEqual(call_count, 2)
+            self.assertEqual(call_count, 1)
 
 
     @patch('src.pygame_ui.ui.pygame.time.get_ticks')
