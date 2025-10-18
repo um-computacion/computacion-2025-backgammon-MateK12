@@ -18,6 +18,7 @@ from src.core.interfaces.JuegoInterfazDados import IJuegoInterfazDados
 from src.core.interfaces.DadosValidaciones import IDadosValidaciones
 from src.core.interfaces.TrianguloValidaciones import ITrianguloValidaciones
 from src.core.interfaces.PuedeHacerMovimiento import IPuedeHacerMovimiento
+from src.core.models.ficha.Ficha import Ficha
 ERROR = "\033[91m"
 RESET = "\033[0m"
 
@@ -157,13 +158,15 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados,IDadosValidaciones,ITria
                     print(f"{ERROR}{e}{RESET}")
                     self.dados_disponibles = []
             self.backgammon.turnero.cambiar_turno()
+            self.__backgammon.tablero.fichas_ganadas=[Ficha(TipoFicha.ROJA.value) for _ in range(15)]
+            print(self.__backgammon.tablero.fichas_ganadas)
         self.mostrar_ganador()
     def mostrar_ganador(self):
         """Muestra el ganador del juego"""
         ganador = self.backgammon.hay_ganador()
-        if ganador == TipoFicha.ROJA:
+        if ganador == TipoFicha.ROJA.value:
             print("¡El jugador rojo ha ganado!")
-        elif ganador == TipoFicha.NEGRA:
+        elif ganador == TipoFicha.NEGRA.value:
             print("¡El jugador negro ha ganado!")
 
 if __name__ == "__main__":

@@ -142,6 +142,7 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
             for ficha in self.__tablero__.fichas_ganadas
             if ficha.tipo == TipoFicha.NEGRA.value
         ]
+        
         if len(fichas_rojas) == 15:
             return TipoFicha.ROJA.value
         if len(fichas_negras) == 15:
@@ -196,4 +197,5 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
                     )
                     if no_hay_fichas_rivales:
                         return True
-        raise NingunMovimientoPosible("No hay movimientos posibles")
+        turno_string = "Rojo" if tipo == TipoFicha.ROJA.value else "Negro"
+        raise NingunMovimientoPosible("No hay movimientos posibles con los dados:{} y turno:{}".format(dados,turno_string))

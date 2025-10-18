@@ -94,7 +94,8 @@ class BackgammonUI(IJuegoInterfazMovimientos,IPuedeHacerMovimiento):
                     self.cambiar_turno()
                 self.actualizar_tablero_ui(time_delta)
             except (NingunMovimientoPosible,NoHayFichaEnTriangulo,MovimientoNoJustoParaGanar,CasillaOcupadaException,SeleccionDadoInvalida,SeleccionTrianguloInvalida) as e:
-                self.__cartel_error.mostrar_cartel(str(e), duracion=5.0)
+                if not self.__backgammon.hay_ganador():
+                        self.__cartel_error.mostrar_cartel(str(e), duracion=5.0)
         self.mostrar_ganador()
         pygame.quit()
         sys.exit()
@@ -107,10 +108,9 @@ class BackgammonUI(IJuegoInterfazMovimientos,IPuedeHacerMovimiento):
         tipo = self.__backgammon.turnero.turno
         try:
             self.__backgammon.puede_mover_ficha(tipo, self.__dados_disponibles)
-        except NingunMovimientoPosible:
+        except NingunMovimientoPosible as e:
             self.__dados_disponibles = []
-            self.cambiar_turno()
-        raise NingunMovimientoPosible("No hay movimientos posibles con los dados disponibles" + str(self.__dados_disponibles))
+            raise NingunMovimientoPosible(e)
 
     def cambiar_turno(self):
         '''Cambia el turno al siguiente jugador dejando los parametros en su estado correspondiente'''
