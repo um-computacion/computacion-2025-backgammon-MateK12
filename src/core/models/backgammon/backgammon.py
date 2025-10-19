@@ -9,11 +9,16 @@ from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
 from src.core.interfaces.TrianguloValidaciones import ITrianguloValidaciones
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
-class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
-    def __init__(self,tablero:Tablero,dados:Dados,BackgammonTurno:Backgammon_Turnos):
+
+
+class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
+    def __init__(
+        self, tablero: Tablero, dados: Dados, BackgammonTurno: Backgammon_Turnos
+    ):
         self.__dados__: Dados = dados
         self.__tablero__: Tablero = tablero
         self.__backgammon_turno = BackgammonTurno
+
     @property
     def tablero(self):
         """Retorna el tablero"""
@@ -28,7 +33,8 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
     def turnero(self):
         """Retorna el tunero de backgammon"""
         return self.__backgammon_turno
-    def seleccion_triangulo_valida(self,triangulo:int):
+
+    def seleccion_triangulo_valida(self, triangulo: int):
         """Verifica si la seleccion de triangulo es valida
         Parametros:
             triangulo (int): Numero del triangulo seleccionado
@@ -44,7 +50,8 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
         if not (0 <= triangulo <= 23):
             raise SeleccionTrianguloInvalida(f"El triangulo {triangulo} no es valido")
         return True
-    def seleccion_dado_valida(self,dado:int):
+
+    def seleccion_dado_valida(self, dado: int):
         """Verifica si la seleccion de dados es valida
         Parametros:
             dados (list[int]): Lista de dados seleccionados
@@ -103,9 +110,13 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
         Retorna: void"""
         self.seleccion_triangulo_valida(triangulo_origen)
         self.seleccion_dado_valida(movimiento)
-        ficha: Ficha = self.seleccionar_ficha(triangulo_origen, self.__backgammon_turno.turno)
+        ficha: Ficha = self.seleccionar_ficha(
+            triangulo_origen, self.__backgammon_turno.turno
+        )
         movimiento = (
-            movimiento if self.__backgammon_turno.turno == TipoFicha.NEGRA.value else -movimiento
+            movimiento
+            if self.__backgammon_turno.turno == TipoFicha.NEGRA.value
+            else -movimiento
         )
         self.__tablero__.mover_ficha(ficha, triangulo_origen, movimiento)
 
@@ -121,12 +132,15 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
             if ficha.tipo == self.__backgammon_turno.turno
         ][0]
         movimiento = (
-            movimiento - 1 if self.__backgammon_turno.turno == TipoFicha.NEGRA.value else -movimiento
+            movimiento - 1
+            if self.__backgammon_turno.turno == TipoFicha.NEGRA.value
+            else -movimiento
         )
-        triangulo_origen = 24 if self.__backgammon_turno.turno == TipoFicha.ROJA.value else 0
+        triangulo_origen = (
+            24 if self.__backgammon_turno.turno == TipoFicha.ROJA.value else 0
+        )
         self.__tablero__.mover_ficha(ficha, triangulo_origen, movimiento, True)
 
-    
     def hay_ganador(self) -> int | None:
         """'Verifica si hay un ganador
         Retorna:
@@ -142,7 +156,7 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
             for ficha in self.__tablero__.fichas_ganadas
             if ficha.tipo == TipoFicha.NEGRA.value
         ]
-        
+
         if len(fichas_rojas) == 15:
             return TipoFicha.ROJA.value
         if len(fichas_negras) == 15:
@@ -159,19 +173,25 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
         """
         for movimiento in dados:
             if self.hay_fichas_comidas():
-                triangulo_origen = -1 if TipoFicha.NEGRA.value == self.__backgammon_turno.turno else 24
+                triangulo_origen = (
+                    -1 if TipoFicha.NEGRA.value == self.__backgammon_turno.turno else 24
+                )
                 triangulo_destino = (
                     triangulo_origen + movimiento
                     if tipo == TipoFicha.NEGRA.value
                     else triangulo_origen - movimiento
                 )
-                if self.__tablero__.validador.triangulo_con_fichas_rivales(self.__tablero__.tablero, triangulo_destino, Ficha(tipo)):
+                if self.__tablero__.validador.triangulo_con_fichas_rivales(
+                    self.__tablero__.tablero, triangulo_destino, Ficha(tipo)
+                ):
                     continue
                 return True
             else:
                 for i in range(24):
                     triangulo_destino = (
-                        i + movimiento if tipo == TipoFicha.NEGRA.value else i - movimiento
+                        i + movimiento
+                        if tipo == TipoFicha.NEGRA.value
+                        else i - movimiento
                     )
                     tiene_fichas = [
                         ficha for ficha in self.tablero.tablero[i] if ficha.tipo == tipo
@@ -198,4 +218,8 @@ class Backgammon(IDadosValidaciones,ITrianguloValidaciones):
                     if no_hay_fichas_rivales:
                         return True
         turno_string = "Rojo" if tipo == TipoFicha.ROJA.value else "Negro"
-        raise NingunMovimientoPosible("No hay movimientos posibles con los dados:{} y turno:{}".format(dados,turno_string))
+        raise NingunMovimientoPosible(
+            "No hay movimientos posibles con los dados:{} y turno:{}".format(
+                dados, turno_string
+            )
+        )

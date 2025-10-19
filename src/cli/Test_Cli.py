@@ -14,12 +14,16 @@ from unittest.mock import patch, MagicMock
 from src.core.helpers.Tablero_Impresor import Tablero_Impresor
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+
+
 # pylint: disable=C0116
 class TestCli(unittest.TestCase):
     def setUp(self):
         self.jugador1 = Jugador("Juan")
         self.jugador2 = Jugador("Maria")
-        tablero =Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador())
+        tablero = Tablero(
+            Tablero_inicializador.inicializar_tablero(), Tablero_Validador()
+        )
         turnero = Backgammon_Turnos(Dados())
         backgammon = Backgammon(tablero, Dados(), turnero)
         self.cli = CLI(self.jugador1, self.jugador2, backgammon)
@@ -224,6 +228,7 @@ class TestCli(unittest.TestCase):
         ), patch("builtins.print") as mock_print:
             self.cli.mostrar_ganador()
             mock_print.assert_called_once_with("¡El jugador rojo ha ganado!")
+
     def test_mostrar_ganador_negro(self):
         """Test mostrar ganador cuando gana el jugador negro"""
         with patch.object(
@@ -231,17 +236,28 @@ class TestCli(unittest.TestCase):
         ), patch("builtins.print") as mock_print:
             self.cli.mostrar_ganador()
             mock_print.assert_called_once_with("¡El jugador negro ha ganado!")
+
     def test_jugar(self):
         """Test jugar"""
         with patch("builtins.print") as mock_print, patch.object(
             Tablero_Impresor, "imprimir_tablero"
-        ) as mock_tablero_impresor, patch.object(self.cli, 'tirar_dados') as mock_tirar_dados, unittest.mock.patch('builtins.input', return_value=''), patch.object(self.cli,'mostrar_ganador') as mock_mostrar_ganador:
-            self.cli.backgammon.hay_ganador = MagicMock(side_effect=[None,None, TipoFicha.ROJA])
+        ) as mock_tablero_impresor, patch.object(
+            self.cli, "tirar_dados"
+        ) as mock_tirar_dados, unittest.mock.patch(
+            "builtins.input", return_value=""
+        ), patch.object(
+            self.cli, "mostrar_ganador"
+        ) as mock_mostrar_ganador:
+            self.cli.backgammon.hay_ganador = MagicMock(
+                side_effect=[None, None, TipoFicha.ROJA]
+            )
 
             self.cli.jugar()
             mock_print.assert_called()
             mock_tablero_impresor.assert_called_once()
             mock_tirar_dados.assert_called()
             mock_mostrar_ganador.assert_called_once()
+
+
 if __name__ == "__main__":
     unittest.main()

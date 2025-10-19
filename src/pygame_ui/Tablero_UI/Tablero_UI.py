@@ -36,18 +36,17 @@ class TableroUI:
     def tablero(self):
         """Getter para el tablero"""
         return self.__tablero
+
     @tablero.setter
     def tablero(self, nuevo_tablero):
         """Setter para el tablero"""
         self.__tablero = nuevo_tablero
 
-    def dibujar_triangulo(self, punto_index:int, color:tuple, screen:pygame.Surface):
+    def dibujar_triangulo(self, punto_index: int, color: tuple, screen: pygame.Surface):
         """Dibuja un triángulo para un punto específico
         Si son los primeros 12 triangulos apuntan hacia abajo, si son los ultimos 12 triangulos apuntan hacia arriba
         """
-        punto_x, punto_y = self.get_punto_position_base(
-            punto_index
-        )  
+        punto_x, punto_y = self.get_punto_position_base(punto_index)
 
         if punto_index <= 11:  # triangulo apuntando hacia abajo
             puntos = [
@@ -67,25 +66,26 @@ class TableroUI:
 
         pygame.draw.polygon(screen, color, puntos)
         pygame.draw.polygon(screen, BLACK, puntos, 2)
-    def __dibujar_numero_triangulo(self, punto_index:int, screen:pygame.Surface):
+
+    def __dibujar_numero_triangulo(self, punto_index: int, screen: pygame.Surface):
         """Dibuja el número del triángulo encima o debajo según corresponda"""
         font = pygame.font.Font(None, 24)
-        
+
         _, base_y = self.get_punto_position_base(punto_index)
         base_x, _ = self.get_punto_position_base_ficha(punto_index)
         text_x = base_x + self.__punto_width__ // 2
-        
-        if punto_index <= 11:  
+
+        if punto_index <= 11:
             text_y = base_y - 15
         elif punto_index <= 17 and punto_index >= 12:
             text_x = base_x + self.__punto_width__ // 2
             text_y = base_y + self.__punto_height__ + 15
         elif punto_index <= 23 and punto_index >= 18:
-            text_x = base_x + self.__punto_width__// 2
+            text_x = base_x + self.__punto_width__ // 2
             text_y = base_y + self.__punto_height__ + 15
         text_surface = font.render(str(punto_index), True, BLACK)
         text_rect = text_surface.get_rect(center=(text_x, text_y))
-        
+
         screen.blit(text_surface, text_rect)
 
     def dibujar_tablero(self, screen):
@@ -100,9 +100,7 @@ class TableroUI:
         )  # Borde del tablero
 
         barra_x = self.__x__ + self.__ancho_tablero__ // 2 - 25
-        pygame.draw.rect(
-            screen, DARK, (barra_x, self.__y__, 50, self.__alto_tablero__)
-        )
+        pygame.draw.rect(screen, DARK, (barra_x, self.__y__, 50, self.__alto_tablero__))
 
         for i in range(24):  # triangulos alternando el color
             color = DARK if i % 2 == 0 else RED
@@ -135,7 +133,11 @@ class TableroUI:
             y = self.__y__
         else:  # Parte inferior
             if punto_index <= 17:
-                x = (    self.__x__+ (punto_index - 12 + 1) * self.__punto_width__+ self.__ancho_tablero__ / 2)  # pos_inicial_x+ desplazamiento en x +ancho_del_tablero/2
+                x = (
+                    self.__x__
+                    + (punto_index - 12 + 1) * self.__punto_width__
+                    + self.__ancho_tablero__ / 2
+                )  # pos_inicial_x+ desplazamiento en x +ancho_del_tablero/2
             else:
                 x = self.__x__ + (punto_index - 18) * self.__punto_width__
             y = self.__y__ + self.__alto_tablero__ - 250
@@ -219,4 +221,3 @@ class TableroUI:
         """Dibuja todas las fichas en todos los puntos del tablero"""
         for punto_index in range(24):
             self.dibujar_fichas_en_punto(punto_index, screen)
-

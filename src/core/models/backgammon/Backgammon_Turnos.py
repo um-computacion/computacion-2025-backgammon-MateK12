@@ -1,15 +1,18 @@
 from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.dado.Dados import Dados
+
+
 class Backgammon_Turnos:
-    def __init__(self,dados:Dados):
+    def __init__(self, dados: Dados):
         self.__turno: int
-        self.__dados= dados
+        self.__dados = dados
 
     @property
     def turno(self) -> int:
         """Retorna el turno actual"""
         return self.__turno
+
     @turno.setter
     def turno(self, value: int) -> None:
         self.__turno = value

@@ -13,7 +13,7 @@ class TestTablero(unittest.TestCase):
     def setUp(self):
         self.tablero_vacio = [[] for _ in range(24)]
 
-        self.tablero = Tablero(self.tablero_vacio,Tablero_Validador())
+        self.tablero = Tablero(self.tablero_vacio, Tablero_Validador())
 
     def test_mover_ficha_a_espacio_vacio(self):  # mover_ficha()
         ficha = Ficha(TipoFicha.NEGRA.value)
@@ -96,11 +96,13 @@ class TestTablero(unittest.TestCase):
 
     def test_get_tablero(self):
         self.assertEqual(self.tablero.tablero, self.tablero.__tablero__)
+
     def test_fichas_ganadas_setter(self):
         ficha1 = Ficha(TipoFicha.NEGRA.value)
         ficha2 = Ficha(TipoFicha.ROJA.value)
         self.tablero.fichas_ganadas = [ficha1, ficha2]
         self.assertEqual(len(self.tablero.fichas_ganadas), 2)
+
 
 if __name__ == "__main__":
     unittest.main()
