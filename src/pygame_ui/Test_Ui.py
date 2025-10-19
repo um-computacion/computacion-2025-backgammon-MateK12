@@ -3,8 +3,7 @@ import pygame
 from src.pygame_ui.ui import BackgammonUI,WINDOW_HEIGHT,WINDOW_WIDTH
 from unittest.mock import Mock, MagicMock,patch
 from src.core.enums.TipoFicha import TipoFicha
-from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
-import pygame_gui
+from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible 
 class Test_Ui(unittest.TestCase):
     def setUp(self):
         pygame.init()
