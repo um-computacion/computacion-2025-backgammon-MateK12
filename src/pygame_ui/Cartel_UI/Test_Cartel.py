@@ -7,6 +7,9 @@ import os
 
 os.environ['SDL_VIDEODRIVER'] = 'dummy' 
 os.environ['SDL_AUDIODRIVER'] = 'dummy'
+# pylint: disable=C0116
+
+
 class TestCartel(unittest.TestCase):
     def setUp(self):
         pygame.init()

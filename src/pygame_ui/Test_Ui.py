@@ -8,6 +8,9 @@ import os
 
 os.environ['SDL_VIDEODRIVER'] = 'dummy' 
 os.environ['SDL_AUDIODRIVER'] = 'dummy'
+
+# pylint: disable=C0116
+
 class Test_Ui(unittest.TestCase):
 
     @patch('pygame.display.set_mode')

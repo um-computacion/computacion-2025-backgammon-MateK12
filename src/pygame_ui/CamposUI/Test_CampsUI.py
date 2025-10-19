@@ -6,6 +6,9 @@ import os
 
 os.environ['SDL_VIDEODRIVER'] = 'dummy' 
 os.environ['SDL_AUDIODRIVER'] = 'dummy'
+
+# pylint: disable=C0116
+
 class TestCampsUI(unittest.TestCase):
     @patch("pygame_gui.UIManager")
     @patch("pygame.font.Font")
