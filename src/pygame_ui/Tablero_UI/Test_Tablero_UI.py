@@ -12,7 +12,9 @@ from src.pygame_ui.Tablero_UI.Tablero_UI import (
 from src.core.models.tablero.Tablero import Tablero
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from unittest.mock import patch
-
+import os
+os.environ['SDL_VIDEODRIVER'] = 'dummy' 
+os.environ['SDL_AUDIODRIVER'] = 'dummy'
 
 # pylint: disable=C0116
 class TestTableroUI(unittest.TestCase):

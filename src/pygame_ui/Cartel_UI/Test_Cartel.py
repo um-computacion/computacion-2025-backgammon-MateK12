@@ -3,8 +3,10 @@ from src.pygame_ui.Cartel_UI.Cartel_UI import Cartel_UI
 from unittest.mock import MagicMock, patch
 import pygame
 import time
+import os
 
-
+os.environ['SDL_VIDEODRIVER'] = 'dummy' 
+os.environ['SDL_AUDIODRIVER'] = 'dummy'
 class TestCartel(unittest.TestCase):
     def setUp(self):
         pygame.init()

@@ -2,8 +2,10 @@ import unittest
 from unittest.mock import patch, MagicMock
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.ficha.Ficha import Ficha
+import os
 
-
+os.environ['SDL_VIDEODRIVER'] = 'dummy' 
+os.environ['SDL_AUDIODRIVER'] = 'dummy'
 class TestCampsUI(unittest.TestCase):
     @patch("pygame_gui.UIManager")
     @patch("pygame.font.Font")

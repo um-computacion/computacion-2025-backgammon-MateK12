@@ -4,16 +4,22 @@ from src.pygame_ui.ui import BackgammonUI, WINDOW_HEIGHT, WINDOW_WIDTH
 from unittest.mock import Mock, MagicMock, patch
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+import os
 
-
+os.environ['SDL_VIDEODRIVER'] = 'dummy' 
+os.environ['SDL_AUDIODRIVER'] = 'dummy'
 class Test_Ui(unittest.TestCase):
-    def setUp(self):
+
+    @patch('pygame.display.set_mode')
+    def setUp(self, mock_set_mode):
         pygame.init()
 
+        mock_set_mode.return_value = MagicMock()
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        
         self.mock_backgammon = MagicMock()
         self.mock_tablero_ui = MagicMock()
         self.mock_campos_ui = MagicMock()
-        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.mock_cartel_error = MagicMock()
         self.mock_cartel_victoria = MagicMock()
 
@@ -63,7 +69,8 @@ class Test_Ui(unittest.TestCase):
         self.mock_backgammon.dados.tirar_dados.assert_called_once()
         mock_puede_hacer_algun_movimiento.assert_called_once()
 
-    def test_actualizar_tablero_ui(self):
+    @patch("src.pygame_ui.ui.pygame.display.flip")
+    def test_actualizar_tablero_ui(self, mock_flip):
         self.ui.actualizar_tablero_ui(0.016)
         self.mock_campos_ui.manager.update.assert_called_once_with(0.016)
         self.assertEqual(self.mock_tablero_ui.tablero, self.mock_backgammon.tablero)
