@@ -93,8 +93,6 @@ No uso herencia
 #### 🔸 Interface Segregation Principle (ISP)
 Hay interfaces separadas como JuegoInterfazDados y JuegoInterfazDadosValidaciones, ya que si ambas interfaces estuvieran juntas, las interfaces que no necesiten validar el dado (como la ui) tendrian que implementar un metodo que no usan
 #### 🔸 Dependency Inversion Principle (DIP)
-Todas las clases dependen de abstracciones, y son pasadas en el constructor, no se instancian en el constructor como estaba antes
-
 ## 📎 Anexos
 
 ### 📈 Diagramas UML

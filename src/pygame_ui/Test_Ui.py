@@ -15,11 +15,11 @@ class Test_Ui(unittest.TestCase):
 
     @patch('pygame.display.set_mode')
     def setUp(self, mock_set_mode):
-        pygame.init()
+        # pygame.init()
 
         mock_set_mode.return_value = MagicMock()
-        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        
+        # self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.screen = MagicMock()        
         self.mock_backgammon = MagicMock()
         self.mock_tablero_ui = MagicMock()
         self.mock_campos_ui = MagicMock()
@@ -171,8 +171,8 @@ class Test_Ui(unittest.TestCase):
             )
             self.assertGreaterEqual(mock_update.call_count, 2)
 
-    def tearDown(self):
-        pygame.quit()
+    # def tearDown(self):
+    #     pygame.quit()
 
 
 if __name__ == "__main__":
