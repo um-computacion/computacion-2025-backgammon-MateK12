@@ -39,7 +39,7 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
         Parametros:
             triangulo (int): Numero del triangulo seleccionado
         Retorna:
-            bool: True si la seleccion es valida, False en caso contrario
+            bool: True si la seleccion es valida
         Raises:
             SeleccionTrianguloInvalida: Si la seleccion no es valida
         """
@@ -52,11 +52,11 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
         return True
 
     def seleccion_dado_valida(self, dado: int):
-        """Verifica si la seleccion de dados es valida
+        """Verifica si la seleccion del dado es valida
         Parametros:
-            dados (list[int]): Lista de dados seleccionados
+            dados int: el dado seleccionado
         Retorna:
-            bool: True si la seleccion es valida, False en caso contrario
+            bool: True si la seleccion es valida
         Raises:
             SeleccionDadoInvalida: Si la seleccion no es valida
         """
@@ -92,7 +92,7 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
             NoHayFichaEnTriangulo: Si el triangulo no es valido o no hay ficha del tipo en el triangulo
         """
         if triangulo < 0 or triangulo > 23:
-            raise NoHayFichaEnTriangulo("El triangulo seleccionado no es valido")
+            raise SeleccionTrianguloInvalida("El triangulo seleccionado no es valido")
         fichas = self.__tablero__.tablero[triangulo]
         tipos_fichas = [ficha for ficha in fichas if ficha.tipo == tipo]
         if not tipos_fichas:
