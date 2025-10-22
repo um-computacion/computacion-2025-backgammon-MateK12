@@ -73,6 +73,7 @@ class TestTablero(unittest.TestCase):
     def test_mover_ficha_a_ganar_negra(self):
         ficha = Ficha(TipoFicha.NEGRA.value)
         self.tablero.__tablero__[22].append(ficha)
+        self.tablero.__tablero__[23] = [Ficha(TipoFicha.NEGRA.value) for i in range(14)]
         self.tablero.mover_ficha(ficha, 22, 2)
         self.assertEqual(len(self.tablero.__tablero__[22]), 0)
         self.assertEqual(len(self.tablero.fichas_ganadas), 1)
@@ -80,6 +81,7 @@ class TestTablero(unittest.TestCase):
     def test_mover_ficha_a_ganar_roja(self):
         ficha = Ficha(TipoFicha.ROJA.value)
         self.tablero.__tablero__[2].append(ficha)
+        self.tablero.__tablero__[0] = [Ficha(TipoFicha.ROJA.value) for i in range(14)]
         self.tablero.mover_ficha(ficha, 2, -3)
         self.assertEqual(len(self.tablero.__tablero__[2]), 0)
         self.assertEqual(len(self.tablero.fichas_ganadas), 1)

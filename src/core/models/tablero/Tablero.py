@@ -3,7 +3,7 @@ from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
-
+from src.core.exceptions.NoPuedeLiberarException import NoPuedeLiberarException
 
 class Tablero:
     def __init__(
@@ -61,8 +61,11 @@ class Tablero:
         ) and not self.__validador__.se_pasa_del_tablero(
             ficha, triangulo_destino, triangulo_origen
         ):
-            self.__tablero__[triangulo_origen].pop()
-            self.__fichas_ganadas__.append(ficha)
+            if self.__validador__.puede_liberar(self.tablero,ficha,self.fichas_ganadas):
+                self.__tablero__[triangulo_origen].pop()
+                self.__fichas_ganadas__.append(ficha)
+            else:
+                raise NoPuedeLiberarException("No puede liberar ficha aún, no estan todas sus fichas en home")
             return
         if self.__validador__.se_pasa_del_tablero(
             ficha, triangulo_destino, triangulo_origen

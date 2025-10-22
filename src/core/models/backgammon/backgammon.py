@@ -200,7 +200,7 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
                         Ficha(tipo), triangulo_destino, i
                     ) and not self.tablero.validador.se_pasa_del_tablero(
                         Ficha(tipo), triangulo_destino, i
-                    )
+                    ) and self.tablero.validador.puede_liberar(self.tablero.tablero,Ficha(tipo),self.tablero.fichas_ganadas)
                     se_pasa = self.tablero.validador.se_pasa_del_tablero(
                         Ficha(tipo), triangulo_destino, i
                     )
