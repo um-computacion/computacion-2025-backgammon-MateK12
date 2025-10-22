@@ -3,9 +3,9 @@
 **Autor:** Mateo Kristich
 
 ## Descripción
-Implementación del clásico juego de Backgammon en Python con interfaz de línea de comandos (CLI). El juego sigue las reglas tradicionales del backgammon e incluye todas las mecánicas principales como fichas comidas, movimientos bloqueados y condiciones de victoria.
+Implementación del clásico juego de Backgammon en Python con interfaz de línea de comandos (CLI) y UI. El juego sigue las reglas tradicionales del backgammon e incluye todas las mecánicas principales como fichas comidas, movimientos bloqueados y condiciones de victoria.
 
-## Cómo Ejecutar el Juego
+## Cómo Ejecutar el Juego (CLI)
 
 ### Requisitos
 - Python 3.8 o superior
@@ -17,7 +17,7 @@ Implementación del clásico juego de Backgammon en Python con interfaz de líne
 cd /ruta/al/proyecto/computacion-2025-backgammon-MateK12
 
 # Ejecutar el juego
-python src/cli/cli.py
+python -m src/cli/cli
 ```
 
 ### Ejecutar con módulo
@@ -135,3 +135,49 @@ Dados tirados: [5, 5, 5, 5]
 Dados disponibles: [5, 5, 5, 5]
 # Puedes usar el 5 cuatro veces
 ```
+
+
+
+## Cómo Ejecutar el Juego (UI)
+
+### Requisitos
+- Python 3.8 o superior
+- Las dependencias del proyecto (ver `requirements.txt` si existe)
+
+### Ejecutar desde la línea de comandos
+```bash
+# Navegar al directorio del proyecto
+cd /ruta/al/proyecto/computacion-2025-backgammon-MateK12
+
+# Ejecutar el juego
+python -m src.pygame_ui.ui
+```
+
+## Cómo Jugar
+### Inicio del Juego
+
+2. El sistema determinará automáticamente quién comienza mediante una tirada de dados inicial.
+
+### Mecánicas del Juego
+
+
+#### Selección de Dados
+Seleccione un dado usando el select
+![alt text](image.png)
+#### Movimiento de Fichas
+
+##### Fichas Normales
+```
+Selecciona el triángulo de origen usando el select 
+```
+![alt text](image-2.png)
+Una vez seleccionado el triángulo de origen y el dado, presione el boton mover ficha para mover la ficha
+##### Fichas Comidas
+- Si tienes fichas comidas, **debes** ingresarlas al tablero antes de mover otras fichas
+- Solo necesitas seleccionar el dado, y presionar el boton mover ficha
+
+### Interfaz del Juego
+
+#### Tablero
+![alt text](image-3.png)
+

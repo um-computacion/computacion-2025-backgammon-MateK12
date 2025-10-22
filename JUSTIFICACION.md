@@ -5,12 +5,8 @@
 El proyecto es una implementación del juego de backgammon en Python, estructurado en varias clases que representan los componentes principales del juego. El diseño sigue principios de programación orientada a objetos, definiendo clases como `Backgammon`, `Tablero`, `Ficha`, `Jugador`, y `Dado`, entre otras. Cada clase tiene responsabilidades claras.
 ## 🎯 Justificación de las Clases Elegidas
 
-Decidi dejar la responabilidad de la verificacion de moviemientos en la clase de tableroValidador para separar 
-las responsabilidades
-Descidi seaparar la responsabilidad de imprmir el tablero en otra clase con un metodo estatico para asi no mezclar
-la logica del juego con la interfaz de usuario
 ### Responsabilidades y Propósito
-Backgammon -> maneja la logica del juego, gestiona turnos, y movimientos
+Backgammon -> maneja la logica del juego
 Tablero -> el tablero realizara los movimientos de la ficha dentro de el
 TableroValidador -> metodos para determinar si un movimiento es valido o no
 cli -> interfaz de usuario
@@ -18,6 +14,11 @@ Ficha -> representa una ficha del juego
 Jugador -> representa a un jugador del juego
 Dado -> genera los numeros aleatorios para los movimientos siguiendo las reglas del backgammon
 Tablero_impresor -> imprime el tablero, dado un arreglo de arreglos de fichas
+Backgammon_Turnos -> maneja los turnos de los jugadores
+Tablero_UI -> maneja la interfaz grafica del tablero
+UI -> maneja la interfaz grafica del juego
+Cartel_UI -> maneja los carteles de error y victoria en la interfaz grafica (esta hecho para ser reutilizable )
+Campos_UI -> maneja los campos de la interfaz grafica para realizar los movimientos
 ## 📊 Justificación de Atributos
 Decidi que el jugador no iba tener fichas en su clase, ya que las fichas estan en el tablero, y puedo identificarlas con el tipo, de hecho el jugador solo tiene el nombre y el tipo de ficha
 ### Selección y Diseño de Atributos
@@ -26,6 +27,12 @@ Decidi que el jugador no iba tener fichas en su clase, ya que las fichas estan e
 
 ## 🔧 Decisiones de Diseño Relevantes
 Decidi no usar una imagen para el tablero para asi tener mas control sobre los triangulos dibujados, y la estetica del tablero en general, ademas de que es mas liviano no tener
+Decidi dejar la responabilidad de la verificacion de moviemientos en la clase de tableroValidador para separar 
+las responsabilidades
+Descidi seaparar la responsabilidad de imprmir el tablero en otra clase con un metodo estatico para asi no mezclar
+la logica del juego con la interfaz de usuario
+Decidi separar los turnos en otra clase para que la clase backgammon no tenga tantas responsabilidades
+
 ### Patrones y Arquitectura Implementada
 Patron de diseño Facade para la interfaz de usuario, ya que la clase CLI y ui son las unicas que interactua con el usuario, y las demas clases no saben nada de la interfaz de usuario, y podria funcionar perfectamente con otro tipo de interfaz
 
@@ -67,7 +74,7 @@ El sistema implementa un conjunto de excepciones personalizadas para manejar cas
 En clases como tablero_validador, backgammon y ficha, se testean todas las funciones basadas en escenarios posibles.
 En clases como CLI se testea las llamadas correctas a las funciones de otras clases, pero no se teste que esas funciones hagan lo que deben hacer, ya que eso se testea en las clases correspondientes.
 ### Plan de Pruebas y Cobertura de Código
-
+actualmente la cobertura es del 91% en toda la aplicacion, haciendo enfasis el core donde la cobertura es de casi 100%, hay metodos que se testean mas que otros, como el puede_hacer_movimiento en backgammon, que tiene muchos escenarios posibles, y es un metodo clave en la logica del juego que no puede fallar.
 
 
 ## 🏛️ Principios SOLID
@@ -78,17 +85,14 @@ En clases como CLI se testea las llamadas correctas a las funciones de otras cla
 Separo la responsabilidad de validar movimientos en una clase aparte, y la responsabilidad de imprimir el tablero en otra clase aparte, y la responsabilidad de manejar la logica del juego en otra clase aparte
 
 #### 🔸 Open/Closed Principle (OCP)
-
+Las interfaces usan interfaces como IJuegoInterfazMovimientos, IJuegoInterfazDados, IJuegoInterfazDadosValidaciones permitiendo asi la extension del codigo sin modificar las clases existentes
 
 #### 🔸 Liskov Substitution Principle (LSP)
-
+No uso herencia
 
 #### 🔸 Interface Segregation Principle (ISP)
-
-
+Hay interfaces separadas como JuegoInterfazDados y JuegoInterfazDadosValidaciones, ya que si ambas interfaces estuvieran juntas, las interfaces que no necesiten validar el dado (como la ui) tendrian que implementar un metodo que no usan
 #### 🔸 Dependency Inversion Principle (DIP)
-
-
 ## 📎 Anexos
 
 ### 📈 Diagramas UML

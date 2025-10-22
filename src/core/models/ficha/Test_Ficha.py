@@ -14,14 +14,9 @@ class TestFicha(unittest.TestCase):
         ficha = Ficha(TipoFicha.ROJA.value)
         self.assertEqual(repr(ficha), "\033[31m●\033[0m")
 
-    def test_comida_getter(self):
+    def test_getter_tipo(self):
         ficha = Ficha(TipoFicha.NEGRA.value)
-        self.assertFalse(ficha.comida)
-
-    def test_comida_setter(self):
-        ficha = Ficha(TipoFicha.NEGRA.value)
-        ficha.comida = True
-        self.assertTrue(ficha.comida)
+        self.assertEqual(ficha.tipo, TipoFicha.NEGRA.value)
 
 
 if __name__ == "__main__":

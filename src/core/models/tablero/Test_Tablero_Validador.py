@@ -153,6 +153,46 @@ class TestTableroValidador(unittest.TestCase):
     def test_no_se_pasa_si_es_menor_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
         self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 23, 20))
+    #region bear off
+    def test_puede_liberar_todas_fichas_en_home_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        for i in range(0, 6):
+            if i ==5:
+                continue
+            self.tablero[i] = [ficha_roja,ficha_roja,ficha_roja]
+        self.assertTrue(self.validador.puede_liberar(self.tablero, ficha_roja,[]))
+
+    def test_puede_liberar_todas_fichas_en_home_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        for i in range(18, 24):
+            if i ==23:
+                continue
+            self.tablero[i] = [ficha_negra,ficha_negra,ficha_negra]
+        self.assertTrue(self.validador.puede_liberar(self.tablero, ficha_negra,[]))
+    def test_no_puede_liberar_fichas_fuera_home_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        for i in range(0, 6):
+            self.tablero[i] = [ficha_roja,ficha_roja]
+        self.assertFalse(self.validador.puede_liberar(self.tablero, ficha_roja,[]))
+    def test_no_puede_liberar_fichas_fuera_home_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        for i in range(18, 24):
+            self.tablero[i] = [ficha_negra,ficha_negra]
+        self.assertFalse(self.validador.puede_liberar(self.tablero, ficha_negra,[]))
+
+    def test_puede_liberar_fichas_fuera_home_roja_con_ganadas(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        for i in range(0, 6):
+            self.tablero[i] = [ficha_roja,ficha_roja]
+        self.assertTrue(self.validador.puede_liberar(self.tablero, ficha_roja,[ficha_roja,ficha_roja,ficha_roja,Ficha(TipoFicha.NEGRA.value)]))
+    
+    def test_puede_liberar_fichas_fuera_home_negra_con_ganadas(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        for i in range(18, 24):
+            self.tablero[i] = [ficha_negra,ficha_negra]
+        self.assertTrue(self.validador.puede_liberar(self.tablero, ficha_negra,[ficha_negra,ficha_negra,ficha_negra,Ficha(TipoFicha.ROJA.value)]))
+
+    #end region
 
 
 if __name__ == "__main__":

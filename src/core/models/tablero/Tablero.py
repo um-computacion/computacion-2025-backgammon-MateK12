@@ -3,14 +3,16 @@ from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
-
+from src.core.exceptions.NoPuedeLiberarException import NoPuedeLiberarException
 
 class Tablero:
-    def __init__(self, fichas: list[list[Ficha]],tablero_validador:Tablero_Validador) -> None:
+    def __init__(
+        self, fichas: list[list[Ficha]], tablero_validador: Tablero_Validador
+    ) -> None:
         self.__tablero__: list[list[Ficha]] = fichas
         self.__fichas_comidas__: list[Ficha] = []
         self.__fichas_ganadas__: list[Ficha] = []
-        self.__validador__: Tablero_Validador =tablero_validador
+        self.__validador__: Tablero_Validador = tablero_validador
 
     @property
     def fichas_comidas(self) -> list[Ficha]:
@@ -37,6 +39,11 @@ class Tablero:
         """Retorna el validador"""
         return self.__validador__
 
+    @fichas_ganadas.setter
+    def fichas_ganadas(self, valor: list[Ficha]) -> None:
+        """Establece las fichas ganadas"""
+        self.__fichas_ganadas__ = valor
+
     def mover_ficha(
         self, ficha: Ficha, triangulo_origen: int, movimiento: int, comida: bool = False
     ) -> None:
@@ -54,8 +61,11 @@ class Tablero:
         ) and not self.__validador__.se_pasa_del_tablero(
             ficha, triangulo_destino, triangulo_origen
         ):
-            self.__tablero__[triangulo_origen].pop()
-            self.__fichas_ganadas__.append(ficha)
+            if self.__validador__.puede_liberar(self.tablero,ficha,self.fichas_ganadas):
+                self.__tablero__[triangulo_origen].pop()
+                self.__fichas_ganadas__.append(ficha)
+            else:
+                raise NoPuedeLiberarException("No puede liberar ficha aún, no estan todas sus fichas en home")
             return
         if self.__validador__.se_pasa_del_tablero(
             ficha, triangulo_destino, triangulo_origen
@@ -70,10 +80,8 @@ class Tablero:
         else:
             if self.__validador__.puede_comer(self.tablero, triangulo_destino, ficha):
                 ficha_comida = self.__tablero__[triangulo_destino].pop()
-                ficha_comida.comida = True
                 self.__fichas_comidas__.append(ficha_comida)
             if comida:
-                ficha.comida = False
                 self.__fichas_comidas__.remove(ficha)
             else:
                 self.__tablero__[triangulo_origen].pop()

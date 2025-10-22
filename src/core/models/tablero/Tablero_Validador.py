@@ -87,3 +87,26 @@ class Tablero_Validador:
                 return True
 
         return False
+    def puede_liberar(
+        self, tablero, ficha: Ficha,fichas_ganadas:list[Ficha]
+    ) -> bool:
+        """
+        Verifica si el jugador puede liberar una ficha desde la barra, osea si hay bear off o no
+        Parametros:
+            tablero (list[list[Ficha]]): El tablero de juego
+            ficha (Ficha): La ficha que se está moviendo
+        """
+        fichas_ganadas = [f for f in fichas_ganadas if f.tipo == ficha.tipo]
+        fichas_restantes = 15 - len(fichas_ganadas)
+        agg_len=0
+        if ficha.tipo == TipoFicha.ROJA.value:
+            for triangulo in range(0, 6):
+                fichas_rojas_en_triangulo = [f for f in tablero[triangulo] if f.tipo == TipoFicha.ROJA.value]
+                agg_len += len(fichas_rojas_en_triangulo)
+            return fichas_restantes == agg_len
+        elif ficha.tipo == TipoFicha.NEGRA.value:
+            agg_len=0
+            for triangulo in range(18, 24):
+                fichas_negras_en_triangulo = [f for f in tablero[triangulo] if f.tipo == TipoFicha.NEGRA.value]
+                agg_len += len(fichas_negras_en_triangulo)
+            return agg_len == fichas_restantes

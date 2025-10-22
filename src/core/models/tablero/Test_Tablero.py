@@ -13,7 +13,7 @@ class TestTablero(unittest.TestCase):
     def setUp(self):
         self.tablero_vacio = [[] for _ in range(24)]
 
-        self.tablero = Tablero(self.tablero_vacio,Tablero_Validador())
+        self.tablero = Tablero(self.tablero_vacio, Tablero_Validador())
 
     def test_mover_ficha_a_espacio_vacio(self):  # mover_ficha()
         ficha = Ficha(TipoFicha.NEGRA.value)
@@ -62,7 +62,6 @@ class TestTablero(unittest.TestCase):
         self.assertEqual(self.tablero.__tablero__[1][0], ficha_negra)
         self.assertEqual(len(self.tablero.fichas_comidas), 1)  # ficha roja
         self.assertEqual(self.tablero.fichas_comidas[0], ficha_roja)
-        self.assertTrue(self.tablero.fichas_comidas[0].comida)
 
     def test_mover_ficha_fuera_del_tablero(self):
         ficha = Ficha(TipoFicha.NEGRA.value)
@@ -74,6 +73,7 @@ class TestTablero(unittest.TestCase):
     def test_mover_ficha_a_ganar_negra(self):
         ficha = Ficha(TipoFicha.NEGRA.value)
         self.tablero.__tablero__[22].append(ficha)
+        self.tablero.__tablero__[23] = [Ficha(TipoFicha.NEGRA.value) for i in range(14)]
         self.tablero.mover_ficha(ficha, 22, 2)
         self.assertEqual(len(self.tablero.__tablero__[22]), 0)
         self.assertEqual(len(self.tablero.fichas_ganadas), 1)
@@ -81,6 +81,7 @@ class TestTablero(unittest.TestCase):
     def test_mover_ficha_a_ganar_roja(self):
         ficha = Ficha(TipoFicha.ROJA.value)
         self.tablero.__tablero__[2].append(ficha)
+        self.tablero.__tablero__[0] = [Ficha(TipoFicha.ROJA.value) for i in range(14)]
         self.tablero.mover_ficha(ficha, 2, -3)
         self.assertEqual(len(self.tablero.__tablero__[2]), 0)
         self.assertEqual(len(self.tablero.fichas_ganadas), 1)
@@ -97,6 +98,12 @@ class TestTablero(unittest.TestCase):
 
     def test_get_tablero(self):
         self.assertEqual(self.tablero.tablero, self.tablero.__tablero__)
+
+    def test_fichas_ganadas_setter(self):
+        ficha1 = Ficha(TipoFicha.NEGRA.value)
+        ficha2 = Ficha(TipoFicha.ROJA.value)
+        self.tablero.fichas_ganadas = [ficha1, ficha2]
+        self.assertEqual(len(self.tablero.fichas_ganadas), 2)
 
 
 if __name__ == "__main__":

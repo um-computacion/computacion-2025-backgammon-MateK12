@@ -4,20 +4,33 @@ from src.core.models.backgammon.backgammon import Backgammon
 from src.core.models.tablero.Tablero import Tablero
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
-from src.core.helpers.Tablero_Impresor import Tablero_Impresor
+from src.core.exceptions.CasillaOcupadaException import CasillaOcupadaException
+from src.core.exceptions.NoHayFichaEnTriangulo import NoHayFichaEnTriangulo
+from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
+from src.core.helpers.Tablero_Impresor import Tablero_Impresor
 from src.core.helpers.Tablero_Inicializador import Tablero_inicializador
 from src.core.models.dado.Dados import Dados
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.core.interfaces.JuegoInterfazMovimientos import IJuegoInterfazMovimientos
 from src.core.interfaces.JuegoInterfazDados import IJuegoInterfazDados
+from src.core.interfaces.DadosValidaciones import IDadosValidaciones
+from src.core.interfaces.TrianguloValidaciones import ITrianguloValidaciones
+from src.core.exceptions.NoPuedeLiberarException import NoPuedeLiberarException
+from src.core.models.ficha.Ficha import Ficha
 
 ERROR = "\033[91m"
 RESET = "\033[0m"
 
 
-class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados):
-    def __init__(self, jugador1, jugador2,backgammon:Backgammon):
+class CLI(
+    IJuegoInterfazMovimientos,
+    IJuegoInterfazDados,
+    IDadosValidaciones,
+    ITrianguloValidaciones,
+):
+    def __init__(self, jugador1, jugador2, backgammon: Backgammon):
         self.__jugador_rojo: Jugador = jugador1
         self.__jugador_negro: Jugador = jugador2
         self.__backgammon: Backgammon = backgammon
@@ -64,8 +77,9 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados):
             triangulo_origen (int): El triángulo de origen
             movimiento (int): El movimiento a realizar
         Llama al método mover_ficha del Backgammon"""
+        self.seleccion_dado_valida(movimiento)
         self.__backgammon.mover_ficha(
-            triangulo_origen, movimiento, self.__backgammon.turno
+            triangulo_origen, movimiento, self.__backgammon.turnero.turno
         )
 
     def inicializar_juego(self):
@@ -78,11 +92,11 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados):
 
         self.__jugador_rojo = jugador1
         self.__jugador_negro = jugador2
-        self.backgammon.quien_empieza()
+        self.backgammon.turnero.quien_empieza()
 
     def mostrar_turno_actual(self):
         """Muestra el turno del jugador actual"""
-        if self.backgammon.turno == TipoFicha.ROJA.value:
+        if self.backgammon.turnero.turno == TipoFicha.ROJA.value:
             print("Turno del jugador rojo: {}".format(self.jugador_rojo))
         else:
             print("Turno del jugador negro: {}".format(self.jugador_negro))
@@ -117,20 +131,6 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados):
             return True
         raise SeleccionDadoInvalida("Selección de dado inválida")
 
-    def puede_hacer_algun_movimiento(self):
-        """Verifica si el jugador actual puede hacer algún movimiento con los dados disponibles
-        Raises:
-            bool: True si puede hacer algún movimiento, False en caso contrario
-        """
-        tipo = self.backgammon.turno
-        for dado in self.dados_disponibles:
-            if self.backgammon.puede_mover_ficha(tipo, dado):
-                return True
-        self.dados_disponibles = []
-        raise NingunMovimientoPosible(
-            "No hay movimientos posibles con los dados disponibles"
-        )
-
     def seleccion_triangulo_valida(self, seleccion: str) -> bool:
         """Valida que la selección del triángulo sea correcta
         Parámetros:
@@ -154,25 +154,41 @@ class CLI(IJuegoInterfazMovimientos,IJuegoInterfazDados):
             self.tirar_dados()
             while self.dados_disponibles:
                 try:
-                    self.puede_hacer_algun_movimiento()
+                    self.backgammon.puede_mover_ficha(
+                        self.backgammon.turnero.turno, self.dados_disponibles
+                    )
                     self.realizar_movimiento()
-                except Exception as e:
+                except (
+                    SeleccionDadoInvalida,
+                    SeleccionTrianguloInvalida,
+                    CasillaOcupadaException,
+                    NoHayFichaEnTriangulo,
+                    MovimientoNoJustoParaGanar,
+                    NoPuedeLiberarException
+                ) as e:
                     print(f"{ERROR}{e}{RESET}")
-            self.backgammon.cambiar_turno()
+                except NingunMovimientoPosible as e:
+                    if self.backgammon.hay_ganador():
+                        break
+                    print(f"{ERROR}{e}{RESET}")
+                    self.dados_disponibles = []
+            self.backgammon.turnero.cambiar_turno()
         self.mostrar_ganador()
+
     def mostrar_ganador(self):
         """Muestra el ganador del juego"""
         ganador = self.backgammon.hay_ganador()
-        if ganador == TipoFicha.ROJA:
+        if ganador == TipoFicha.ROJA.value:
             print("¡El jugador rojo ha ganado!")
-        elif ganador == TipoFicha.NEGRA:
+        elif ganador == TipoFicha.NEGRA.value:
             print("¡El jugador negro ha ganado!")
 
-if __name__ == "__main__":
-    tablero = Tablero(Tablero_inicializador.inicializar_tablero(),Tablero_Validador())
-    dados = Dados()
-    backgammon = Backgammon(tablero,dados)
 
+if __name__ == "__main__":
+    tablero = Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador())
+    dados = Dados()
+    turnero = Backgammon_Turnos(dados)
+    backgammon = Backgammon(tablero, dados, turnero)
 
     cli = CLI(None, None, backgammon)
     cli.jugar()

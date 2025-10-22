@@ -1,6 +1,8 @@
 from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
-class Tablero_inicializador():
+
+
+class Tablero_inicializador:
     @staticmethod
     def inicializar_tablero() -> list[list[Ficha]]:
         """Inicializa el tablero con la configuración inicial del backgammon
