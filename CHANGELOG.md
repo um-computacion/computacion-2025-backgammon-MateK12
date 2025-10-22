@@ -1,0 +1,328 @@
+# Changelog
+
+
+
+## [1.0.0] - 20-08-2025
+
+### Agregado
+-Archivos md agregados
+-gitignore para ignorar el entorno virtual agregado
+-Archivo de requirements para librerias necesarias
+-Configuracion de circleci
+### Cambiado
+
+### Arreglado
+
+### Eliminado
+
+## [1.0.1] - 20-08-2025
+
+### Agregado
+estructura de carpetas como en consigna
+archivos vacios de las clases con sus respectivos tests vacios
+### Cambiado
+gitignor para ignorar env
+### Arreglado
+
+### Eliminado
+
+## [1.0.2] - 21-08-2025
+
+### Agregado
+clases ficha, jugador, dados implementadas con sus tests
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.0.3] - 23-08-2025
+
+### Agregado
+clase UI empezada, tablero se dibuja bien
+tests para la clase UI implementadas
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.0.4] - 24-08-2025
+
+### Agregado
+Clase tablero, clase tablero validador, testeadas
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.0.5] - 24-08-2025
+
+### Agregado
+-metodos para saber si come o no una ficha en moviemiento agregadas
+-setter de comida en ficha agregado
+-guardar fichas en "medio" del tablero cuando se comen
+-tests
+-comentarios agregados en test
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.0.6] - 28-08-2025
+
+### Agregado
+-metodos para saber si hay fichas comidas de un tipo especifico, seleccionar ficha
+-tests de esas clases
+-metodo para inicializar tablero
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.1.0] - 31-08-2025 ##
+
+### Agregado
+Clase CLI empezada
+test a metodos basicos
+### Cambiado
+### Arreglado
+
+### Eliminado
+
+## [1.1.1] - 3-09-2025
+### Agregado
+Pipeline creada
+### Cambiado
+requirements txt
+### Arreglado
+### Eliminado
+
+## [1.1.2] - 4-09-2025
+### Agregado
+agrege getter del dado en la clase backgammon
+dinamica de juego empezada
+### Cambiado
+
+### Arreglado
+### Eliminado
+
+## [1.1.3] - 8-09-2025
+### Agregado
+funcion mover ficha agregada en backgammon
+atributo movimientos disponibles agregados en cli
+agregada validacion en seleccion de triangulo para elejir un triangulo valido 
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [1.1.4] - 9-09-2025
+### Agregado
+funcion mover ficha agregada en backgammon
+atributo movimientos disponibles agregados en cli
+agregada validacion en seleccion de triangulo para elejir un triangulo valido 
+### Cambiado
+tirar dados devuelve un arreglo de numeros
+
+### Arreglado
+### Eliminado
+
+## [1.1.5] - 10-09-2025
+### Agregado
+docstrings a funciones
+### Cambiado
+### Arreglado
+movieminto de ficha en el tablero
+### Eliminado
+
+## [1.1.6] - 12-09-2025
+### Agregado
+Moviemientos fluids
+funcion quien empieza para elegir aleatoriamente quien empieza
+### Cambiado
+### Arreglado
+funciones cambiadas en el movimiento para que ande
+### Eliminado
+
+## [1.1.7] - 13-09-2025
+### Agregado
+tests de imprimirTablero() agregado
+Agregado nombre en readme
+### Cambiado
+### Arreglado
+test arreglados en clase dados y en backgammon
+Las fichas rojas mueven en sentido contrario a las negras
+se cambia gestion de turnos para mover 2 veces seguidas mismo jugador
+### Eliminado
+
+## [1.1.8] - 14-09-2025
+### Agregado
+agregado meotod para saber is la fucha puede ganar o no, agregada excecpion
+### Cambiado
+### Arreglado
+se comen las fichas, y se vuelven a poner en el tablero en el lugar correspondiente
+### Eliminado
+metodo rango_ganar en tablero_validador
+
+## [1.1.9] - 15-09-2025
+### Agregado
+atributo en ficha para saber si la ficha esta por ganar o no
+### Cambiado
+logica para saber si una ficha roja se pasa para ganar o no
+### Arreglado
+### Eliminado
+
+## [1.2.0] - 16-09-2025 ##
+### Agregado
+Probado circuito de juego, validacion de triangulo hecha
+creado metodo estatico para imprmir tablero, responsabilidades segmentadas
+agregados tests a cli
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [1.2.1] - 16-09-2025 
+### Agregado
+agregados tests a cli
+se mejoro la impresora del tablero, haciendo los [] mas ordenados
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.0.0] - 16-09-2025 ###
+### Agregado
+Docstrings en funciones faltantes
+separado tablero ui de clase UI
+renderizado en de fichas en tablero, aunque mal puestas
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.0.1] - 21-09-2025
+### Agregado
+docstrings en metodos de ui
+### Cambiado
+### Arreglado
+fichas mostrandose alineadas con los triangulos
+### Eliminado
+
+## [2.0.2] - 21-09-2025
+### Agregado
+Se muestran campos para realizar movimientos
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.0.3] - 24-09-2025
+### Agregado
+se agrega metodo para saber si puede hacer algun movimiento
+se agrega getter del validador
+se elimino tests y metodo que no se usaba en tablero_validador
+se agrego comentario para evitar que pylint busque docstrings en tests
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.0.4] - 25-09-2025
+### Agregado
+metodo para saber si puede hacer algun movimiento funcionando
+excepcion para indicar que se cambio de turno
+tests de la funcion
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.0.5] - 26-09-2025
+### Agregado
+Readme con instruccioens de como jugar
+### Cambiado
+Archivo de justificacion completado
+calificacion en pylint mejorada a 9
+
+### Arreglado
+### Eliminado
+
+## [2.0.6] - 27-09-2025
+### Agregado
+Texto en interfaz grafica
+### Cambiado
+orden de los campos para que se vea bien
+Refactor en codigo para respetar DIP
+### Arreglado
+### Eliminado
+
+## [2.0.7] - 27-09-2025
+### Agregado
+callbacks para evento de apretar boton
+metodos para tirar dados y mover ficha en ui
+validacion para triangulo y dado valido ui
+### Cambiado
+interfaz JuegoInterfazDados agregada e implementada en ui y cli
+### Arreglado
+### Eliminado
+quitados atributos no usados en CamposUi
+
+## [2.0.8] - 28-09-2025
+### Agregado
+cartel para manejar excepciones
+tests en caposUi
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.1.0] - 30-09-2025 ##
+### Agregado
+cartel mostrandose con pygame
+movimiento de ficha en ui
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.1.1] - 2-10-2025
+### Agregado
+se actualiza la vista correctamente al mover ficha
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.1.2] - 2-10-2025
+### Agregado
+Refactor en cartel para usar misma clase para ganador y excepciones
+mostrar numeros en triangulos
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.1.3] - 4-10-2025
+### Agregado
+quitados metodos que no se usaban en tablero_ui
+tests agregados en tablero_ui
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.1.4] - 4-10-2025
+### Agregado
+test agregados a ui 83% de coverage
+### Cambiado
+### Arreglado
+### Eliminado
+
+## [2.2.0] - 4-10-2025 ##
+### Agregado
+Responsabilidad de cambiar turno en turnero, seprada de backgammon, test actualizados
+### Cambiado
+### Arreglado
+###
+
+## [2.2.1] - 4-10-2025 ##
+### Agregado
+### Cambiado
+excepciones levantadas en clase backgammon para asegurar consistencia
+### Arreglado
+###
+
+## [2.2.2] - 4-10-2025 ##
+### Agregado
+### Cambiado
+correcciones post refactor, cartel mostrandose correctamente, juego funcionando
+### Arreglado
+###

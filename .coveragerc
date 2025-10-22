@@ -1,0 +1,18 @@
+[run]
+source=
+    src
+omit =
+    */Test_*.py
+    **/Test_*.py
+    Test_*.py
+    src/core/exceptions/*
+    src/core/enums/*
+    src/core/helpers/Tablero_Impresor.py
+    src/core/interfaces/*
+    */tests/*
+    **/tests/*
+    */test_*.py
+    **/test_*.py
+[report]
+exclude_lines = 
+    ^\s*'''
