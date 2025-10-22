@@ -196,11 +196,14 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
                     tiene_fichas = [
                         ficha for ficha in self.tablero.tablero[i] if ficha.tipo == tipo
                     ]
-                    puede_ganar = self.tablero.validador.puede_ganar(
+                    movimiento_justo_para_ganar = self.tablero.validador.puede_ganar(
                         Ficha(tipo), triangulo_destino, i
                     ) and not self.tablero.validador.se_pasa_del_tablero(
                         Ficha(tipo), triangulo_destino, i
-                    ) and self.tablero.validador.puede_liberar(self.tablero.tablero,Ficha(tipo),self.tablero.fichas_ganadas)
+                    )
+                    puede_liberar = self.tablero.validador.puede_liberar(
+                        self.tablero.tablero, Ficha(tipo), self.tablero.fichas_ganadas
+                    )
                     se_pasa = self.tablero.validador.se_pasa_del_tablero(
                         Ficha(tipo), triangulo_destino, i
                     )
@@ -208,8 +211,10 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
                         continue
                     if se_pasa:
                         continue
-                    if puede_ganar:
+                    if movimiento_justo_para_ganar and puede_liberar:
                         return True
+                    if movimiento_justo_para_ganar and not puede_liberar:
+                        continue
                     no_hay_fichas_rivales = (
                         not self.tablero.validador.triangulo_con_fichas_rivales(
                             self.tablero.tablero, triangulo_destino, Ficha(tipo)

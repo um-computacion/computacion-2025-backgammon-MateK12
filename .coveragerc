@@ -8,8 +8,7 @@ omit =
     src/core/exceptions/*
     src/core/enums/*
     src/core/helpers/Tablero_Impresor.py
-    src/core/interfaces/JuegoInterfazDados.py
-    src/core/interfaces/JuegoInterfazMovimientos.py
+    src/core/interfaces/*
     */tests/*
     **/tests/*
     */test_*.py

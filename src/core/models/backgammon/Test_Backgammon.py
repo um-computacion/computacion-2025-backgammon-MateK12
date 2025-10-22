@@ -182,12 +182,12 @@ class TestBackgammon(unittest.TestCase):
         with self.assertRaises(NingunMovimientoPosible):
             self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [3, 4])
 
-    def test_puede_mover_ficha_roja_desde_5(self):
+    def test_puede_mover_ficha_roja_desde_5_para_ganar(self):
         self.game.turnero.turno = TipoFicha.ROJA.value
 
         for i in range(24):
             self.game.tablero.tablero[i] = []
-
+        self.game.tablero.tablero[4] = [Ficha(TipoFicha.ROJA.value) for _ in range(14)]
         self.game.tablero.tablero[5] = [Ficha(TipoFicha.ROJA.value)]
         resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6])
         self.assertTrue(resultado)
@@ -238,6 +238,26 @@ class TestBackgammon(unittest.TestCase):
 
         with self.assertRaises(NingunMovimientoPosible):
             self.game.puede_mover_ficha(TipoFicha.ROJA.value, [2])
+    def test_puede_mover_ficha_negra_comida_un_solo_movimiento(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        ficha_comida = Ficha(TipoFicha.NEGRA.value)
+        self.game.tablero.fichas_comidas.append(ficha_comida)
+        self.game.tablero.tablero[0] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value) ]
+        self.game.tablero.tablero[1] = []
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [2,1])
+        self.assertTrue(resultado)
+    def test_puede_mover_ficha_negra_comida_dos_movimientos(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        ficha_comida = Ficha(TipoFicha.NEGRA.value)
+        self.game.tablero.fichas_comidas.append(ficha_comida)
+
+        self.game.tablero.tablero[1] = []
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [2,1])
+        self.assertTrue(resultado)
 
     def test_puede_mover_ficha_negra_unica_opcion_bloqueada_comida(self):
         self.game.turnero.turno = TipoFicha.NEGRA.value
@@ -328,7 +348,31 @@ class TestBackgammon(unittest.TestCase):
 
         resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6])
         self.assertTrue(resultado)
+    def test_no_puede_mover_ficahas_todas_se_pasan_home_lleno(self):
+        self.game.turnero.turno = TipoFicha.ROJA.value
 
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+        self.game.tablero.tablero[0] = [Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[1] = [Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.fichas_ganadas = [Ficha(TipoFicha.ROJA.value) for _ in range(12)]
+
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6,4])
+    def test_no_puede_mover_no_puede_ganar(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+        self.game.tablero.tablero[7] = [Ficha(TipoFicha.NEGRA.value)]
+        self.game.tablero.tablero[8] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+
+        self.game.tablero.tablero[23] = [Ficha(TipoFicha.NEGRA.value)]
+
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1,1,1,1])
     # end region
     #region test seleccion dado valido
     def test_seleccion_dado_valida_valido(self):

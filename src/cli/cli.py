@@ -17,7 +17,7 @@ from src.core.interfaces.JuegoInterfazMovimientos import IJuegoInterfazMovimient
 from src.core.interfaces.JuegoInterfazDados import IJuegoInterfazDados
 from src.core.interfaces.DadosValidaciones import IDadosValidaciones
 from src.core.interfaces.TrianguloValidaciones import ITrianguloValidaciones
-from src.core.interfaces.PuedeHacerMovimiento import IPuedeHacerMovimiento
+from src.core.exceptions.NoPuedeLiberarException import NoPuedeLiberarException
 from src.core.models.ficha.Ficha import Ficha
 
 ERROR = "\033[91m"
@@ -164,6 +164,7 @@ class CLI(
                     CasillaOcupadaException,
                     NoHayFichaEnTriangulo,
                     MovimientoNoJustoParaGanar,
+                    NoPuedeLiberarException
                 ) as e:
                     print(f"{ERROR}{e}{RESET}")
                 except NingunMovimientoPosible as e:
@@ -172,10 +173,6 @@ class CLI(
                     print(f"{ERROR}{e}{RESET}")
                     self.dados_disponibles = []
             self.backgammon.turnero.cambiar_turno()
-            self.__backgammon.tablero.fichas_ganadas = [
-                Ficha(TipoFicha.ROJA.value) for _ in range(15)
-            ]
-            print(self.__backgammon.tablero.fichas_ganadas)
         self.mostrar_ganador()
 
     def mostrar_ganador(self):

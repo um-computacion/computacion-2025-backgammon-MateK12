@@ -21,7 +21,7 @@ from src.core.models.dado.Dados import Dados
 from src.core.models.tablero.Tablero_Validador import Tablero_Validador
 from src.pygame_ui.Cartel_UI.Cartel_UI import Cartel_UI
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
-
+from src.core.exceptions.NoPuedeLiberarException import NoPuedeLiberarException
 WINDOW_WIDTH = 1500
 WINDOW_HEIGHT = 700
 BROWN_LIGHT = (222, 184, 135)
@@ -112,6 +112,7 @@ class BackgammonUI(IJuegoInterfazMovimientos, IPuedeHacerMovimiento):
                 CasillaOcupadaException,
                 SeleccionDadoInvalida,
                 SeleccionTrianguloInvalida,
+                NoPuedeLiberarException
             ) as e:
                 if not self.__backgammon.hay_ganador():
                     self.__cartel_error.mostrar_cartel(str(e), duracion=5.0)
