@@ -58,7 +58,6 @@ jobs:
       - name: Run Pylint and generate report
         run: |
           pylint --rcfile=.pylintrc src/ > pylint_report.txt || true
-
       - name: Generate reports file
         run: |
           cat > generate_reports.py << 'EOF'
@@ -79,17 +78,15 @@ jobs:
           ```text
           {coverage_report}
           ```
-
           ## Pylint Report
           ```text
           {pylint_report}
           ```
-          """
-
-          with open("REPORTS.md", "w") as f:
-              f.write(reports_content)
           EOF
+
           python generate_reports.py
+          {coverage_report}
+
       - name: Create Pull Request for reports
         if: github.ref == 'refs/heads/main'
         uses: peter-evans/create-pull-request@v5
