@@ -12,5 +12,5 @@ lxml
 beautifulsoup4
 pylint
 black
-pygame==2.5.2
-pygame-gui==0.6.10
+pygame-ce>=2.5.5
+pygame-gui>=0.6.11
