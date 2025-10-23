@@ -35,6 +35,7 @@ class TestCampsUI(unittest.TestCase):
     #     self.campos_ui.dados_actuales = [1, 2]
 
     def setUp(self):
+        pygame.font.Font = MagicMock()
         with patch('pygame_gui.UIManager'), \
              patch('pygame.font.Font'):
             self.campos_ui = CamposUi(1500, 700)
