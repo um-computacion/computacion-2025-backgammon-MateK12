@@ -1,5 +1,4 @@
 coverage
-pygame
 pytest
 requests
 pandas
@@ -12,5 +11,6 @@ statsmodels
 lxml
 beautifulsoup4
 pylint
-pygame_gui
 black
+pygame-ce>=2.5.5
+pygame-gui>=0.6.11
