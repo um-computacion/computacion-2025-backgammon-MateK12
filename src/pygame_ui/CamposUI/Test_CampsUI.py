@@ -12,10 +12,11 @@ os.environ['SDL_HIDDEN'] = '1'
 class TestCampsUI(unittest.TestCase):
     @patch("pygame_gui.UIManager")
     @patch("pygame.font.Font")
-    def setUp(self, mock_font, mock_ui_manager):
+    @patch('pygame.display.set_mode')
+    @patch('pygame.init')
+    def setUp(self, mock_font, mock_ui_manager, mock_set_mode, mock_pygame_init):
         mock_font_instance = MagicMock()
         mock_font.return_value = mock_font_instance
-
         mock_manager_instance = MagicMock()
         mock_ui_manager.return_value = mock_manager_instance
         from src.pygame_ui.CamposUI.camposUI import CamposUi

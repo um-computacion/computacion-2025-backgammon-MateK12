@@ -8,7 +8,6 @@ ELEMENT_WIDTH = 250
 LABEL_WIDTH = 200
 BUTTON_WIDTH = 150
 LABEL_COLOR = (0, 0, 0)
-
 # pylint: disable=C0116
 
 class CamposUi:
