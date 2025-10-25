@@ -84,6 +84,7 @@ jobs:
           EOF
           python generate_reports.py
       - name: Create Pull Request for reports
+        if: github.ref == 'refs/heads/main'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.MY_TOKEN }}
