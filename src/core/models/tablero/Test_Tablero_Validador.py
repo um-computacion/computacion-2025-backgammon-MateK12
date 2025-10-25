@@ -92,11 +92,18 @@ class TestTableroValidador(unittest.TestCase):
 
     def test_no_puede_ganar_se_queda_corto_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.tablero[11]=[Ficha(TipoFicha.ROJA.value)]
         self.assertFalse(self.validador.puede_ganar(ficha_roja, 0, 3))
-
+    def test_puede_ganar_con_numero_mayor_roja(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_roja, -2, 3))
+    def test_puede_ganar_con_numero_mayor_negra(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertTrue(self.validador.puede_ganar(ficha_negra, 26, 23))
     def test_no_puede_ganar_se_queda_corto_roja_no_se_pasa(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3))
+        self.tablero[11]=[Ficha(TipoFicha.ROJA.value)]
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3,self.tablero))
 
     def test_puede_ganar_ficha_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
@@ -120,39 +127,69 @@ class TestTableroValidador(unittest.TestCase):
 
     def test_no_puede_ganar_volviendo_de_comida(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.puede_ganar(ficha_roja, -1, 24))
+        self.assertFalse(self.validador.puede_ganar(ficha_roja, 1, 24))
 
     def test_no_se_pasa_del_tablero_ficha_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 24, 23))
+        self.tablero[11]=[Ficha(TipoFicha.NEGRA.value)]
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 24, 23,self.tablero))
 
     def test_no_se_pasa_del_tablero_ficha_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 0))
+        self.tablero[5]=[Ficha(TipoFicha.ROJA.value)]
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 0,self.tablero))
 
-    def test_no_se_pasa_del_tablero_ficha_roja_si_sale_6(self):
+    def test_no_se_pasa_del_tablero_ficha_roja_si_sale_1(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 0))
+        self.tablero[11]=[Ficha(TipoFicha.ROJA.value)]
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -1, 1,self.tablero))
 
-    def test_no_se_pasa_del_tablero_ficha_negra_si_sale_6(self):
+    def test_no_se_pasa_del_tablero_ficha_negra_si_sale_1(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 24, 24))
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 24, 23,self.tablero))
 
     def test_se_pasa_del_tablero_ficha_negra_mueve_3(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_negra, 26, 23))
+        self.tablero[11]=[Ficha(TipoFicha.NEGRA.value)]
+        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_negra, 26, 23,self.tablero))
 
     def test_se_pasa_del_tablero_ficha_roja_mueve_3(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_roja, -2, 1))
+        self.tablero[11]=[Ficha(TipoFicha.ROJA.value)]
+        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_roja, -2, 1,self.tablero))
 
     def test_no_se_pasa_si_es_menor_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
-        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3))
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 0, 3,self.tablero))
 
     def test_no_se_pasa_si_es_menor_negra(self):
         ficha_negra = Ficha(TipoFicha.NEGRA.value)
-        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 23, 20))
+        self.tablero[11]=[Ficha(TipoFicha.NEGRA.value)]
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 23, 20,self.tablero))
+    #region tiene fichas atras
+    def test_no_tiene_fichas_atras_ficha_negra_no_deberia_pasarse(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_negra, 25, 20,self.tablero))
+    def test_tiene_fichas_atras_ficha_negra_deberia_pasarse(self):
+        ficha_negra = Ficha(TipoFicha.NEGRA.value)
+        self.tablero[11]=[Ficha(TipoFicha.NEGRA.value)]
+        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_negra, 25, 20,self.tablero))
+    def test_no_tiene_fichas_atras_ficha_roja_no_deberia_pasarse(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, -3, 2,self.tablero))
+    def test_tiene_fichas_atras_ficha_roja_deberia_pasarse(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.tablero[11]=[Ficha(TipoFicha.ROJA.value)]
+        self.assertTrue(self.validador.se_pasa_del_tablero(ficha_roja, -3, 2,self.tablero))
+    def test_no_tiene_fichas_mismo_color_atras_no_deberia_pasarse(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.tablero[11]=[Ficha(TipoFicha.NEGRA.value)]
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 25, 20,self.tablero))
+    def test_no_se_pasa_ficha_atras(self):
+        ficha_roja = Ficha(TipoFicha.ROJA.value)
+        self.tablero[11]=[Ficha(TipoFicha.ROJA.value)]
+        self.assertFalse(self.validador.se_pasa_del_tablero(ficha_roja, 2, 3,self.tablero))
+    #end region
     #region bear off
     def test_puede_liberar_todas_fichas_en_home_roja(self):
         ficha_roja = Ficha(TipoFicha.ROJA.value)
@@ -193,7 +230,8 @@ class TestTableroValidador(unittest.TestCase):
         self.assertTrue(self.validador.puede_liberar(self.tablero, ficha_negra,[ficha_negra,ficha_negra,ficha_negra,Ficha(TipoFicha.ROJA.value)]))
 
     #end region
-
+    def tearDown(self):
+        self.tablero = [[] for _ in range(24)]
 
 if __name__ == "__main__":
     unittest.main()

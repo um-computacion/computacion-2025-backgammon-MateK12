@@ -59,14 +59,13 @@ class Tablero_Validador:
         tipo = ficha.tipo
 
         if tipo == TipoFicha.ROJA.value:
-            return triangulo_destino == -1 and triangulo_origen < 6
+            return triangulo_destino <= -1 
         elif tipo == TipoFicha.NEGRA.value:
-            return triangulo_destino == 24 and triangulo_origen > 17
+            return triangulo_destino >= 24 
 
-        return False
 
     def se_pasa_del_tablero(
-        self, ficha: Ficha, triangulo_destino: int, triangulo_origen: int
+        self, ficha: Ficha, triangulo_destino: int, triangulo_origen: int,tablero
     ) -> bool:
         """Verifica si el movimiento se pasa del tablero (va más allá del final)
         Parametros:
@@ -77,6 +76,8 @@ class Tablero_Validador:
         Retorna:
             bool: True si se pasa del tablero, False en caso contrario
         """
+        if not self._tiene_fichas_atras(tablero, ficha, triangulo_origen):
+            return False
         tipo = ficha.tipo
 
         if tipo == TipoFicha.ROJA.value:
@@ -87,6 +88,30 @@ class Tablero_Validador:
                 return True
 
         return False
+
+    def _tiene_fichas_atras(self, tablero, ficha: Ficha, triangulo_origen: int) -> bool:
+        """
+        Verifica si el jugador tiene fichas en los triángulos detrás de la ficha
+        Parametros:
+            tablero (list[list[Ficha]]): El tablero de juego
+            ficha (Ficha): La ficha que se está moviendo
+            dado (int): El valor del dado
+        Retorna:
+            bool: True si tiene fichas atrás, False en caso contrario
+        """
+        tipo = ficha.tipo
+        if tipo == TipoFicha.ROJA.value:
+            for i in range(triangulo_origen + 1, 24):
+                triangulo_filtrado = [f for f in tablero[i] if f.tipo == TipoFicha.ROJA.value]
+                if triangulo_filtrado:
+                    return True
+        elif tipo == TipoFicha.NEGRA.value:
+            for i in range(0, triangulo_origen):
+                triangulo_filtrado = [f for f in tablero[i] if f.tipo == TipoFicha.NEGRA.value]
+                if triangulo_filtrado:
+                    return True
+        return False
+
     def puede_liberar(
         self, tablero, ficha: Ficha,fichas_ganadas:list[Ficha]
     ) -> bool:

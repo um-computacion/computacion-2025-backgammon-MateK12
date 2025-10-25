@@ -373,6 +373,16 @@ class TestBackgammon(unittest.TestCase):
 
         with self.assertRaises(NingunMovimientoPosible):
             self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1,1,1,1])
+    # def test_puede_mover_no_fichas_atras_se_pasa(self):
+    #     self.game.turnero.turno = TipoFicha.NEGRA.value
+
+    #     for i in range(24):
+    #         self.game.tablero.tablero[i] = []
+
+    #     self.game.tablero.tablero[22] = [Ficha(TipoFicha.NEGRA.value)]
+    #     # self.game.tablero.tablero[23] = [Ficha(TipoFicha.NEGRA.value)]
+    #     resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [6])
+    #     self.assertTrue(resultado)
     # end region
     #region test seleccion dado valido
     def test_seleccion_dado_valida_valido(self):
