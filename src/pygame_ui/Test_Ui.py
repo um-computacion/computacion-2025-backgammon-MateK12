@@ -87,19 +87,15 @@ class Test_Ui(unittest.TestCase):
 
     def test_realizar_movimiento_normal(self):
         self.mock_backgammon.hay_fichas_comidas.return_value = False
-        self.ui._BackgammonUI__dados_disponibles = [3, 5]
         self.ui.realizar_movimiento()
         self.mock_backgammon.mover_ficha.assert_called_once_with(5, 3)
-        self.assertEqual(self.ui._BackgammonUI__dados_disponibles, [5])
-        self.assertEqual(self.mock_campos_ui.dados_actuales, [5])
 
     def test_realizar_movimiento_con_fichas_comidas(self):
         self.mock_backgammon.hay_fichas_comidas.return_value = True
-        self.ui._BackgammonUI__dados_disponibles = [3, 5]
         self.ui.realizar_movimiento()
         self.mock_backgammon.mover_ficha_comida.assert_called_once_with(3)
-        self.assertEqual(self.ui._BackgammonUI__dados_disponibles, [5])
-        self.assertEqual(self.mock_campos_ui.dados_actuales, [5])
+    
+
 
     def test_cambiar_turno(self):
         self.ui.cambiar_turno()

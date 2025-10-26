@@ -327,9 +327,18 @@ correcciones post refactor, cartel mostrandose correctamente, juego funcionando
 ### Arreglado
 ###
 
-## [2.3.2] - 24-10-2025 ##
+## [2.3.0] - 24-10-2025 ##
 ### Agregado
 ### Cambiado
 Regla de ganar fichas aunque se pasen si no hay otras atras y se tienen todas en el home implementada y testeada 
+### Arreglado
+###
+
+
+## [2.4.0] - 26-10-2025 ##
+### Agregado
+regla de "En particular, en caso de disponer de una sola ficha que puede moverse por el valor de ambos dados, pero no la suma de ambos, deberá escogerse el mayor de los dos valores." implementada y testeada
+### Cambiado
+ dados_disponibles pasado como atributo de backgammon
 ### Arreglado
 ###
