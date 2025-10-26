@@ -96,7 +96,7 @@ jobs:
           python generate_reports.py
 
       - name: Create Pull Request for reports
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.MY_TOKEN }}
