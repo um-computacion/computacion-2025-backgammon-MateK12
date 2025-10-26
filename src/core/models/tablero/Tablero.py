@@ -55,20 +55,23 @@ class Tablero:
         Raises:
         CasillaOcupadaException: Si el triángulo de destino tiene 2 o más fichas rivales.
         """
+        fichas_comidas = [f for f in self.__fichas_comidas__ if f.tipo == ficha.tipo]
+
         triangulo_destino = triangulo_origen + movimiento
         if self.__validador__.puede_ganar(
             ficha, triangulo_destino, triangulo_origen
         ) and not self.__validador__.se_pasa_del_tablero(
-            ficha, triangulo_destino, triangulo_origen
-        ):
+            ficha, triangulo_destino, triangulo_origen,self.tablero
+        )and not fichas_comidas:
             if self.__validador__.puede_liberar(self.tablero,ficha,self.fichas_ganadas):
                 self.__tablero__[triangulo_origen].pop()
                 self.__fichas_ganadas__.append(ficha)
             else:
                 raise NoPuedeLiberarException("No puede liberar ficha aún, no estan todas sus fichas en home")
             return
+        
         if self.__validador__.se_pasa_del_tablero(
-            ficha, triangulo_destino, triangulo_origen
+            ficha, triangulo_destino, triangulo_origen,self.tablero
         ):
             raise MovimientoNoJustoParaGanar("Movimiento no justo para ganar")
         if self.__validador__.triangulo_con_fichas_rivales(

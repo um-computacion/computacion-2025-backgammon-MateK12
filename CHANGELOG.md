@@ -326,3 +326,10 @@ excepciones levantadas en clase backgammon para asegurar consistencia
 correcciones post refactor, cartel mostrandose correctamente, juego funcionando
 ### Arreglado
 ###
+
+## [2.3.2] - 24-10-2025 ##
+### Agregado
+### Cambiado
+Regla de ganar fichas aunque se pasen si no hay otras atras y se tienen todas en el home implementada y testeada 
+### Arreglado
+###

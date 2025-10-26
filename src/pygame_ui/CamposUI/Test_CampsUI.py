@@ -1,27 +1,45 @@
+import pygame
+import os
+from io import StringIO
+from contextlib import redirect_stdout, redirect_stderr
+
+os.environ['SDL_VIDEODRIVER'] = 'dummy' 
+os.environ['SDL_AUDIODRIVER'] = 'dummy'
+os.environ['SDL_HIDDEN'] = '1'
+
+# pylint: disable=C0116
+with redirect_stdout(StringIO()), redirect_stderr(StringIO()):
+    pygame.init()
+
+
 import unittest
 from unittest.mock import patch, MagicMock
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.ficha.Ficha import Ficha
-import os
+from src.pygame_ui.CamposUI.camposUI import CamposUi
 
-os.environ['SDL_VIDEODRIVER'] = 'dummy' 
-os.environ['SDL_AUDIODRIVER'] = 'dummy'
-
-# pylint: disable=C0116
 
 class TestCampsUI(unittest.TestCase):
-    @patch("pygame_gui.UIManager")
-    @patch("pygame.font.Font")
-    def setUp(self, mock_font, mock_ui_manager):
-        mock_font_instance = MagicMock()
-        mock_font.return_value = mock_font_instance
+    # @patch("pygame_gui.UIManager")
+    # @patch("pygame.font.Font")
+    # @patch('pygame.display.set_mode')
+    # @patch('pygame.init')
+    # def setUp(self, mock_font, mock_ui_manager, mock_set_mode, mock_pygame_init):
+    #     mock_font_instance = MagicMock()
+    #     mock_font.return_value = mock_font_instance
+    #     mock_manager_instance = MagicMock()
+    #     mock_ui_manager.return_value = mock_manager_instance
+    #     from src.pygame_ui.CamposUI.camposUI import CamposUi
 
-        mock_manager_instance = MagicMock()
-        mock_ui_manager.return_value = mock_manager_instance
-        from src.pygame_ui.CamposUI.camposUI import CamposUi
+    #     self.campos_ui = CamposUi(1500, 700)
+    #     self.campos_ui.dados_actuales = [1, 2]
 
-        self.campos_ui = CamposUi(1500, 700)
-        self.campos_ui.dados_actuales = [1, 2]
+    def setUp(self):
+        pygame.font.Font = MagicMock()
+        with patch('pygame_gui.UIManager'), \
+             patch('pygame.font.Font'):
+            self.campos_ui = CamposUi(1500, 700)
+            self.campos_ui.dados_actuales = [1, 2]
 
     @patch("pygame_gui.elements.UIDropDownMenu")
     @patch("pygame_gui.elements.UIButton")

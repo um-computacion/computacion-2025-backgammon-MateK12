@@ -8,13 +8,10 @@ ELEMENT_WIDTH = 250
 LABEL_WIDTH = 200
 BUTTON_WIDTH = 150
 LABEL_COLOR = (0, 0, 0)
-
 # pylint: disable=C0116
 
 class CamposUi:
     def __init__(self, screen_width: int, screen_height: int):
-        self.__screen_width = screen_width
-        self.__screen_height = screen_height
 
         self.__dados_actuales = []
 
