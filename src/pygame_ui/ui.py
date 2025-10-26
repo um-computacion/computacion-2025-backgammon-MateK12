@@ -43,7 +43,6 @@ class BackgammonUI(IJuegoInterfazMovimientos, IPuedeHacerMovimiento):
         self.__campos_ui = camposUi
         self.__screen = surface
         self.__screen.fill(BROWN_LIGHT)
-        self.__dados_disponibles: list[int] = []
         self.__dados_tirados: bool = False
         self.__cartel_error = cartel_error
         self.__cartel_victoria = cartel_victoria
@@ -54,7 +53,7 @@ class BackgammonUI(IJuegoInterfazMovimientos, IPuedeHacerMovimiento):
             return
         resultado = self.__backgammon.dados.tirar_dados()
         self.__campos_ui.dados_actuales = resultado
-        self.__dados_disponibles = resultado
+        self.__backgammon.dados_disponibles = resultado
         self.__dados_tirados = True
         self.puede_hacer_algun_movimiento()
 
@@ -72,14 +71,11 @@ class BackgammonUI(IJuegoInterfazMovimientos, IPuedeHacerMovimiento):
         """Procesa el movimiento del jugador"""
         dado = self.__campos_ui.get_dado_seleccionado()
         triangulo = self.__campos_ui.get_seleccion_triangulo()
-        seleccion_index = self.__dados_disponibles.index(dado)
         if self.__backgammon.hay_fichas_comidas():
             self.__backgammon.mover_ficha_comida(dado)
-            self.__dados_disponibles.pop(int(seleccion_index))
         else:
             self.__backgammon.mover_ficha(int(triangulo), dado)
-            self.__dados_disponibles.pop(int(seleccion_index))
-        self.__campos_ui.dados_actuales = self.__dados_disponibles
+        self.__campos_ui.dados_actuales = self.__backgammon.dados_disponibles
         self.__campos_ui.fichas_comidas = self.__backgammon.tablero.fichas_comidas
 
     def jugar(self):
@@ -94,15 +90,19 @@ class BackgammonUI(IJuegoInterfazMovimientos, IPuedeHacerMovimiento):
                 time_delta = clock.tick(60) / 1000.0
                 self.tirar_dados()
                 for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+
                     if (
                         event.type == pygame_gui.UI_BUTTON_START_PRESS
                         and event.ui_element == self.__campos_ui.boton_mover
                     ):
                         self.realizar_movimiento()
-                        if self.__dados_disponibles:
+                        if self.__backgammon.dados_disponibles:
                             self.puede_hacer_algun_movimiento()
                     self.__campos_ui.manager.process_events(event)
-                if not self.__dados_disponibles:
+                if not self.__backgammon.dados_disponibles:
                     self.cambiar_turno()
                 self.actualizar_tablero_ui(time_delta)
             except (
@@ -126,9 +126,9 @@ class BackgammonUI(IJuegoInterfazMovimientos, IPuedeHacerMovimiento):
         """
         tipo = self.__backgammon.turnero.turno
         try:
-            self.__backgammon.puede_mover_ficha(tipo, self.__dados_disponibles)
+            self.__backgammon.puede_mover_ficha(tipo, self.__backgammon.dados_disponibles)
         except NingunMovimientoPosible as e:
-            self.__dados_disponibles = []
+            self.__backgammon.dados_disponibles = []
             raise NingunMovimientoPosible(e)
 
     def cambiar_turno(self):

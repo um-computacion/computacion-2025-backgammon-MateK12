@@ -18,7 +18,7 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
         self.__dados__: Dados = dados
         self.__tablero__: Tablero = tablero
         self.__backgammon_turno = BackgammonTurno
-
+        self.__dados_disponibles: list[int] = []
     @property
     def tablero(self):
         """Retorna el tablero"""
@@ -33,7 +33,19 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
     def turnero(self):
         """Retorna el tunero de backgammon"""
         return self.__backgammon_turno
+    
+    @property
+    def dados_disponibles(self):
+        """Retorna los dados disponibles"""
+        return self.__dados_disponibles
 
+    @dados_disponibles.setter
+    def dados_disponibles(self, dados):
+        """Setea los dados disponibles"""
+        for dado in dados:
+            self.seleccion_dado_valida(dado)
+        self.__dados_disponibles = dados
+    
     def seleccion_triangulo_valida(self, triangulo: int):
         """Verifica si la seleccion de triangulo es valida
         Parametros:
@@ -119,6 +131,7 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
             else -movimiento
         )
         self.__tablero__.mover_ficha(ficha, triangulo_origen, movimiento)
+        self.__dados_disponibles.remove(abs(movimiento))
 
     def mover_ficha_comida(self, movimiento: int):
         """Mueve una ficha comida al tablero
@@ -140,6 +153,8 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
             24 if self.__backgammon_turno.turno == TipoFicha.ROJA.value else 0
         )
         self.__tablero__.mover_ficha(ficha, triangulo_origen, movimiento, True)
+        dado_valido = movimiento + 1 if self.__backgammon_turno.turno == TipoFicha.NEGRA.value else abs(movimiento)
+        self.__dados_disponibles.remove(abs(dado_valido))
 
     def hay_ganador(self) -> int | None:
         """'Verifica si hay un ganador
@@ -167,10 +182,12 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
         """Verifica si el jugador puede mover alguna ficha de su tipo en base a un movimiento
         Parametros:
             tipo (TipoFicha): Tipo de ficha a verificar
-            movimiento (int): Numero de posiciones a mover (positivo)
+            dados (list[int]): Lista de dados disponibles
         Retorna:
             bool: True si puede mover alguna ficha, False en caso contrario
         """
+        movimientos_totales = []
+
         for movimiento in dados:
             if self.hay_fichas_comidas():
                 triangulo_origen = (
@@ -185,7 +202,7 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
                     self.__tablero__.tablero, triangulo_destino, Ficha(tipo)
                 ):
                     continue
-                return True
+                movimientos_totales.append(movimiento)
             else:
                 for i in range(24):
                     triangulo_destino = (
@@ -207,13 +224,18 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
                     se_pasa = self.tablero.validador.se_pasa_del_tablero(
                         Ficha(tipo), triangulo_destino, i, self.tablero.tablero
                     )
+
                     if not tiene_fichas:
+                        movimientos_totales.append(0)
                         continue
                     if se_pasa:
+                        movimientos_totales.append(0)
                         continue
                     if movimiento_justo_para_ganar and puede_liberar:
-                        return True
+                        movimientos_totales.append(movimiento)
+                        continue
                     if movimiento_justo_para_ganar and not puede_liberar:
+                        movimientos_totales.append(0)
                         continue
                     no_hay_fichas_rivales = (
                         not self.tablero.validador.triangulo_con_fichas_rivales(
@@ -221,10 +243,68 @@ class Backgammon(IDadosValidaciones, ITrianguloValidaciones):
                         )
                     )
                     if no_hay_fichas_rivales:
-                        return True
+                        movimientos_totales.append(movimiento)
+                        continue
+                    movimientos_totales.append(0)
+
+        movimientos_validos = [f for f in movimientos_totales if f > 0]
+        if len(movimientos_validos)==2 and len(dados)==2 and abs(movimientos_totales.index(dados[0])-movimientos_totales.index(movimientos_validos[1]))==24:
+            triangulo_origen = movimientos_totales.index(dados[0])
+            no_es_unica_ficha =len([f for f in self.tablero.tablero[triangulo_origen] if f.tipo == tipo]) != 1
+            if dados[0] == dados[1] or no_es_unica_ficha:
+                return True
+            if not self._puede_mover_suma_ambos(tipo,dados,movimientos_totales):
+                dado = max(dados)
+                triangulo_origen = movimientos_totales.index(dados[0])
+                self.mover_ficha(triangulo_origen, dado)
+
+        if movimientos_validos:
+            return True
+
         turno_string = "Rojo" if tipo == TipoFicha.ROJA.value else "Negro"
+        self.dados_disponibles = []
         raise NingunMovimientoPosible(
-            "No hay movimientos posibles con los dados:{} y turno:{}".format(
-                dados, turno_string
+                "No hay movimientos posibles con los dados: {} y turno: {}".format(
+                    dados, turno_string
+                )
+            )
+
+    def _puede_mover_suma_ambos(self,tipo: int, dados: list[int],movimientos_totales: list[int]):
+        """Verifica si el jugador puede una ficha en especifico de su tipo en base a la suma de ambos dados
+        Parametros:
+            tipo (TipoFicha): Tipo de ficha a verificar
+            dados (list[int]): Lista de dados disponibles
+        Retorna:
+            bool: True si puede mover alguna ficha, False en caso contrario
+        """
+        suma_dados = sum(dados)
+        triangulo_origen = movimientos_totales.index(dados[0])
+        triangulo_destino = (
+            triangulo_origen + suma_dados
+            if tipo == TipoFicha.NEGRA.value
+            else triangulo_origen - suma_dados
+        )
+        movimiento_justo_para_ganar = self.tablero.validador.puede_ganar(
+            Ficha(tipo), triangulo_destino, triangulo_origen
+        ) and not self.tablero.validador.se_pasa_del_tablero(
+            Ficha(tipo), triangulo_destino, triangulo_origen, self.tablero.tablero
+        )
+        puede_liberar = self.tablero.validador.puede_liberar(
+            self.tablero.tablero, Ficha(tipo), self.tablero.fichas_ganadas
+        )
+        se_pasa = self.tablero.validador.se_pasa_del_tablero(
+            Ficha(tipo), triangulo_destino, triangulo_origen, self.tablero.tablero
+        )
+        if se_pasa:
+            return False
+        if movimiento_justo_para_ganar and puede_liberar:
+            return True
+        if movimiento_justo_para_ganar and not puede_liberar:
+            return False
+        no_hay_fichas_rivales = (
+            not self.tablero.validador.triangulo_con_fichas_rivales(
+                self.tablero.tablero, triangulo_destino, Ficha(tipo)
             )
         )
+        if no_hay_fichas_rivales:
+            return True

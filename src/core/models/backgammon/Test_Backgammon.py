@@ -110,26 +110,31 @@ class TestBackgammon(unittest.TestCase):
     def test_mover_ficha_comida(self):
         self.game.turnero.turno = TipoFicha.NEGRA.value
         self.game.tablero.fichas_comidas = [Ficha(self.game.turnero.turno)]
+        self.game.dados_disponibles = [2,3]
         self.game.mover_ficha_comida(2)
         self.assertEqual(len(self.game.tablero.fichas_comidas), 0)
         self.assertEqual(len(self.game.tablero.tablero[1]), 1)
         self.assertEqual(
             self.game.tablero.tablero[1][0].tipo, TipoFicha.NEGRA.value
         )
+        self.assertEqual(self.game.dados_disponibles, [3])
     def test_mover_ficha_comida_roja(self):
         self.game.turnero.turno = TipoFicha.ROJA.value
         self.game.tablero.fichas_comidas = [Ficha(self.game.turnero.turno)]
+        self.game.dados_disponibles = [2,3]
         self.game.mover_ficha_comida(2)
         self.assertEqual(len(self.game.tablero.fichas_comidas), 0)
         self.assertEqual(len(self.game.tablero.tablero[22]), 1)
         self.assertEqual(
             self.game.tablero.tablero[22][0].tipo, TipoFicha.ROJA.value
         )
+        self.assertEqual(self.game.dados_disponibles, [3])
     # endregion
     #region mover ficha
     def test_mover_ficha(
         self,
     ):
+        self.game.dados_disponibles = [1]
         self.game.turnero.turno = TipoFicha.NEGRA.value
         self.game.mover_ficha(0, 1)
         self.assertEqual(len(self.game.tablero.tablero[0]), 1)
@@ -373,17 +378,118 @@ class TestBackgammon(unittest.TestCase):
 
         with self.assertRaises(NingunMovimientoPosible):
             self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1,1,1,1])
-    # def test_puede_mover_no_fichas_atras_se_pasa(self):
-    #     self.game.turnero.turno = TipoFicha.NEGRA.value
+    def test_puede_mover_ficha_ninguna_atras_roja(self):
+        self.game.turnero.turno = TipoFicha.ROJA.value
 
-    #     for i in range(24):
-    #         self.game.tablero.tablero[i] = []
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
 
-    #     self.game.tablero.tablero[22] = [Ficha(TipoFicha.NEGRA.value)]
-    #     # self.game.tablero.tablero[23] = [Ficha(TipoFicha.NEGRA.value)]
-    #     resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [6])
-    #     self.assertTrue(resultado)
+        self.game.tablero.fichas_ganadas = [Ficha(TipoFicha.ROJA.value) for _ in range(14)]
+        self.game.tablero.tablero[3] = [Ficha(TipoFicha.ROJA.value)]
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6,5])
+        self.assertTrue(resultado)
+    def test_puede_mover_ficha_ninguna_atras_negra(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+        self.game.tablero.fichas_ganadas = [Ficha(TipoFicha.NEGRA.value) for _ in range(14)]
+        self.game.tablero.tablero[22] = [Ficha(TipoFicha.NEGRA.value)]
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [6,5])
+        self.assertTrue(resultado)
+
+    def test_no_puede_mover_ficha_se_pasa_por_tener_atras_bloqueado(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+        self.game.tablero.tablero[19] = [Ficha(TipoFicha.NEGRA.value)]
+        self.game.tablero.tablero[21] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[22] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.fichas_ganadas = [Ficha(TipoFicha.NEGRA.value) for _ in range(13)]
+        self.game.tablero.tablero[23] = [Ficha(TipoFicha.NEGRA.value)]
+
+        with self.assertRaises(NingunMovimientoPosible):
+            self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [2,3])
+
+
     # end region
+    #region puede_mover_suma_ambos
+    def test_unico_movimiento_suma_dados_invalida_debe_mover_mayor(self):
+        self.game.turnero.turno = TipoFicha.ROJA.value
+        self.game.dados_disponibles = [3, 2]
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+
+        self.game.tablero.tablero[10] = [Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[7] = [Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.NEGRA.value)]
+        self.game.tablero.tablero[8] = [Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.NEGRA.value)]
+
+        self.game.tablero.tablero[4] = [Ficha(TipoFicha.ROJA.value)]
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [3, 2])
+        self.assertTrue(resultado)
+        self.assertEqual(len(self.game.tablero.tablero[4]), 0)
+        self.assertEqual(len(self.game.tablero.tablero[1]), 1)
+        self.assertEqual(self.game.dados_disponibles,[2])
+
+    def test_puede_mover_suma_porque_no_tiene_fichas_atras(self):
+        self.game.turnero.turno = TipoFicha.ROJA.value
+        self.game.dados_disponibles = [6, 5]
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+        self.game.tablero.fichas_ganadas = [Ficha(TipoFicha.ROJA.value) for _ in range(14)]
+        self.game.tablero.tablero[2] = [Ficha(TipoFicha.ROJA.value)]
+
+        resultado = self.game.puede_mover_ficha(TipoFicha.ROJA.value, [6, 5])
+        self.assertTrue(resultado)
+        self.assertEqual(len(self.game.tablero.tablero[2]), 1)
+
+    def test_puede_mover_porque_son_dobles_aunque_suma_invalida(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+
+        self.game.tablero.tablero[20] = [Ficha(TipoFicha.NEGRA.value)]
+        self.game.tablero.tablero[22] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1, 1])
+        self.assertTrue(resultado)
+        self.assertEqual(len(self.game.tablero.tablero[20]), 1)
+    def test_no_puede_mover_suma_porque_no_puede_liberar_mueve_mayor(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+        self.game.dados_disponibles = [1, 2]
+        self.game.tablero.tablero[10] = [Ficha(TipoFicha.NEGRA.value)]
+        self.game.tablero.tablero[11] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[12] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+
+        self.game.tablero.tablero[21] = [Ficha(TipoFicha.NEGRA.value)]
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1, 2])
+        self.assertTrue(resultado)
+        self.assertEqual(len(self.game.tablero.tablero[21]), 0)
+        self.assertEqual(len(self.game.tablero.tablero[23]),1)
+
+    def test_suma_invalida_pero_no_es_unica_ficha_del_triangulo(self):
+        self.game.turnero.turno = TipoFicha.NEGRA.value
+
+        for i in range(24):
+            self.game.tablero.tablero[i] = []
+        self.game.dados_disponibles = [1, 2] 
+        self.game.tablero.tablero[20] = [Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.NEGRA.value)]
+        self.game.tablero.tablero[23] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+        resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1, 2])
+        self.assertTrue(resultado)
+        self.assertEqual(len(self.game.tablero.tablero[20]), 2)
+
     #region test seleccion dado valido
     def test_seleccion_dado_valida_valido(self):
         dado = 3
@@ -433,6 +539,17 @@ class TestBackgammon(unittest.TestCase):
             triangulo = None
             self.game.seleccion_triangulo_valida(triangulo)
     #endregion
+    #dados_disponibles property
+    def test_dados_disponibles_property(self):
+        self.game.dados_disponibles = [1,2,3]
+        self.assertIsNotNone(self.game.dados_disponibles)
+    def test_dados_disponibles_setter(self):
+        self.game.dados_disponibles = [4,5]
+        self.assertEqual(self.game.dados_disponibles, [4,5])
+    def test_dados_disponibles_setter_invalido(self):
+        with self.assertRaises(SeleccionDadoInvalida):
+            self.game.dados_disponibles = [7,2]
+
 
 if __name__ == "__main__":
     unittest.main()

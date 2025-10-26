@@ -35,18 +35,16 @@ class TestCli(unittest.TestCase):
     def test_getter_Jugador_2(self):
         self.assertEqual(self.cli.jugador_negro, self.jugador2)
 
-    def test_getterDadosDisponibles(self):
-        self.assertEqual(self.cli.dados_disponibles, [])
 
     def test_setter_dados_disponibles(self):
         """Test setter de dados_disponibles"""
         nuevos_dados = [1, 2, 3, 4]
-        self.cli.dados_disponibles = nuevos_dados
-        self.assertEqual(self.cli.dados_disponibles, nuevos_dados)
+        self.cli.backgammon.dados_disponibles = nuevos_dados
+        self.assertEqual(self.cli.backgammon.dados_disponibles, nuevos_dados)
 
     def test_seleccion_dado_valida_correcta(self):
         """Test selección de dado válida"""
-        self.cli.dados_disponibles = [1, 2, 3]
+        self.cli.backgammon.dados_disponibles = [1, 2, 3]
         self.assertTrue(self.cli.seleccion_dado_valida("0"))
         self.assertTrue(self.cli.seleccion_dado_valida("1"))
         self.assertTrue(self.cli.seleccion_dado_valida("2"))
@@ -54,25 +52,25 @@ class TestCli(unittest.TestCase):
     # region dado_seleccion valida
     def test_seleccion_dado_invalida_fuera_rango(self):
         """Test selección de dado inválida - fuera de rango"""
-        self.cli.dados_disponibles = [1, 2]
+        self.cli.backgammon.dados_disponibles = [1, 2]
         with self.assertRaises(SeleccionDadoInvalida):
             self.cli.seleccion_dado_valida("3")
 
     def test_seleccion_dado_invalida_negativa(self):
         """Test selección de dado inválida - número negativo"""
-        self.cli.dados_disponibles = [1, 2]
+        self.cli.backgammon.dados_disponibles = [1, 2]
         with self.assertRaises(SeleccionDadoInvalida):
             self.cli.seleccion_dado_valida("-1")
 
     def test_seleccion_dado_invalida_no_numerico(self):
         """Test selección de dado inválida - no numérico"""
-        self.cli.dados_disponibles = [1, 2]
+        self.cli.backgammon.dados_disponibles = [1, 2]
         with self.assertRaises(SeleccionDadoInvalida):
             self.cli.seleccion_dado_valida("a")
 
     def test_seleccion_dado_invalida_vacio(self):
         """Test selección de dado inválida - string vacío"""
-        self.cli.dados_disponibles = [1, 2]
+        self.cli.backgammon.dados_disponibles = [1, 2]
         with self.assertRaises(SeleccionDadoInvalida):
             self.cli.seleccion_dado_valida("")
 
@@ -124,7 +122,7 @@ class TestCli(unittest.TestCase):
     # region realizar_movimiento
     def test_realizar_movimiento_con_fichas_comidas_dado_valido(self):
         """Test realizar movimiento cuando hay fichas comidas y el dado es válido"""
-        self.cli.dados_disponibles = [3, 5]
+        self.cli.backgammon.dados_disponibles = [3, 5]
 
         with patch("builtins.input", return_value="0"), patch(
             "builtins.print"
@@ -134,16 +132,15 @@ class TestCli(unittest.TestCase):
             self.cli.backgammon, "mover_ficha_comida"
         ) as mock_mover_comida, patch(
             "src.core.helpers.Tablero_Impresor.Tablero_Impresor.imprimir_tablero"
-        ):
+        ), patch.object(self.cli.backgammon,'mover_ficha') as mock_mover_ficha:
 
             self.cli.realizar_movimiento()
 
             mock_mover_comida.assert_called_once_with(3)
-            self.assertEqual(self.cli.dados_disponibles, [5])
-
+            mock_mover_ficha.assert_not_called()
     def test_realizar_movimiento_sin_fichas_comidas_dado_y_triangulo_validos(self):
         """Test realizar movimiento cuando NO hay fichas comidas, dado y triángulo válidos"""
-        self.cli.dados_disponibles = [2, 4]
+        self.cli.backgammon.dados_disponibles = [2, 4]
 
         with patch("builtins.input", side_effect=["1", "5"]), patch(
             "builtins.print"
@@ -158,11 +155,10 @@ class TestCli(unittest.TestCase):
             self.cli.realizar_movimiento()
 
             mock_mover_ficha.assert_called_once_with(5, 4)
-            self.assertEqual(self.cli.dados_disponibles, [2])
 
     def test_realizar_movimiento_dado_invalido(self):
         """Test realizar movimiento con selección de dado inválida"""
-        self.cli.dados_disponibles = [1, 3]
+        self.cli.backgammon.dados_disponibles = [1, 3]
 
         with patch("builtins.input", return_value="5"), patch("builtins.print"):
 
@@ -183,7 +179,7 @@ class TestCli(unittest.TestCase):
 
     def test_realizar_movimiento_sin_fichas_comidas_triangulo_invalido(self):
         """Test realizar movimiento sin fichas comidas pero triángulo inválido"""
-        self.cli.dados_disponibles = [2, 6]
+        self.cli.backgammon.dados_disponibles = [2, 6]
 
         with patch("builtins.input", side_effect=["0", "25"]), patch(
             "builtins.print"
@@ -197,7 +193,7 @@ class TestCli(unittest.TestCase):
                 self.cli.realizar_movimiento()
 
             mock_mover_ficha.assert_not_called()
-            self.assertEqual(self.cli.dados_disponibles, [2, 6])
+            self.assertEqual(self.cli.backgammon.dados_disponibles, [2, 6])
 
     # endregion
     # region tirar_dados
@@ -208,7 +204,7 @@ class TestCli(unittest.TestCase):
         ), patch("builtins.print"):
             resultado = self.cli.tirar_dados()
             self.assertEqual(resultado, [3, 5])
-            self.assertEqual(self.cli.dados_disponibles, [3, 5])
+            self.assertEqual(self.cli.backgammon.dados_disponibles, [3, 5])
 
     def test_tirar_dados_dobles(self):
         """Test tirar dados cuando salen dobles"""
@@ -218,7 +214,7 @@ class TestCli(unittest.TestCase):
             resultado = self.cli.tirar_dados()
             self.assertEqual(resultado, [3, 3, 3, 3])
             mock_print.assert_called_with("Dados tirados: [3, 3, 3, 3]")
-            self.assertEqual(self.cli.dados_disponibles, [3, 3, 3, 3])
+            self.assertEqual(self.cli.backgammon.dados_disponibles, [3, 3, 3, 3])
 
     # endregion
     def test_mostrar_ganador_rojo(self):
