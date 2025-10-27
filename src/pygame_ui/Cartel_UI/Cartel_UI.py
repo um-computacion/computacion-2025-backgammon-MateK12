@@ -1,8 +1,8 @@
 import pygame
 import time
+from src.core.interfaces.CartelUI import ICartelUI
 
-
-class Cartel_UI:
+class Cartel_UI(ICartelUI):
     def __init__(
         self,
         posicion: tuple,
@@ -11,7 +11,6 @@ class Cartel_UI:
     ):
         self.__mensaje_activo = False
         self.__tiempo_error_inicio = 0
-        self.__mensaje_error = ""
         self.__duracion = 3.0
         self.__titulo = ""
         self.__font_titulo = pygame.font.Font(None, 36)

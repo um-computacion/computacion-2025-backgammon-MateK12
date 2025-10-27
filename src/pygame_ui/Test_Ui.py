@@ -26,7 +26,7 @@ class Test_Ui(unittest.TestCase):
         self.mock_campos_ui = MagicMock()
         self.mock_cartel_error = MagicMock()
         self.mock_cartel_victoria = MagicMock()
-
+        self.mock_cartel_info = MagicMock()
         self.mock_backgammon.dados.tirar_dados.return_value = [3, 5]
         self.mock_backgammon.turno = 1
         self.mock_backgammon.hay_ganador.return_value = False
@@ -42,6 +42,7 @@ class Test_Ui(unittest.TestCase):
             surface=self.screen,
             cartel_error=self.mock_cartel_error,
             cartel_victoria=self.mock_cartel_victoria,
+            cartel_info=self.mock_cartel_info,
         )
 
     @patch("src.pygame_ui.ui.BackgammonUI")
@@ -168,8 +169,21 @@ class Test_Ui(unittest.TestCase):
             )
             self.assertGreaterEqual(mock_update.call_count, 2)
 
-    # def tearDown(self):
-    #     pygame.quit()
+    def test_quien_empieza(self):
+        self.mock_backgammon.turnero.quien_empieza.return_value = (3, 5)
+        self.mock_backgammon.turnero.turno = TipoFicha.NEGRA.value
+        self.ui.quien_empieza()
+        self.mock_cartel_info.mostrar_cartel.assert_called_once_with(
+            titulo='Empieza: Negro', duracion=5.0, mensaje='Rojo: 3 y Negro: 5'
+        )
+    def test_quien_empieza(self):
+        self.mock_backgammon.turnero.quien_empieza.return_value = (5, 3)
+        self.mock_backgammon.turnero.turno = TipoFicha.ROJA.value
+        self.ui.quien_empieza()
+        self.mock_cartel_info.mostrar_cartel.assert_called_once_with(
+            titulo='Empieza: Rojo', duracion=5.0, mensaje='Rojo: 5 y Negro: 3'
+        )
+
 
 
 if __name__ == "__main__":

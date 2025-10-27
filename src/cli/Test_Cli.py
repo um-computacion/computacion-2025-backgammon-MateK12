@@ -253,7 +253,25 @@ class TestCli(unittest.TestCase):
             mock_tablero_impresor.assert_called_once()
             mock_tirar_dados.assert_called()
             mock_mostrar_ganador.assert_called_once()
+    def test_quien_empieza_rojo(self):
+        """Test quien empieza"""
+        self.cli.backgammon.turnero.quien_empieza = MagicMock(return_value=(4, 2))
+        self.cli.backgammon.turnero.turno = TipoFicha.ROJA.value
+        with patch("builtins.print") as mock_print:
+            self.cli.quien_empieza()
+            mock_print.assert_called_with("¡El jugador rojo empieza!")
+            count = mock_print.call_count
+            self.assertEqual(count, 2)
 
+    def test_quien_empieza_negro(self):
+        """Test quien empieza"""
+        self.cli.backgammon.turnero.quien_empieza = MagicMock(return_value=(2, 4))
+        self.cli.backgammon.turnero.turno = TipoFicha.NEGRA.value
+        with patch("builtins.print") as mock_print:
+            self.cli.quien_empieza()
+            count = mock_print.call_count
+            mock_print.assert_called_with("¡El jugador negro empieza!")
+            self.assertEqual(count, 2)
 
 if __name__ == "__main__":
     unittest.main()
