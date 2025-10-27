@@ -38,6 +38,7 @@ class Backgammon_Turnos:
             elif dados[0] < dados[1]:
                 self.__turno = TipoFicha.NEGRA.value
                 hay_Ganador = True
+        return dados
 
     def __tirar_dados(self):
         """Tira los dados y retorna el resultado

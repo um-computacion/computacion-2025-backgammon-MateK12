@@ -82,7 +82,7 @@ class CLI(
 
         self.__jugador_rojo = jugador1
         self.__jugador_negro = jugador2
-        self.backgammon.turnero.quien_empieza()
+        self.quien_empieza()
 
     def mostrar_turno_actual(self):
         """Muestra el turno del jugador actual"""
@@ -171,6 +171,14 @@ class CLI(
         elif ganador == TipoFicha.NEGRA.value:
             print("¡El jugador negro ha ganado!")
 
+    def quien_empieza(self):
+        """Muestra qué jugador empieza"""
+        dados = self.backgammon.turnero.quien_empieza()
+        print("Rojo: {}, Negro: {}".format(dados[0], dados[1]))
+        if self.backgammon.turnero.turno == TipoFicha.ROJA.value:
+            print("¡El jugador rojo empieza!")
+        else:
+            print("¡El jugador negro empieza!")
 
 if __name__ == "__main__":
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador())
