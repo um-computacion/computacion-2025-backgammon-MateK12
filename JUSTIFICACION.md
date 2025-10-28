@@ -29,12 +29,16 @@ Decidi que el jugador no iba tener fichas en su clase, ya que las fichas estan e
 Decidi no usar una imagen para el tablero para asi tener mas control sobre los triangulos dibujados, y la estetica del tablero en general, ademas de que es mas liviano no tener
 Decidi dejar la responabilidad de la verificacion de moviemientos en la clase de tableroValidador para separar 
 las responsabilidades
-Descidi seaparar la responsabilidad de imprmir el tablero en otra clase con un metodo estatico para asi no mezclar
+Decidi seaparar la responsabilidad de imprmir el tablero en otra clase con un metodo estatico para asi no mezclar
 la logica del juego con la interfaz de usuario
 Decidi separar los turnos en otra clase para que la clase backgammon no tenga tantas responsabilidades
+Decidi "componentizar" la interfaz grafica en varias clases para separar responsabilidades y hacer el codigo mas mantenible, como 
+en Campos_UI, Cartel_UI, Tablero_UI y todas ellas son manejadas por Backgammon_UI que controla cuando se muestran y ocultan
+Hice que la clase UI reciba una instancia de ICartelUI en su constructor, para implementar el principio de inversion de dependencias (DIP), permitiendo asi cambiar la implementacion de cartel UI
+
 
 ### Patrones y Arquitectura Implementada
-Patron de diseño Facade para la interfaz de usuario, ya que la clase CLI y ui son las unicas que interactua con el usuario, y las demas clases no saben nada de la interfaz de usuario, y podria funcionar perfectamente con otro tipo de interfaz
+Patron de diseño Facade para la interfaz de usuario, ya que la clase CLI y ui son las unicas que interactua con el usuario, y las demas clases no saben nada de la interfaz de usuario, y podria funcionar perfectamente con otro tipo de interfaz, ademas de ser consistente.
 
 
 ## ⚠️ Excepciones y Manejo de Errores
@@ -67,12 +71,15 @@ El sistema implementa un conjunto de excepciones personalizadas para manejar cas
 #### 🎯 **SeleccionTrianguloInvalida**
 - **Propósito**: Se lanza cuando el jugador selecciona un triángulo fuera del rango válido (0-23) (fuera de rango)
 - **Contexto**: Validación de entrada del usuario para posiciones del tablero
-
+#### 🎯 **NoPuedeLiberar**
+- **Propósito**: Se lanza cuando un jugador intenta liberar fichas antes de sacar todas del home
+- **Contexto**: Validación de movimientos de liberación de fichas
 
 
 ## 🧪 Estrategias de Testing y Cobertura
 En clases como tablero_validador, backgammon y ficha, se testean todas las funciones basadas en escenarios posibles.
 En clases como CLI se testea las llamadas correctas a las funciones de otras clases, pero no se teste que esas funciones hagan lo que deben hacer, ya que eso se testea en las clases correspondientes.
+En metodos claves como puede_hacer_movimiento se testean muchos escenarios posibles para asegurar que la logica del juego no falle, inclusive testeando escenarios dificiles de replicar en un juego real. 
 ### Plan de Pruebas y Cobertura de Código
 actualmente la cobertura es del 91% en toda la aplicacion, haciendo enfasis el core donde la cobertura es de casi 100%, hay metodos que se testean mas que otros, como el puede_hacer_movimiento en backgammon, que tiene muchos escenarios posibles, y es un metodo clave en la logica del juego que no puede fallar.
 
@@ -93,6 +100,7 @@ No uso herencia
 #### 🔸 Interface Segregation Principle (ISP)
 Hay interfaces separadas como JuegoInterfazDados y JuegoInterfazDadosValidaciones, ya que si ambas interfaces estuvieran juntas, las interfaces que no necesiten validar el dado (como la ui) tendrian que implementar un metodo que no usan
 #### 🔸 Dependency Inversion Principle (DIP)
+La clase UI recibe una instancia de ICartelUI en su constructor, permitiendo asi que la clase UI no dependa de una implementacion concreta de cartel UI, sino de una abstraccion, permitiendo asi cambiar la implementacion de cartel y reutilizar codigo
 ## 📎 Anexos
 
 ### 📈 Diagramas UML

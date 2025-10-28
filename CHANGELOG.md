@@ -345,8 +345,8 @@ regla de "En particular, en caso de disponer de una sola ficha que puede moverse
 
 ## [2.4.1] - 27-10-2025 ##
 ### Agregado
-cartel para mostrar dados sacados primer turno en ui
+cartel para mostrar dados sacados primer turno en ui, y tambien en cli
 ### Cambiado
-Se agrega interfaz ICartelUI para implementar dip en Cartel_UI
+Se agrega interfaz ICartelUI para implementar dip en Cartel_UI, refactor para usar solo una instancia de cartel
 ### Arreglado
 ###

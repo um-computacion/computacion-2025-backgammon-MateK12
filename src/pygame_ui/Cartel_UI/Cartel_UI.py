@@ -6,8 +6,6 @@ class Cartel_UI(ICartelUI):
     def __init__(
         self,
         posicion: tuple,
-        color_fondo: tuple = (255, 0, 0),
-        color_texto: tuple = (255, 255, 255),
     ):
         self.__mensaje_activo = False
         self.__tiempo_error_inicio = 0
@@ -15,8 +13,8 @@ class Cartel_UI(ICartelUI):
         self.__titulo = ""
         self.__font_titulo = pygame.font.Font(None, 36)
         self.__font_mensaje = pygame.font.Font(None, 24)
-        self.__color_fondo = color_fondo
-        self.__color_texto = color_texto
+        self.__color_fondo = None
+        self.__color_texto = None
         self.__posicion = posicion
         self.__ancho = 400
         self.__alto = 150
@@ -27,7 +25,7 @@ class Cartel_UI(ICartelUI):
         return self.__mensaje_activo
 
     def mostrar_cartel(
-        self, mensaje: str, duracion: float = 3.0, titulo: str = "Error"
+        self, mensaje: str, duracion: float, titulo: str ,color_fondo:tuple, color_texto:tuple
     ):
         """
         Configura un mensaje para mostrar durante el tiempo especificado
@@ -41,6 +39,8 @@ class Cartel_UI(ICartelUI):
         self.__mensaje = str(mensaje)
         self.__titulo = titulo
         self.__duracion = duracion
+        self.__color_fondo = color_fondo
+        self.__color_texto = color_texto
 
     def actualizar_y_dibujar(self, screen: pygame.Surface):
         """

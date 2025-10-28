@@ -16,17 +16,13 @@ class Test_Ui(unittest.TestCase):
 
     @patch('pygame.display.set_mode')
     def setUp(self, mock_set_mode):
-        # pygame.init()
 
         mock_set_mode.return_value = MagicMock()
-        # self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.screen = MagicMock()        
         self.mock_backgammon = MagicMock()
         self.mock_tablero_ui = MagicMock()
         self.mock_campos_ui = MagicMock()
-        self.mock_cartel_error = MagicMock()
-        self.mock_cartel_victoria = MagicMock()
-        self.mock_cartel_info = MagicMock()
+        self.mock_cartel = MagicMock()
         self.mock_backgammon.dados.tirar_dados.return_value = [3, 5]
         self.mock_backgammon.turno = 1
         self.mock_backgammon.hay_ganador.return_value = False
@@ -40,9 +36,7 @@ class Test_Ui(unittest.TestCase):
             tableroUI=self.mock_tablero_ui,
             camposUi=self.mock_campos_ui,
             surface=self.screen,
-            cartel_error=self.mock_cartel_error,
-            cartel_victoria=self.mock_cartel_victoria,
-            cartel_info=self.mock_cartel_info,
+            cartel_UI=self.mock_cartel,
         )
 
     @patch("src.pygame_ui.ui.BackgammonUI")
@@ -81,10 +75,7 @@ class Test_Ui(unittest.TestCase):
         self.assertEqual(self.mock_tablero_ui.tablero, self.mock_backgammon.tablero)
         self.mock_campos_ui.dibujar_campos.assert_called_once_with(self.screen)
         self.mock_tablero_ui.dibujar_tablero.assert_called_once_with(self.screen)
-        self.mock_cartel_error.actualizar_y_dibujar.assert_called_once_with(self.screen)
-        self.mock_cartel_victoria.actualizar_y_dibujar.assert_called_once_with(
-            self.screen
-        )
+        self.mock_cartel.actualizar_y_dibujar.assert_called_once_with(self.screen)
 
     def test_realizar_movimiento_normal(self):
         self.mock_backgammon.hay_fichas_comidas.return_value = False
@@ -107,15 +98,15 @@ class Test_Ui(unittest.TestCase):
     def mostrar_ganador_rojo(self):
         self.mock_backgammon.hay_ganador.return_value = TipoFicha.ROJA
         self.ui.mostrar_ganador()
-        self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with(
+        self.mock_cartel.mostrar_cartel.assert_called_once_with(
             "¡El jugador Rojo ha ganado!", 5.0, titulo="Ganador"
         )
 
     def mostrar_ganador_negro(self):
         self.mock_backgammon.hay_ganador.return_value = TipoFicha.NEGRA
         self.ui.mostrar_ganador()
-        self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with(
-            "¡El jugador Negro ha ganado!", 5.0, titulo="Ganador"
+        self.mock_cartel.mostrar_cartel.assert_called_once_with(
+            "¡El jugador Negro ha ganado!", 5.0, titulo="Ganador",color_fondo=(0, 128, 0), color_texto=(255, 255, 255)
         )
 
     def test_puede_hacer_algun_movimiento_false(self):
@@ -144,8 +135,8 @@ class Test_Ui(unittest.TestCase):
 
         with patch.object(self.ui, "actualizar_tablero_ui") as mock_update:
             self.ui.mostrar_ganador()
-            self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with(
-                "¡El jugador Rojo ha ganado!", duracion=5.0, titulo="Ganador"
+            self.mock_cartel.mostrar_cartel.assert_called_once_with(
+                "¡El jugador Rojo ha ganado!", duracion=5.0, titulo="Ganador",color_fondo=(0, 128, 0), color_texto=(255, 255, 255)
             )
             self.assertGreaterEqual(mock_update.call_count, 2)
 
@@ -164,8 +155,8 @@ class Test_Ui(unittest.TestCase):
 
         with patch.object(self.ui, "actualizar_tablero_ui") as mock_update:
             self.ui.mostrar_ganador()
-            self.mock_cartel_victoria.mostrar_cartel.assert_called_once_with(
-                "¡El jugador Negro ha ganado!", duracion=5.0, titulo="Ganador"
+            self.mock_cartel.mostrar_cartel.assert_called_once_with(
+                "¡El jugador Negro ha ganado!", duracion=5.0, titulo="Ganador",color_fondo=(0, 128, 0), color_texto=(255, 255, 255)
             )
             self.assertGreaterEqual(mock_update.call_count, 2)
 
@@ -173,15 +164,15 @@ class Test_Ui(unittest.TestCase):
         self.mock_backgammon.turnero.quien_empieza.return_value = (3, 5)
         self.mock_backgammon.turnero.turno = TipoFicha.NEGRA.value
         self.ui.quien_empieza()
-        self.mock_cartel_info.mostrar_cartel.assert_called_once_with(
-            titulo='Empieza: Negro', duracion=5.0, mensaje='Rojo: 3 y Negro: 5'
+        self.mock_cartel.mostrar_cartel.assert_called_once_with(
+            titulo='Empieza: Negro', duracion=5.0, mensaje='Rojo: 3 y Negro: 5' ,color_fondo=(128, 128, 0), color_texto=(255, 255, 255)
         )
     def test_quien_empieza(self):
         self.mock_backgammon.turnero.quien_empieza.return_value = (5, 3)
         self.mock_backgammon.turnero.turno = TipoFicha.ROJA.value
         self.ui.quien_empieza()
-        self.mock_cartel_info.mostrar_cartel.assert_called_once_with(
-            titulo='Empieza: Rojo', duracion=5.0, mensaje='Rojo: 5 y Negro: 3'
+        self.mock_cartel.mostrar_cartel.assert_called_once_with(
+            titulo='Empieza: Rojo', duracion=5.0, mensaje='Rojo: 5 y Negro: 3' ,color_fondo=(128, 128, 0), color_texto=(255, 255, 255)
         )
 
 
