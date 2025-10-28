@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class ICartelUI(ABC):
 
     @abstractmethod
-    def mostrar_cartel(self, mensaje: str, duracion: float = 3.0, titulo: str = "Error"):
+    def mostrar_cartel(self, mensaje: str, duracion: float, titulo: str ,color_fondo:tuple,color_texto:tuple):
         pass
 
     @abstractmethod
