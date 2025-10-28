@@ -5,11 +5,11 @@
           Name                                              Stmts   Miss  Cover   Missing
 -------------------------------------------------------------------------------
 src/cli/__init__.py                                   0      0   100%
-src/cli/cli.py                                      113     19    83%   62, 70-71, 144-162, 176-182
+src/cli/cli.py                                      119     19    84%   62, 70-71, 144-162, 184-190
 src/core/__init__.py                                  0      0   100%
 src/core/helpers/Tablero_Inicializador.py            15      0   100%
 src/core/models/__init__.py                           0      0   100%
-src/core/models/backgammon/Backgammon_Turnos.py      28      0   100%
+src/core/models/backgammon/Backgammon_Turnos.py      29      0   100%
 src/core/models/backgammon/__init__.py                0      0   100%
 src/core/models/backgammon/backgammon.py            149      4    97%   299, 304-310
 src/core/models/dado/Dados.py                        16      0   100%
@@ -23,44 +23,55 @@ src/core/models/tablero/Tablero_Validador.py         60      0   100%
 src/core/models/tablero/__init__.py                   0      0   100%
 src/pygame_ui/CamposUI/__init__.py                    0      0   100%
 src/pygame_ui/CamposUI/camposUI.py                  130     15    88%   61, 150, 163-166, 170-174, 197, 222-224
-src/pygame_ui/Cartel_UI/Cartel_UI.py                 61      0   100%
+src/pygame_ui/Cartel_UI/Cartel_UI.py                 63      0   100%
 src/pygame_ui/Cartel_UI/__init__.py                   0      0   100%
 src/pygame_ui/Tablero_UI/Tablero_UI.py              105     16    85%   61, 72-89
 src/pygame_ui/Tablero_UI/__init__.py                  0      0   100%
 src/pygame_ui/__init__.py                             0      0   100%
-src/pygame_ui/ui.py                                 128     29    77%   83-121, 156, 180
+src/pygame_ui/ui.py                                 134     29    78%   83-121, 156, 186
 -------------------------------------------------------------------------------
-TOTAL                                               870     84    90%
+TOTAL                                               885     84    91%
 
 ```
 
           ## Pylint Report
 ```text
           ************* Module pygame_ui.ui
+src/pygame_ui/ui.py:118:0: C0301: Line too long (124/100) (line-too-long)
 src/pygame_ui/ui.py:124:0: C0301: Line too long (151/100) (line-too-long)
 src/pygame_ui/ui.py:135:0: C0301: Line too long (102/100) (line-too-long)
-src/pygame_ui/ui.py:31:4: R0913: Too many arguments (7/5) (too-many-arguments)
-src/pygame_ui/ui.py:31:4: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
-src/pygame_ui/ui.py:40:8: E1101: Module 'pygame' has no 'init' member (no-member)
-src/pygame_ui/ui.py:51:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/pygame_ui/ui.py:60:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/pygame_ui/ui.py:145:0: C0301: Line too long (115/100) (line-too-long)
+src/pygame_ui/ui.py:149:0: C0301: Line too long (115/100) (line-too-long)
+src/pygame_ui/ui.py:34:4: R0913: Too many arguments (6/5) (too-many-arguments)
+src/pygame_ui/ui.py:34:4: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
+src/pygame_ui/ui.py:42:8: E1101: Module 'pygame' has no 'init' member (no-member)
+src/pygame_ui/ui.py:52:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/pygame_ui/ui.py:61:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/pygame_ui/ui.py:93:37: E1101: Module 'pygame' has no 'QUIT' member (no-member)
 src/pygame_ui/ui.py:94:24: E1101: Module 'pygame' has no 'quit' member (no-member)
 src/pygame_ui/ui.py:120:8: E1101: Module 'pygame' has no 'quit' member (no-member)
 src/pygame_ui/ui.py:132:12: W0707: Consider explicitly re-raising using 'raise NingunMovimientoPosible(e) from e' (raise-missing-from)
-src/pygame_ui/ui.py:160:0: C0116: Missing function or method docstring (missing-function-docstring)
+src/pygame_ui/ui.py:164:19: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/pygame_ui/ui.py:166:20: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/pygame_ui/ui.py:171:0: C0116: Missing function or method docstring (missing-function-docstring)
 src/pygame_ui/ui.py:10:0: W0611: Unused Ficha imported from src.core.models.ficha.Ficha (unused-import)
 ************* Module pygame_ui.Test_Ui
 src/pygame_ui/Test_Ui.py:9:39: C0303: Trailing whitespace (trailing-whitespace)
-src/pygame_ui/Test_Ui.py:23:33: C0303: Trailing whitespace (trailing-whitespace)
-src/pygame_ui/Test_Ui.py:97:0: C0303: Trailing whitespace (trailing-whitespace)
+src/pygame_ui/Test_Ui.py:21:33: C0303: Trailing whitespace (trailing-whitespace)
+src/pygame_ui/Test_Ui.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+src/pygame_ui/Test_Ui.py:109:0: C0301: Line too long (118/100) (line-too-long)
+src/pygame_ui/Test_Ui.py:139:0: C0301: Line too long (130/100) (line-too-long)
+src/pygame_ui/Test_Ui.py:159:0: C0301: Line too long (131/100) (line-too-long)
+src/pygame_ui/Test_Ui.py:168:0: C0301: Line too long (135/100) (line-too-long)
+src/pygame_ui/Test_Ui.py:175:0: C0301: Line too long (134/100) (line-too-long)
 src/pygame_ui/Test_Ui.py:18:4: W0221: Number of parameters was 1 in 'TestCase.setUp' and is now 2 in overriding 'Test_Ui.setUp' method (arguments-differ)
-src/pygame_ui/Test_Ui.py:51:8: C0415: Import outside toplevel (src.pygame_ui.ui.main) (import-outside-toplevel)
-src/pygame_ui/Test_Ui.py:49:33: W0613: Unused argument 'mock_display' (unused-argument)
-src/pygame_ui/Test_Ui.py:65:24: W0212: Access to a protected member _BackgammonUI__dados_tirados of a client class (protected-access)
-src/pygame_ui/Test_Ui.py:77:41: W0613: Unused argument 'mock_flip' (unused-argument)
-src/pygame_ui/Test_Ui.py:104:25: W0212: Access to a protected member _BackgammonUI__dados_tirados of a client class (protected-access)
-src/pygame_ui/Test_Ui.py:121:8: W0212: Access to a protected member _BackgammonUI__dados_disponibles of a client class (protected-access)
+src/pygame_ui/Test_Ui.py:46:8: C0415: Import outside toplevel (src.pygame_ui.ui.main) (import-outside-toplevel)
+src/pygame_ui/Test_Ui.py:44:33: W0613: Unused argument 'mock_display' (unused-argument)
+src/pygame_ui/Test_Ui.py:60:24: W0212: Access to a protected member _BackgammonUI__dados_tirados of a client class (protected-access)
+src/pygame_ui/Test_Ui.py:72:41: W0613: Unused argument 'mock_flip' (unused-argument)
+src/pygame_ui/Test_Ui.py:96:25: W0212: Access to a protected member _BackgammonUI__dados_tirados of a client class (protected-access)
+src/pygame_ui/Test_Ui.py:113:8: W0212: Access to a protected member _BackgammonUI__dados_disponibles of a client class (protected-access)
+src/pygame_ui/Test_Ui.py:170:4: E0102: method already defined line 163 (function-redefined)
 src/pygame_ui/Test_Ui.py:2:0: W0611: Unused import pygame (unused-import)
 src/pygame_ui/Test_Ui.py:3:0: W0611: Unused WINDOW_HEIGHT imported from src.pygame_ui.ui (unused-import)
 src/pygame_ui/Test_Ui.py:3:0: W0611: Unused WINDOW_WIDTH imported from src.pygame_ui.ui (unused-import)
@@ -117,27 +128,36 @@ src/pygame_ui/Tablero_UI/Test_Tablero_UI.py:22:8: E1101: Module 'pygame' has no 
 src/pygame_ui/Tablero_UI/Test_Tablero_UI.py:171:8: E1101: Module 'pygame' has no 'quit' member (no-member)
 ************* Module pygame_ui.Cartel_UI.Test_Cartel
 src/pygame_ui/Cartel_UI/Test_Cartel.py:8:39: C0303: Trailing whitespace (trailing-whitespace)
-src/pygame_ui/Cartel_UI/Test_Cartel.py:49:0: C0301: Line too long (118/100) (line-too-long)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:24:0: C0301: Line too long (119/100) (line-too-long)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:33:0: C0301: Line too long (124/100) (line-too-long)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:44:0: C0301: Line too long (118/100) (line-too-long)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:51:0: C0301: Line too long (118/100) (line-too-long)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:61:0: C0301: Line too long (126/100) (line-too-long)
 src/pygame_ui/Cartel_UI/Test_Cartel.py:15:8: E1101: Module 'pygame' has no 'init' member (no-member)
 src/pygame_ui/Cartel_UI/Test_Cartel.py:25:25: W0212: Access to a protected member _Cartel_UI__mensaje of a client class (protected-access)
 src/pygame_ui/Cartel_UI/Test_Cartel.py:26:25: W0212: Access to a protected member _Cartel_UI__titulo of a client class (protected-access)
 src/pygame_ui/Cartel_UI/Test_Cartel.py:27:25: W0212: Access to a protected member _Cartel_UI__duracion of a client class (protected-access)
-src/pygame_ui/Cartel_UI/Test_Cartel.py:50:17: W0212: Access to a protected member _Cartel_UI__dividir_mensaje of a client class (protected-access)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:28:25: W0212: Access to a protected member _Cartel_UI__color_fondo of a client class (protected-access)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:29:25: W0212: Access to a protected member _Cartel_UI__color_texto of a client class (protected-access)
+src/pygame_ui/Cartel_UI/Test_Cartel.py:52:17: W0212: Access to a protected member _Cartel_UI__dividir_mensaje of a client class (protected-access)
 ************* Module pygame_ui.Cartel_UI.Cartel_UI
-src/pygame_ui/Cartel_UI/Cartel_UI.py:5:0: R0902: Too many instance attributes (13/7) (too-many-instance-attributes)
-src/pygame_ui/Cartel_UI/Cartel_UI.py:14:8: W0238: Unused private member `Cartel_UI.__mensaje_error` (unused-private-member)
-src/pygame_ui/Cartel_UI/Cartel_UI.py:42:8: W0201: Attribute '__mensaje' defined outside __init__ (attribute-defined-outside-init)
+src/pygame_ui/Cartel_UI/Cartel_UI.py:5:0: R0902: Too many instance attributes (12/7) (too-many-instance-attributes)
+src/pygame_ui/Cartel_UI/Cartel_UI.py:27:4: R0913: Too many arguments (6/5) (too-many-arguments)
+src/pygame_ui/Cartel_UI/Cartel_UI.py:27:4: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
+src/pygame_ui/Cartel_UI/Cartel_UI.py:39:8: W0201: Attribute '__mensaje' defined outside __init__ (attribute-defined-outside-init)
 ************* Module cli.cli
-src/cli/cli.py:33:43: W0621: Redefining name 'backgammon' from outer scope (line 179) (redefined-outer-name)
+src/cli/cli.py:33:43: W0621: Redefining name 'backgammon' from outer scope (line 187) (redefined-outer-name)
 src/cli/cli.py:90:18: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
 src/cli/cli.py:92:18: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
 src/cli/cli.py:96:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/cli/cli.py:176:8: W0621: Redefining name 'dados' from outer scope (line 185) (redefined-outer-name)
+src/cli/cli.py:177:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
 src/cli/cli.py:21:0: W0611: Unused Ficha imported from src.core.models.ficha.Ficha (unused-import)
 ************* Module cli.Test_Cli
 src/cli/Test_Cli.py:13:0: W0404: Reimport 'patch' (imported line 5) (reimported)
 src/cli/Test_Cli.py:116:29: C2801: Unnecessarily calls dunder method __repr__. Use repr built-in function. (unnecessary-dunder-call)
 src/cli/Test_Cli.py:117:29: C2801: Unnecessarily calls dunder method __repr__. Use repr built-in function. (unnecessary-dunder-call)
-src/cli/Test_Cli.py:20:0: R0904: Too many public methods (23/20) (too-many-public-methods)
+src/cli/Test_Cli.py:20:0: R0904: Too many public methods (25/20) (too-many-public-methods)
 src/cli/Test_Cli.py:5:0: W0611: Unused Mock imported from unittest.mock (unused-import)
 src/cli/Test_Cli.py:16:0: W0611: Unused NingunMovimientoPosible imported from src.core.exceptions.NingunMovimientoPosible (unused-import)
 ************* Module core.exceptions.NoPuedeLiberarException
@@ -228,9 +248,16 @@ src/core/interfaces/JuegoInterfazMovimientos.py:4:0: R0903: Too few public metho
 ************* Module core.interfaces.DadosValidaciones
 src/core/interfaces/DadosValidaciones.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/core/interfaces/DadosValidaciones.py:4:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+************* Module core.interfaces.CartelUI
+src/core/interfaces/CartelUI.py:7:0: C0301: Line too long (110/100) (line-too-long)
+src/core/interfaces/CartelUI.py:12:0: C0304: Final newline missing (missing-final-newline)
+src/core/interfaces/CartelUI.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
+src/core/interfaces/CartelUI.py:7:4: R0913: Too many arguments (6/5) (too-many-arguments)
+src/core/interfaces/CartelUI.py:7:4: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
+src/core/interfaces/CartelUI.py:11:4: C0116: Missing function or method docstring (missing-function-docstring)
 
 -----------------------------------
-Your code has been rated at 9.03/10
+Your code has been rated at 8.91/10
 
 
 ```
