@@ -4,7 +4,7 @@ from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.MovimientoNoJustoParaGanar import MovimientoNoJustoParaGanar
 
-# pylint: disable=C0116
+# pylint: disable=C0116,R0904
 
 
 class TestTableroValidador(unittest.TestCase):

@@ -3,6 +3,7 @@ from unittest.mock import patch
 from src.core.models.dado.Dados import Dados
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
 from src.core.enums.TipoFicha import TipoFicha
+#pylint: disable=C0116
 
 
 class Test_Backgammon_Turnos(unittest.TestCase):

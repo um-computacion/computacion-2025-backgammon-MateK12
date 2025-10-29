@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-
+# pylint: disable=C0116
 class ICartelUI(ABC):
 
     @abstractmethod
