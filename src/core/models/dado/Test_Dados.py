@@ -29,12 +29,6 @@ class TestDados(unittest.TestCase):
         self.assertTrue(1 <= resultado[0] <= 6)
         self.assertTrue(1 <= resultado[1] <= 6)
 
-    def test_dados_iguales_son_dobles(self):
-        with patch("random.randint", side_effect=[5, 5]):
-            resultado = self.dados.tirar_dados()
-            self.assertEqual(resultado[0], 5)
-            self.assertEqual(resultado[1], 5)
-            self.assertTrue(self.dados.doble)
 
     def test_doble_false_principio_true_final(self):
         with patch("random.randint", side_effect=[5, 5]):

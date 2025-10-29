@@ -2,7 +2,6 @@ from src.core.models.ficha.Ficha import Ficha
 from src.core.enums.TipoFicha import TipoFicha
 from src.core.models.dado.Dados import Dados
 
-
 class Backgammon_Turnos:
     def __init__(self, dados: Dados):
         self.__turno: int

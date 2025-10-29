@@ -13,11 +13,9 @@ class Tablero_Impresor:
         """
         print("\n" + "=" * 80)
 
-        # Encontrar la altura máxima de las columnas
         max_height = max(len(columna) for columna in tablero.tablero)
 
-        # Imprimir números de los puntos superiores
-        print("Puntos 12-7: ", end="")
+        print("Puntos 11-0: ", end="")
         for i in range(11, 5, -1):
             print(f"{i:2}", end="    ")
         print(" | ", end="")
@@ -25,7 +23,6 @@ class Tablero_Impresor:
             print(f"{i:2}", end="    ")
         print()
 
-        # Imprimir fichas superiores verticalmente
         for altura in range(max_height - 1, -1, -1):
             print(" " * 13, end="")  # Alineación
             # Puntos 12-7
@@ -69,7 +66,7 @@ class Tablero_Impresor:
             print()
 
         # Imprimir números de los puntos inferiores
-        print("Puntos 13-18: ", end="")
+        print("Puntos 12-23: ", end="")
         for i in range(12, 18):
             print(f"{i:2}", end="    ")
         print("  | ", end="")
