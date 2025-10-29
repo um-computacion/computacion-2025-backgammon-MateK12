@@ -7,7 +7,9 @@
 src/cli/__init__.py                                   0      0   100%
 src/cli/cli.py                                      119     19    84%   62, 70-71, 144-162, 184-190
 src/core/__init__.py                                  0      0   100%
+src/core/helpers/Tablero_Impresor.py                 54      0   100%
 src/core/helpers/Tablero_Inicializador.py            15      0   100%
+src/core/helpers/__init__.py                          0      0   100%
 src/core/models/__init__.py                           0      0   100%
 src/core/models/backgammon/Backgammon_Turnos.py      29      0   100%
 src/core/models/backgammon/__init__.py                0      0   100%
@@ -30,7 +32,7 @@ src/pygame_ui/Tablero_UI/__init__.py                  0      0   100%
 src/pygame_ui/__init__.py                             0      0   100%
 src/pygame_ui/ui.py                                 134     29    78%   83-121, 156, 186
 -------------------------------------------------------------------------------
-TOTAL                                               885     84    91%
+TOTAL                                               939     84    91%
 
 ```
 
@@ -165,6 +167,9 @@ src/core/exceptions/NoPuedeLiberarException.py:1:0: C0304: Final newline missing
 ************* Module core.helpers.Tablero_Inicializador
 src/core/helpers/Tablero_Inicializador.py:10:0: C0301: Line too long (140/100) (line-too-long)
 src/core/helpers/Tablero_Inicializador.py:5:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+************* Module core.helpers.Test_Tablero_impresor
+src/core/helpers/Test_Tablero_impresor.py:120:0: C0304: Final newline missing (missing-final-newline)
+src/core/helpers/Test_Tablero_impresor.py:5:0: W0611: Unused Tablero_Validador imported from src.core.models.tablero.Tablero_Validador (unused-import)
 ************* Module core.helpers.Tablero_Impresor
 src/core/helpers/Tablero_Impresor.py:6:4: R0912: Too many branches (20/12) (too-many-branches)
 src/core/helpers/Tablero_Impresor.py:4:0: R0903: Too few public methods (1/2) (too-few-public-methods)
@@ -173,12 +178,6 @@ src/core/models/backgammon/Test_Backgammon.py:486:44: C0303: Trailing whitespace
 src/core/models/backgammon/Test_Backgammon.py:19:0: R0904: Too many public methods (56/20) (too-many-public-methods)
 src/core/models/backgammon/Test_Backgammon.py:2:0: W0611: Unused Mock imported from unittest.mock (unused-import)
 src/core/models/backgammon/Test_Backgammon.py:2:0: W0611: Unused patch imported from unittest.mock (unused-import)
-************* Module core.models.backgammon.Test_backgammon_Turnos
-src/core/models/backgammon/Test_backgammon_Turnos.py:13:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/core/models/backgammon/Test_backgammon_Turnos.py:19:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/core/models/backgammon/Test_backgammon_Turnos.py:25:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/core/models/backgammon/Test_backgammon_Turnos.py:33:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/core/models/backgammon/Test_backgammon_Turnos.py:41:4: C0116: Missing function or method docstring (missing-function-docstring)
 ************* Module core.models.backgammon.Backgammon_Turnos
 src/core/models/backgammon/Backgammon_Turnos.py:1:0: W0611: Unused Ficha imported from src.core.models.ficha.Ficha (unused-import)
 ************* Module core.models.backgammon.backgammon
@@ -201,8 +200,6 @@ src/core/models/backgammon/backgammon.py:181:4: R0914: Too many local variables 
 src/core/models/backgammon/backgammon.py:267:16: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
 src/core/models/backgammon/backgammon.py:181:4: R0912: Too many branches (14/12) (too-many-branches)
 src/core/models/backgammon/backgammon.py:272:4: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
-************* Module core.models.dado.Test_Dados
-src/core/models/dado/Test_Dados.py:32:4: E0102: method already defined line 20 (function-redefined)
 ************* Module core.models.dado.Dados
 src/core/models/dado/Dados.py:17:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 ************* Module core.models.tablero.Tablero
@@ -218,7 +215,6 @@ src/core/models/tablero/Test_Tablero_Validador.py:224:0: C0301: Line too long (1
 src/core/models/tablero/Test_Tablero_Validador.py:225:0: C0303: Trailing whitespace (trailing-whitespace)
 src/core/models/tablero/Test_Tablero_Validador.py:230:0: C0301: Line too long (146/100) (line-too-long)
 src/core/models/tablero/Test_Tablero_Validador.py:124:4: E0102: method already defined line 112 (function-redefined)
-src/core/models/tablero/Test_Tablero_Validador.py:10:0: R0904: Too many public methods (40/20) (too-many-public-methods)
 src/core/models/tablero/Test_Tablero_Validador.py:5:0: W0611: Unused MovimientoNoJustoParaGanar imported from src.core.exceptions.MovimientoNoJustoParaGanar (unused-import)
 ************* Module core.models.tablero.Tablero_Validador
 src/core/models/tablero/Tablero_Validador.py:62:42: C0303: Trailing whitespace (trailing-whitespace)
@@ -232,32 +228,23 @@ src/core/models/tablero/Tablero_Validador.py:127:8: R1705: Unnecessary "elif" af
 src/core/models/tablero/Tablero_Validador.py:115:4: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
 ************* Module core.models.jugador.Jugador
 src/core/models/jugador/Jugador.py:1:0: R0903: Too few public methods (1/2) (too-few-public-methods)
-************* Module core.interfaces.JuegoInterfazDados
-src/core/interfaces/JuegoInterfazDados.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
-src/core/interfaces/JuegoInterfazDados.py:11:4: C0116: Missing function or method docstring (missing-function-docstring)
 ************* Module core.interfaces.PuedeHacerMovimiento
-src/core/interfaces/PuedeHacerMovimiento.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/core/interfaces/PuedeHacerMovimiento.py:4:0: R0903: Too few public methods (1/2) (too-few-public-methods)
 ************* Module core.interfaces.TrianguloValidaciones
-src/core/interfaces/TrianguloValidaciones.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/core/interfaces/TrianguloValidaciones.py:7:4: E0213: Method 'seleccion_triangulo_valida' should have "self" as first argument (no-self-argument)
 src/core/interfaces/TrianguloValidaciones.py:4:0: R0903: Too few public methods (1/2) (too-few-public-methods)
 ************* Module core.interfaces.JuegoInterfazMovimientos
-src/core/interfaces/JuegoInterfazMovimientos.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/core/interfaces/JuegoInterfazMovimientos.py:4:0: R0903: Too few public methods (1/2) (too-few-public-methods)
 ************* Module core.interfaces.DadosValidaciones
-src/core/interfaces/DadosValidaciones.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/core/interfaces/DadosValidaciones.py:4:0: R0903: Too few public methods (1/2) (too-few-public-methods)
 ************* Module core.interfaces.CartelUI
 src/core/interfaces/CartelUI.py:7:0: C0301: Line too long (110/100) (line-too-long)
 src/core/interfaces/CartelUI.py:12:0: C0304: Final newline missing (missing-final-newline)
-src/core/interfaces/CartelUI.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
 src/core/interfaces/CartelUI.py:7:4: R0913: Too many arguments (6/5) (too-many-arguments)
 src/core/interfaces/CartelUI.py:7:4: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
-src/core/interfaces/CartelUI.py:11:4: C0116: Missing function or method docstring (missing-function-docstring)
 
 -----------------------------------
-Your code has been rated at 8.91/10
+Your code has been rated at 9.02/10
 
 
 ```
