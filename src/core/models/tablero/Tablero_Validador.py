@@ -54,7 +54,7 @@ class Tablero_Validador:
             triangulo_destino (int): El triángulo al que se quiere mover la ficha
             triangulo_origen (int): El triángulo desde donde se mueve la ficha
         Retorna:
-            bool: True si puede ganar (llega exactamente al final), False en caso contrario
+            bool: True si puede ganar, False en caso contrario
         """
         tipo = ficha.tipo
 

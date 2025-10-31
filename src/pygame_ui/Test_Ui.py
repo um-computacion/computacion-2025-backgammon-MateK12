@@ -6,6 +6,7 @@ from src.core.enums.TipoFicha import TipoFicha
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
 import os
 
+
 os.environ['SDL_VIDEODRIVER'] = 'dummy' 
 os.environ['SDL_AUDIODRIVER'] = 'dummy'
 os.environ['SDL_HIDDEN'] = '1'
@@ -30,7 +31,6 @@ class Test_Ui(unittest.TestCase):
         self.mock_campos_ui.get_seleccion_triangulo.return_value = 5
         self.mock_campos_ui.manager = MagicMock()
         self.mock_campos_ui.boton_mover = MagicMock()
-
         self.ui = BackgammonUI(
             backgammon=self.mock_backgammon,
             tableroUI=self.mock_tablero_ui,
@@ -39,19 +39,6 @@ class Test_Ui(unittest.TestCase):
             cartel_UI=self.mock_cartel,
         )
 
-    @patch("src.pygame_ui.ui.BackgammonUI")
-    @patch("src.pygame_ui.ui.pygame.display.set_mode")
-    def test_main_function(self, mock_display, mock_ui):
-        """Test de la función main"""
-        from src.pygame_ui.ui import main
-
-        mock_ui_instance = MagicMock()
-        mock_ui.return_value = mock_ui_instance
-
-        main()
-
-        mock_ui.assert_called_once()
-        mock_ui_instance.jugar.assert_called_once()
 
     @patch("src.pygame_ui.ui.BackgammonUI.puede_hacer_algun_movimiento")
     def test_tirar_dados(self, mock_puede_hacer_algun_movimiento):

@@ -12,16 +12,22 @@ from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
 from src.core.exceptions.SeleccionDadoInvalida import SeleccionDadoInvalida
 from src.core.exceptions.SeleccionTrianguloInvalida import SeleccionTrianguloInvalida
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoComida import EstrategiaMovimientoComida
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoNormal import EstrategiaMovimientoNormal
+from src.core.models.backgammon.Estrategias.EstrategiaUnicaFicha import EstrategiaUnicaFicha
+
 
 # pylint: disable=C0116,W0212
 
 
 class TestBackgammon(unittest.TestCase):
     def setUp(self):
+        estrategias = [EstrategiaUnicaFicha(),EstrategiaMovimientoComida(),EstrategiaMovimientoNormal()]
         self.game = Backgammon(
             Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador()),
             Dados(),
             Backgammon_Turnos(Dados()),
+            estrategias
         )
 
     def test_get_tablero(self):
@@ -201,7 +207,6 @@ class TestBackgammon(unittest.TestCase):
         self.game.turnero.turno = TipoFicha.NEGRA.value
 
         ficha_comida = Ficha(TipoFicha.NEGRA.value)
-        ficha_comida.comida = True
         self.game.tablero.fichas_comidas.append(ficha_comida)
 
         for i in range(6):
@@ -218,7 +223,6 @@ class TestBackgammon(unittest.TestCase):
         self.game.turnero.turno = TipoFicha.ROJA.value
 
         ficha_comida = Ficha(TipoFicha.ROJA.value)
-        ficha_comida.comida = True
         self.game.tablero.fichas_comidas.append(ficha_comida)
 
         for i in range(18, 24):
@@ -429,6 +433,7 @@ class TestBackgammon(unittest.TestCase):
         self.game.tablero.tablero[10] = [Ficha(TipoFicha.ROJA.value)]
         self.game.tablero.tablero[7] = [Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.NEGRA.value)]
         self.game.tablero.tablero[8] = [Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.NEGRA.value)]
+        self.game.tablero.tablero[5] = [Ficha(TipoFicha.NEGRA.value),Ficha(TipoFicha.NEGRA.value)]
 
         self.game.tablero.tablero[4] = [Ficha(TipoFicha.ROJA.value)]
 
@@ -462,6 +467,7 @@ class TestBackgammon(unittest.TestCase):
         resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1, 1])
         self.assertTrue(resultado)
         self.assertEqual(len(self.game.tablero.tablero[20]), 1)
+        
     def test_no_puede_mover_suma_porque_no_puede_liberar_mueve_mayor(self):
         self.game.turnero.turno = TipoFicha.NEGRA.value
 
@@ -471,6 +477,7 @@ class TestBackgammon(unittest.TestCase):
         self.game.tablero.tablero[10] = [Ficha(TipoFicha.NEGRA.value)]
         self.game.tablero.tablero[11] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
         self.game.tablero.tablero[12] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
+        self.game.tablero.tablero[13] = [Ficha(TipoFicha.ROJA.value),Ficha(TipoFicha.ROJA.value)]
 
         self.game.tablero.tablero[21] = [Ficha(TipoFicha.NEGRA.value)]
         resultado = self.game.puede_mover_ficha(TipoFicha.NEGRA.value, [1, 2])

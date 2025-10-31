@@ -14,6 +14,9 @@ from unittest.mock import patch, MagicMock
 from src.core.helpers.Tablero_Impresor import Tablero_Impresor
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
 from src.core.exceptions.NingunMovimientoPosible import NingunMovimientoPosible
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoComida import EstrategiaMovimientoComida
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoNormal import EstrategiaMovimientoNormal
+from src.core.models.backgammon.Estrategias.EstrategiaUnicaFicha import EstrategiaUnicaFicha
 
 
 # pylint: disable=C0116
@@ -25,7 +28,8 @@ class TestCli(unittest.TestCase):
             Tablero_inicializador.inicializar_tablero(), Tablero_Validador()
         )
         turnero = Backgammon_Turnos(Dados())
-        backgammon = Backgammon(tablero, Dados(), turnero)
+        estrategias = [EstrategiaUnicaFicha(), EstrategiaMovimientoComida(), EstrategiaMovimientoNormal()]
+        backgammon = Backgammon(tablero, Dados(), turnero, estrategias)
         self.cli = CLI(self.jugador1, self.jugador2, backgammon)
         self.cli.backgammon.turnero.quien_empieza()
 
