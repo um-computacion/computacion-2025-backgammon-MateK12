@@ -19,10 +19,13 @@ Tablero_UI -> maneja la interfaz grafica del tablero
 UI -> maneja la interfaz grafica del juego
 Cartel_UI -> maneja los carteles de error y victoria en la interfaz grafica (esta hecho para ser reutilizable )
 Campos_UI -> maneja los campos de la interfaz grafica para realizar los movimientos
+Estrategia_movimiento_unico -> estrategia para mover una ficha con el dado mayor cuando no puede mover con la suma
+Estrategia_movimiento_normal -> Valida que se pueda mover normalmente
+Estrategia_movimiento_comidas -> Valida que se pueda mover las fichas comidas que vuelven a entrar al tablero
 ## 📊 Justificación de Atributos
 Decidi que el jugador no iba tener fichas en su clase, ya que las fichas estan en el tablero, y puedo identificarlas con el tipo, de hecho el jugador solo tiene el nombre y el tipo de ficha
-### Selección y Diseño de Atributos
-
+Decidi que no hacia falta tener un bool en la clase ficha para saber si esta comida o no, ya que si una ficha esta comida, no estara en el array de fichas_comidas
+### Selección y Diseño de Atributos 
 
 
 ## 🔧 Decisiones de Diseño Relevantes
@@ -35,10 +38,11 @@ Decidi separar los turnos en otra clase para que la clase backgammon no tenga ta
 Decidi "componentizar" la interfaz grafica en varias clases para separar responsabilidades y hacer el codigo mas mantenible, como 
 en Campos_UI, Cartel_UI, Tablero_UI y todas ellas son manejadas por Backgammon_UI que controla cuando se muestran y ocultan
 Hice que la clase UI reciba una instancia de ICartelUI en su constructor, para implementar el principio de inversion de dependencias (DIP), permitiendo asi cambiar la implementacion de cartel UI
-
+Implemente el patron de estrategia para manejar los diferentes tipos de movimientos que se pueden hacer en el backgammon, como movimientos normales, movimientos de fichas comidas y movimientos unicos cuando no se puede mover con la suma de los dados, permitiendo asi extender las validaciones facilmente sin modificar la clase backgammon al validar si puede mover o no, ademas al todas implementar la interfaz IEstrategiaMovimiento, Implementeo el principio DIP en backgammon, ya que depende de la abstraccion IEstrategiaMovimiento y no de una implementacion concreta, permitiendo asi agregar nuevas estrategias de movimiento sin modificar la clase backgammon (se le pasa un arreglo de estrategias en el constructor)
 
 ### Patrones y Arquitectura Implementada
 Patron de diseño Facade para la interfaz de usuario, ya que la clase CLI y ui son las unicas que interactua con el usuario, y las demas clases no saben nada de la interfaz de usuario, y podria funcionar perfectamente con otro tipo de interfaz, ademas de ser consistente.
+Patron de estrategia para manejar las diferentes validaciones que se pueden hacer en el backgammon, como movimientos normales, movimientos de fichas comidas y movimientos unicos cuando no se puede mover con la suma de los dados, permitiendo asi extender las validaciones facilmente sin modificar la clase backgammon al validar si puede mover o no
 
 
 ## ⚠️ Excepciones y Manejo de Errores
@@ -81,8 +85,7 @@ En clases como tablero_validador, backgammon y ficha, se testean todas las funci
 En clases como CLI se testea las llamadas correctas a las funciones de otras clases, pero no se teste que esas funciones hagan lo que deben hacer, ya que eso se testea en las clases correspondientes.
 En metodos claves como puede_hacer_movimiento se testean muchos escenarios posibles para asegurar que la logica del juego no falle, inclusive testeando escenarios dificiles de replicar en un juego real. 
 ### Plan de Pruebas y Cobertura de Código
-actualmente la cobertura es del 91% en toda la aplicacion, haciendo enfasis el core donde la cobertura es de casi 100%, hay metodos que se testean mas que otros, como el puede_hacer_movimiento en backgammon, que tiene muchos escenarios posibles, y es un metodo clave en la logica del juego que no puede fallar.
-
+actualmente la cobertura es del 91% en toda la aplicacion, haciendo enfasis el core donde la cobertura es de casi 100%, hay metodos que se testean mas que otros, como el puede_hacer_movimiento en backgammon, que tiene muchos escenarios posibles, y es un metodo clave en la logica del juego que no puede fallar. Ademas de testear cada estrategia con sus debidos escenarios.
 
 ## 🏛️ Principios SOLID
 
@@ -93,6 +96,7 @@ Separo la responsabilidad de validar movimientos en una clase aparte, y la respo
 
 #### 🔸 Open/Closed Principle (OCP)
 Las interfaces usan interfaces como IJuegoInterfazMovimientos, IJuegoInterfazDados, IJuegoInterfazDadosValidaciones permitiendo asi la extension del codigo sin modificar las clases existentes
+Backgammon usa el patron de estrategia para manejar las diferentes validaciones sobre los movimientos que se pueden hacer en el backgammon, como movimientos normales, movimientos de fichas comidas y movimientos unicos cuando no se puede mover con la suma de los dados, permitiendo asi extender las validaciones facilmente sin modificar la clase backgammon al validar si puede mover o no
 
 #### 🔸 Liskov Substitution Principle (LSP)
 No uso herencia
@@ -101,8 +105,9 @@ No uso herencia
 Hay interfaces separadas como JuegoInterfazDados y JuegoInterfazDadosValidaciones, ya que si ambas interfaces estuvieran juntas, las interfaces que no necesiten validar el dado (como la ui) tendrian que implementar un metodo que no usan
 #### 🔸 Dependency Inversion Principle (DIP)
 La clase UI recibe una instancia de ICartelUI en su constructor, permitiendo asi que la clase UI no dependa de una implementacion concreta de cartel UI, sino de una abstraccion, permitiendo asi cambiar la implementacion de cartel y reutilizar codigo
+La clase Backgammon depende de la abstraccion IEstrategiaMovimiento y no de una implementacion concreta, permitiendo asi agregar nuevas estrategias de movimiento sin modificar la clase backgammon (se le pasa un arreglo de estrategias en el constructor)
 ## 📎 Anexos
 
 ### 📈 Diagramas UML
-![alt text](image-1.png)
 #### Diagrama de Clases
+![alt text](UML_clases.png)

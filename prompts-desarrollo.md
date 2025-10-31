@@ -634,6 +634,18 @@ saque el metodo de cerrar_error porque no lo voy a usar
 ### modelo
     claude
 ### propmt
+Refactoriza el metodo puede_hacer_movimiento en la clase backgammon para que sea mas legible y cumpla con el principio de OCP
+### respuesta    
+**Refactor con el patron estrategias**
+### Fixed
+Corregui la estrategia de ficha unica porque entendio muy mal la logica de la regla
+### cambios 
+### archivos finales
+Estrategia/
+
+### modelo
+    claude
+### propmt
 ### respuesta    
 ### Fixed
 ### cambios 

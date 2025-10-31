@@ -282,3 +282,14 @@ hizo lo que le pedi, y lo use asi
 ### archivos finales
 CHANGELOG.md
 
+
+### modelo
+    claude
+### propmt
+haz un diagrama de clases UML con mermaid en base a estos modelos
+### respuesta    
+**Diagrama UML en mermaid**
+### Fixed
+### cambios 
+### archivos finales
+JUSTIFICACION.md

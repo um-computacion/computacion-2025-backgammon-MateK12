@@ -23,6 +23,10 @@ from src.pygame_ui.Cartel_UI.Cartel_UI import Cartel_UI
 from src.core.models.backgammon.Backgammon_Turnos import Backgammon_Turnos
 from src.core.exceptions.NoPuedeLiberarException import NoPuedeLiberarException
 from src.core.interfaces.CartelUI import ICartelUI
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoComida import EstrategiaMovimientoComida
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoNormal import EstrategiaMovimientoNormal
+from src.core.models.backgammon.Estrategias.EstrategiaUnicaFicha import EstrategiaUnicaFicha
+
 WINDOW_WIDTH = 1500
 WINDOW_HEIGHT = 700
 BROWN_LIGHT = (222, 184, 135)
@@ -169,9 +173,10 @@ class BackgammonUI(IJuegoInterfazMovimientos, IPuedeHacerMovimiento):
             )
 
 def main():
+    estrategias = [EstrategiaMovimientoComida(), EstrategiaMovimientoNormal(), EstrategiaUnicaFicha()]
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador())
     turnero = Backgammon_Turnos(Dados())
-    backgammon = Backgammon(tablero, Dados(), turnero)
+    backgammon = Backgammon(tablero, Dados(), turnero,estrategias)
     tableroUi = TableroUI(tablero)
     camposUi = CamposUi(WINDOW_WIDTH, WINDOW_HEIGHT)
     pantalla = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))

@@ -19,6 +19,10 @@ from src.core.interfaces.DadosValidaciones import IDadosValidaciones
 from src.core.interfaces.TrianguloValidaciones import ITrianguloValidaciones
 from src.core.exceptions.NoPuedeLiberarException import NoPuedeLiberarException
 from src.core.models.ficha.Ficha import Ficha
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoComida import EstrategiaMovimientoComida
+from src.core.models.backgammon.Estrategias.EstrategiaUnicaFicha import EstrategiaUnicaFicha
+from src.core.models.backgammon.Estrategias.EstrategiaMovimientoNormal import EstrategiaMovimientoNormal
+
 
 ERROR = "\033[91m"
 RESET = "\033[0m"
@@ -184,7 +188,11 @@ if __name__ == "__main__":
     tablero = Tablero(Tablero_inicializador.inicializar_tablero(), Tablero_Validador())
     dados = Dados()
     turnero = Backgammon_Turnos(dados)
-    backgammon = Backgammon(tablero, dados, turnero)
+    estrategias = [
+            EstrategiaMovimientoComida(),
+            EstrategiaUnicaFicha(),
+            EstrategiaMovimientoNormal(),]
+    backgammon = Backgammon(tablero, dados, turnero,estrategias)
 
     cli = CLI(None, None, backgammon)
     cli.jugar()

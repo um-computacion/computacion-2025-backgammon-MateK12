@@ -7,7 +7,7 @@ os.environ['SDL_VIDEODRIVER'] = 'dummy'
 os.environ['SDL_AUDIODRIVER'] = 'dummy'
 os.environ['SDL_HIDDEN'] = '1'
 
-# pylint: disable=C0116
+# pylint: disable=C0116,W0212
 with redirect_stdout(StringIO()), redirect_stderr(StringIO()):
     pygame.init()
 
