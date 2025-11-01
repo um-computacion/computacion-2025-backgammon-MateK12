@@ -30,7 +30,7 @@ src/pygame_ui/CamposUI/__init__.py                                         0    
 src/pygame_ui/CamposUI/camposUI.py                                       130     15    88%   61, 150, 163-166, 170-174, 197, 222-224
 src/pygame_ui/Cartel_UI/Cartel_UI.py                                      63      0   100%
 src/pygame_ui/Cartel_UI/__init__.py                                        0      0   100%
-src/pygame_ui/Tablero_UI/Tablero_UI.py                                   105     16    85%   61, 72-89
+src/pygame_ui/Tablero_UI/Tablero_UI.py                                   105     16    85%   65, 80-97
 src/pygame_ui/Tablero_UI/__init__.py                                       0      0   100%
 src/pygame_ui/__init__.py                                                  0      0   100%
 src/pygame_ui/ui.py                                                      138     39    72%   87-125, 160, 176-187, 191
@@ -98,13 +98,14 @@ src/pygame_ui/CamposUI/camposUI.py:199:4: R1710: Either all return statements in
 src/pygame_ui/CamposUI/camposUI.py:85:8: W0201: Attribute 'select_triangulo' defined outside __init__ (attribute-defined-outside-init)
 ************* Module pygame_ui.Tablero_UI.Tablero_UI
 src/pygame_ui/Tablero_UI/Tablero_UI.py:47:0: C0301: Line too long (116/100) (line-too-long)
-src/pygame_ui/Tablero_UI/Tablero_UI.py:114:0: C0301: Line too long (107/100) (line-too-long)
-src/pygame_ui/Tablero_UI/Tablero_UI.py:149:0: C0301: Line too long (108/100) (line-too-long)
-src/pygame_ui/Tablero_UI/Tablero_UI.py:197:0: C0301: Line too long (110/100) (line-too-long)
+src/pygame_ui/Tablero_UI/Tablero_UI.py:115:27: C0303: Trailing whitespace (trailing-whitespace)
+src/pygame_ui/Tablero_UI/Tablero_UI.py:124:0: C0301: Line too long (107/100) (line-too-long)
+src/pygame_ui/Tablero_UI/Tablero_UI.py:159:0: C0301: Line too long (108/100) (line-too-long)
+src/pygame_ui/Tablero_UI/Tablero_UI.py:207:0: C0301: Line too long (110/100) (line-too-long)
 src/pygame_ui/Tablero_UI/Tablero_UI.py:5:0: E1101: Module 'pygame' has no 'init' member (no-member)
-src/pygame_ui/Tablero_UI/Tablero_UI.py:80:13: R1716: Simplify chained comparison between the operands (chained-comparison)
-src/pygame_ui/Tablero_UI/Tablero_UI.py:83:13: R1716: Simplify chained comparison between the operands (chained-comparison)
-src/pygame_ui/Tablero_UI/Tablero_UI.py:87:58: E0606: Possibly using variable 'text_y' before assignment (possibly-used-before-assignment)
+src/pygame_ui/Tablero_UI/Tablero_UI.py:88:13: R1716: Simplify chained comparison between the operands (chained-comparison)
+src/pygame_ui/Tablero_UI/Tablero_UI.py:91:13: R1716: Simplify chained comparison between the operands (chained-comparison)
+src/pygame_ui/Tablero_UI/Tablero_UI.py:95:58: E0606: Possibly using variable 'text_y' before assignment (possibly-used-before-assignment)
 ************* Module pygame_ui.Tablero_UI.Test_Tablero_UI
 src/pygame_ui/Tablero_UI/Test_Tablero_UI.py:16:39: C0303: Trailing whitespace (trailing-whitespace)
 src/pygame_ui/Tablero_UI/Test_Tablero_UI.py:22:8: E1101: Module 'pygame' has no 'init' member (no-member)
@@ -307,16 +308,17 @@ src/core/enums/__init__.py:1:0: R0801: Similar lines in 2 files
 src/core/enums/__init__.py:1:0: R0801: Similar lines in 2 files
 ==core.models.backgammon.Estrategias.EstrategiaMovimientoNormal:[52:59]
 ==core.models.backgammon.Estrategias.EstrategiaUnicaFicha:[148:156]
-        triangulo_destino = (
-            triangulo + movimiento
-            if tipo == TipoFicha.NEGRA.value
-            else triangulo - movimiento
-        )
+            triangulo_destino = (
+                triangulo + movimiento
+                if tipo == TipoFicha.NEGRA.value
+                else triangulo - movimiento
+            )
 
-        if self._se_pasa_tablero(tipo, triangulo_destino, triangulo, tablero): (duplicate-code)
+            # Verificar si se pasa del tablero
+            if self._se_pasa_tablero(tipo, triangulo_destino, triangulo, tablero): (duplicate-code)
 
 -----------------------------------
-Your code has been rated at 9.11/10
+Your code has been rated at 9.10/10
 
 
 ```
