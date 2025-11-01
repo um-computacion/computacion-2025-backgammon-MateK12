@@ -45,6 +45,10 @@ class TableroUI:
     def dibujar_triangulo(self, punto_index: int, color: tuple, screen: pygame.Surface):
         """Dibuja un triángulo para un punto específico
         Si son los primeros 12 triangulos apuntan hacia abajo, si son los ultimos 12 triangulos apuntan hacia arriba
+        Args:
+            punto_index (int): Índice del triángulo (0-23)
+            color (tuple): Color del triángulo (R,G,B) 
+            screen (pygame.Surface): Superficie donde dibujar el triángulo
         """
         punto_x, punto_y = self.get_punto_position_base(punto_index)
 
@@ -65,10 +69,14 @@ class TableroUI:
             ]
 
         pygame.draw.polygon(screen, color, puntos)
-        pygame.draw.polygon(screen, BLACK, puntos, 2)
+        pygame.draw.polygon(screen, BLACK, puntos, 2) # Borde del triangulo
 
     def __dibujar_numero_triangulo(self, punto_index: int, screen: pygame.Surface):
-        """Dibuja el número del triángulo encima o debajo según corresponda"""
+        """Dibuja el número del triángulo encima o debajo según corresponda
+        Args:
+            punto_index (int): Índice del triángulo (0-23)
+            screen (pygame.Surface): Superficie donde dibujar el número
+        """
         font = pygame.font.Font(None, 24)
 
         _, base_y = self.get_punto_position_base(punto_index)
@@ -91,6 +99,8 @@ class TableroUI:
     def dibujar_tablero(self, screen):
         """Dibuja el tablero completo
         Incluye el borde del tablero, el bar central, los 24 triangulos y las fichas
+        Args:
+            screen (pygame.Surface): Superficie donde dibujar el tablero
         """
         pygame.draw.rect(
             screen,
@@ -102,7 +112,7 @@ class TableroUI:
         barra_x = self.__x__ + self.__ancho_tablero__ // 2 - 25
         pygame.draw.rect(screen, DARK, (barra_x, self.__y__, 50, self.__alto_tablero__))
 
-        for i in range(24):  # triangulos alternando el color
+        for i in range(24):  
             color = DARK if i % 2 == 0 else RED
             self.dibujar_triangulo(i, color, screen)
             self.__dibujar_numero_triangulo(i, screen)
@@ -140,7 +150,7 @@ class TableroUI:
                 )  # pos_inicial_x+ desplazamiento en x +ancho_del_tablero/2
             else:
                 x = self.__x__ + (punto_index - 18) * self.__punto_width__
-            y = self.__y__ + self.__alto_tablero__ - 250
+            y = self.__y__ + self.__alto_tablero__ - self.__punto_height__
 
         return x, y
 
@@ -196,6 +206,7 @@ class TableroUI:
     def dibujar_fichas_en_punto(self, punto_index, screen):
         """Dibuja todas las fichas en un triangulo específico del tablero, validando la posición del triangulo
         @param punto_index: Índice del triángulo (0-23)
+        @param screen: Superficie donde dibujar las fichas
         """
         fichas = self.__tablero.tablero[punto_index]
         if not fichas:
@@ -218,6 +229,9 @@ class TableroUI:
             self.dibujar_ficha(center_x, ficha_y, ficha.tipo, screen)
 
     def dibujar_todas_las_fichas(self, screen):
-        """Dibuja todas las fichas en todos los puntos del tablero"""
+        """Dibuja todas las fichas en todos los puntos del tablero
+        Args:
+            screen (pygame.Surface): Superficie donde dibujar las fichas
+        """
         for punto_index in range(24):
             self.dibujar_fichas_en_punto(punto_index, screen)

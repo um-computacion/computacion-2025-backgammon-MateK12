@@ -8,7 +8,7 @@ class Cartel_UI(ICartelUI):
         posicion: tuple,
     ):
         self.__mensaje_activo = False
-        self.__tiempo_error_inicio = 0
+        self.__tiempo_inicio = 0
         self.__duracion = 3.0
         self.__titulo = ""
         self.__font_titulo = pygame.font.Font(None, 36)
@@ -35,7 +35,7 @@ class Cartel_UI(ICartelUI):
             duracion (float): Duración en segundos (por defecto 3.0)
         """
         self.__mensaje_activo = True
-        self.__tiempo_error_inicio = time.time()
+        self.__tiempo_inicio = time.time()
         self.__mensaje = str(mensaje)
         self.__titulo = titulo
         self.__duracion = duracion
@@ -46,19 +46,24 @@ class Cartel_UI(ICartelUI):
         """
         Actualiza el cartel y lo dibuja si está activo
         Debe llamarse en cada frame del loop principal
+        Args:
+            screen (pygame.Surface): Superficie donde dibujar el cartel
         """
         if not self.__mensaje_activo:
             return
 
         tiempo_actual = time.time()
-        if tiempo_actual - self.__tiempo_error_inicio >= self.__duracion:
+        if tiempo_actual - self.__tiempo_inicio >= self.__duracion:
             self.__mensaje_activo = False
             return
 
         self.__dibujar_mensaje(screen)
 
     def __dibujar_mensaje(self, screen: pygame.Surface):
-        """Dibuja el cartel"""
+        """Dibuja el cartel
+        Args:
+            screen (pygame.Surface): Superficie donde dibujar el cartel
+        """
         offset_x = self.__ancho // 2
         offset_y = self.__alto // 2
         pygame.draw.rect(
@@ -87,7 +92,11 @@ class Cartel_UI(ICartelUI):
             y_mensaje += 20
 
     def __dividir_mensaje(self, mensaje: str, max_caracteres: int = 45) -> list[str]:
-        """Divide el mensaje en líneas para que quepa en el cartel"""
+        """Divide el mensaje en líneas para que quepa en el cartel
+        Args:
+            mensaje (str): Mensaje a dividir
+            max_caracteres (int): Máximo de caracteres por línea
+        """
         if len(mensaje) <= max_caracteres:
             return [mensaje]
 
