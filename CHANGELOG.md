@@ -350,3 +350,17 @@ cartel para mostrar dados sacados primer turno en ui, y tambien en cli
 Se agrega interfaz ICartelUI para implementar dip en Cartel_UI, refactor para usar solo una instancia de cartel
 ### Arreglado
 ###
+
+## [2.5.0] - 31-10-2025 ##
+### Agregado
+### Cambiado
+Se agrega la interfaz IEstrategiaMovible y IEstrategiaPuedeMover para implementar DIP y OCP en las validaciones de las reglas
+### Arreglado
+###
+
+## [2.5.1] - 30-10-2025 ##
+### Agregado
+### Cambiado
+Docstrings agregados en metodos de Cartel_UI y Tablero_UI
+### Arreglado
+###
