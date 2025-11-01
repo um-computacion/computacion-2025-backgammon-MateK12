@@ -1,0 +1,2 @@
+class SeleccionTrianguloInvalida(Exception):
+    pass
